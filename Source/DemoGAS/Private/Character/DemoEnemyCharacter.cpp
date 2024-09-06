@@ -4,29 +4,24 @@
 #include "DemoGAS/Public/Character/DemoEnemyCharacter.h"
 
 
-// Sets default values
 ADemoEnemyCharacter::ADemoEnemyCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
+void ADemoEnemyCharacter::HighlightActor()
+{
+	
+}
+
+void ADemoEnemyCharacter::UnHighlightActor()
+{
+	
+}
+
 void ADemoEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}
-
-// Called every frame
-void ADemoEnemyCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-// Called to bind functionality to input
-void ADemoEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 

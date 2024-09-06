@@ -4,25 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "DemoCharacterBase.h"
+#include "Interface/EnemyInterface.h"
 #include "DemoEnemyCharacter.generated.h"
 
 UCLASS()
-class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase
+class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase,public IEnemyInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ADemoEnemyCharacter();
 
+	virtual void HighlightActor() override;
+	virtual void UnHighlightActor() override;
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 };
