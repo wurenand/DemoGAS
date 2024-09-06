@@ -6,23 +6,23 @@
 #include "DemoCharacterBase.h"
 #include "DemoPlayerCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class DEMOGAS_API ADemoPlayerCharacter : public ADemoCharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ADemoPlayerCharacter();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+private:
+	UPROPERTY(EditAnywhere,Category = "Camera")
+	TObjectPtr<USpringArmComponent> SpringArm;
+	UPROPERTY(EditAnywhere,Category = "Camera")
+	TObjectPtr<UCameraComponent> Camera;
 };
