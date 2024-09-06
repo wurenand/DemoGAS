@@ -15,6 +15,9 @@ ADemoPlayerState::ADemoPlayerState()
 	//构造ASC和AttributeSet
 	AbilitySystemComponent = CreateDefaultSubobject<UDemoAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true); //TODO(为什么只给ASC设置复制?)
+	//Full会把GE复制给所有人   Mixed只会把GE复制给拥有它的Client（可以更新HUD等）  Minimal不会复制GE
+	//但是GameplayCue和GameplayTags一直都会被复制
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
 }
 

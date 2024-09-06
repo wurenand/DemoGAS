@@ -17,6 +17,7 @@ ADemoEnemyCharacter::ADemoEnemyCharacter()
 	//构造ASC和AttributeSet
 	AbilitySystemComponent = CreateDefaultSubobject<UDemoAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true); //TODO(为什么只给ASC设置复制?)
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
 }
 
