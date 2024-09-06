@@ -12,6 +12,16 @@ ADemoCharacterBase::ADemoCharacterBase()
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 }
 
+UAbilitySystemComponent* ADemoCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+UAttributeSet* ADemoCharacterBase::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
 void ADemoCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

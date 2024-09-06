@@ -4,6 +4,8 @@
 #include "DemoGAS/Public/Character/DemoEnemyCharacter.h"
 
 #include "DemoGAS/DemoGAS.h"
+#include "GameplayAbilities/DemoAbilitySystemComponent.h"
+#include "GameplayAbilities/DemoAttributeSet.h"
 
 
 ADemoEnemyCharacter::ADemoEnemyCharacter()
@@ -11,6 +13,11 @@ ADemoEnemyCharacter::ADemoEnemyCharacter()
 	PrimaryActorTick.bCanEverTick = false;
 	//设定后PC中的CursorTrace才能检测到
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+
+	//构造ASC和AttributeSet
+	AbilitySystemComponent = CreateDefaultSubobject<UDemoAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true); //TODO(为什么只给ASC设置复制?)
+	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
 }
 
 void ADemoEnemyCharacter::HighlightActor()

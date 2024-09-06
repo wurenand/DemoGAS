@@ -3,18 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "DemoCharacterBase.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
 //Abstract修饰符标识这个类不能被实例
 UCLASS(Abstract)
-class DEMOGAS_API ADemoCharacterBase : public ACharacter
+class DEMOGAS_API ADemoCharacterBase : public ACharacter,public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	ADemoCharacterBase();
 
+	//来自IAbilitySystemInterface
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	//自定义，仿制上面的函数，给AttributeSet一个Getter
+	UAttributeSet* GetAttributeSet() const;
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -25,5 +33,11 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere,Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
-	
+
+	//对于PlayerCharacter：只是PlayerState中构造的ASC和AttributeSet的引用，并不实际构造
+	//对于EnemyCharacter：实际构造
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };
