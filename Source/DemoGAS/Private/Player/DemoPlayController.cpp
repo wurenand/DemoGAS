@@ -55,8 +55,11 @@ void ADemoPlayController::PlayerTick(float DeltaTime)
 void ADemoPlayController::CursorTrace()
 {
 	FHitResult CursorResult;
-	GetHitResultUnderCursor(ECC_Visibility,false,CursorResult);
-	if(!CursorResult.bBlockingHit) return;
+	GetHitResultUnderCursor(ECC_Visibility, false, CursorResult);
+	if(!CursorResult.bBlockingHit)
+	{
+		return;
+	}
 	//更新上一帧和当前帧
 	LastFrameActor = CurrentFrameActor;
 	CurrentFrameActor = Cast<IEnemyInterface>(CursorResult.GetActor());
@@ -68,12 +71,18 @@ void ADemoPlayController::CursorTrace()
 	 * D	Y	!=	Y	Unhighlight Last Highlight Current
 	 * E	Y   ==	Y   DoNothing
 	 */
-	if(LastFrameActor == nullptr && CurrentFrameActor == nullptr)
+	if((LastFrameActor == nullptr) == (CurrentFrameActor == nullptr))
 	{
 		//A
-		if(LastFrameActor == nullptr) return;
+		if(LastFrameActor == nullptr)
+		{
+			return;
+		}
 		//E
-		if(LastFrameActor == CurrentFrameActor) return;
+		if(LastFrameActor == CurrentFrameActor)
+		{
+			return;
+		}
 		//D
 		LastFrameActor->UnHighlightActor();
 		CurrentFrameActor->HighlightActor();
@@ -89,7 +98,6 @@ void ADemoPlayController::CursorTrace()
 		//C
 		LastFrameActor->UnHighlightActor();
 	}
-	
 }
 
 
@@ -109,4 +117,3 @@ void ADemoPlayController::Move(const FInputActionValue& Value)
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisValue.X);
 	}
 }
-

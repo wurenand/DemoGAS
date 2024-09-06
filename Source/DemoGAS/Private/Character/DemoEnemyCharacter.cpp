@@ -3,21 +3,31 @@
 
 #include "DemoGAS/Public/Character/DemoEnemyCharacter.h"
 
+#include "DemoGAS/DemoGAS.h"
+
 
 ADemoEnemyCharacter::ADemoEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	//设定后PC中的CursorTrace才能检测到
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 }
 
 void ADemoEnemyCharacter::HighlightActor()
 {
-	
+	//理由后期处理材质，实现描边（一定要在项目设置里面打开 自定义深度的 启动模板）
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	WeaponMesh->SetRenderCustomDepth(true);
+	WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 }
 
 void ADemoEnemyCharacter::UnHighlightActor()
 {
-	
+	GetMesh()->SetRenderCustomDepth(false);
+	WeaponMesh->SetRenderCustomDepth(false);
 }
+
 
 void ADemoEnemyCharacter::BeginPlay()
 {

@@ -14,7 +14,7 @@ class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase,public IEnemyI
 
 public:
 	ADemoEnemyCharacter();
-
+	
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
