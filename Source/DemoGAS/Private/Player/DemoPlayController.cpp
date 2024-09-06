@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Interface/EnemyInterface.h"
 
 
 ADemoPlayController::ADemoPlayController()
@@ -44,6 +45,54 @@ void ADemoPlayController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayController::Move);
 }
 
+void ADemoPlayController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	//执行鼠标指针射线检测，高亮
+	CursorTrace();
+}
+
+void ADemoPlayController::CursorTrace()
+{
+	FHitResult CursorResult;
+	GetHitResultUnderCursor(ECC_Visibility,false,CursorResult);
+	if(!CursorResult.bBlockingHit) return;
+	//更新上一帧和当前帧
+	LastFrameActor = CurrentFrameActor;
+	CurrentFrameActor = Cast<IEnemyInterface>(CursorResult.GetActor());
+	/*
+	 *	   Last Current
+	 * A	n		n	DoNothing
+	 * B	n		Y	Highlight Current
+	 * C	Y		n	UnHighlight Last
+	 * D	Y	!=	Y	Unhighlight Last Highlight Current
+	 * E	Y   ==	Y   DoNothing
+	 */
+	if(LastFrameActor == nullptr && CurrentFrameActor == nullptr)
+	{
+		//A
+		if(LastFrameActor == nullptr) return;
+		//E
+		if(LastFrameActor == CurrentFrameActor) return;
+		//D
+		LastFrameActor->UnHighlightActor();
+		CurrentFrameActor->HighlightActor();
+	}
+	else
+	{
+		//B
+		if(LastFrameActor == nullptr)
+		{
+			CurrentFrameActor->HighlightActor();
+			return;
+		}
+		//C
+		LastFrameActor->UnHighlightActor();
+	}
+	
+}
+
+
 void ADemoPlayController::Move(const FInputActionValue& Value)
 {
 	const FVector2d InputAxisValue = Value.Get<FVector2d>();
@@ -60,3 +109,4 @@ void ADemoPlayController::Move(const FInputActionValue& Value)
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisValue.X);
 	}
 }
+
