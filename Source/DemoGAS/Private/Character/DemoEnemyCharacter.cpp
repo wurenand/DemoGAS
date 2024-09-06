@@ -40,6 +40,10 @@ void ADemoEnemyCharacter::UnHighlightActor()
 void ADemoEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//初始化ASC的ActorInfo
+	//对于AI控制的角色，直接在BeginPlay中初始化就行
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	
 }
 

@@ -20,9 +20,16 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	//只会在Server调用
+	virtual void PossessedBy(AController* NewController) override;
+	//默认只在Client调用
+	virtual void OnRep_PlayerState() override;
+
 private:
 	UPROPERTY(EditAnywhere,Category = "Camera")
 	TObjectPtr<USpringArmComponent> SpringArm;
 	UPROPERTY(EditAnywhere,Category = "Camera")
 	TObjectPtr<UCameraComponent> Camera;
+
+	void InitialASCActorInfo();
 };

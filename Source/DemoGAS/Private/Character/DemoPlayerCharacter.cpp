@@ -3,9 +3,11 @@
 
 #include "DemoGAS/Public/Character/DemoPlayerCharacter.h"
 
+#include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/DemoPlayerState.h"
 
 ADemoPlayerCharacter::ADemoPlayerCharacter()
 {
@@ -38,4 +40,31 @@ ADemoPlayerCharacter::ADemoPlayerCharacter()
 void ADemoPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ADemoPlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	//初始化ASC的ActorInfo 对于ASC位于PlayerState上
+	//Server端的ActorInfo在PossessdBy初始化
+	InitialASCActorInfo();
+}
+
+void ADemoPlayerCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	//对于ASC在PlayerState上
+	//Client端的ActorInfo由OnRep_PlayerState初始化
+	InitialASCActorInfo();
+}
+
+void ADemoPlayerCharacter::InitialASCActorInfo()
+{
+	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
+	check(DemoPlayerState)
+	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
+	//为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
+	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
+	AttributeSet = DemoPlayerState->GetAttributeSet();
 }
