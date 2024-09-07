@@ -18,6 +18,7 @@ ADemoPlayerState::ADemoPlayerState()
 	//Full会把GE复制给所有人   Mixed只会把GE复制给拥有它的Client（可以更新HUD等）  Minimal不会复制GE
 	//但是GameplayCue和GameplayTags一直都会被复制
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	//在ASC的OwnerActor的构造函数中创建AttributeSet时，会自动注册AttributeSet到ASC组件中
 	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
 }
 
