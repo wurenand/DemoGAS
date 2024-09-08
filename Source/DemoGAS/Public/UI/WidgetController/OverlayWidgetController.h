@@ -19,12 +19,18 @@ class DEMOGAS_API UOverlayWidgetController : public UDemoWidgetController
 	GENERATED_BODY()
 
 public:
-	//用于初始化的广播，应当在Widget设置其WidgetController之后就被调用
+	//子类重写 用于初始化的广播，应当在Widget设置其WidgetController之后就被调用
 	virtual void BoardcastInitialValues() override;
+	//子类重写 用于绑定函数到AttributeChanged
+	virtual void BindCallBackToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable , Category = "GAS|Attributes")
 	FOnHealthChangedSignature OnHealthChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnMaxHealthChangedSignature OnMaxHealthChangedSignature;
-	
+
+protected:
+	//~ Attribute值变化的用于bind的函数
+	void OnHealthChanged(const FOnAttributeChangeData& Data) const;
+	void OnMaxHealthChanged(const FOnAttributeChangeData& Data) const;
 };

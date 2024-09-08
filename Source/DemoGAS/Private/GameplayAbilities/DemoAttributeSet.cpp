@@ -9,7 +9,7 @@
 UDemoAttributeSet::UDemoAttributeSet()
 {
 	//初始化Attribute
-	InitHealth(100);
+	InitHealth(50);
 	InitMaxHealth(100);
 	InitMana(100);
 	InitMaxMana(100);

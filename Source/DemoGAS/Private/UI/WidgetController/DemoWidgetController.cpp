@@ -15,3 +15,8 @@ void UDemoWidgetController::BoardcastInitialValues()
 {
 	//具体由子类实现
 }
+
+void UDemoWidgetController::BindCallBackToDependencies()
+{
+	//具体由子类实现
+}
