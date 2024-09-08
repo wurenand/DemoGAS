@@ -10,3 +10,8 @@ void UDemoWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 	AbilitySystemComponent = Params.AbilitySystemComponent;
 	AttributeSet = Params.AttributeSet;
 }
+
+void UDemoWidgetController::BoardcastInitialValues()
+{
+	//具体由子类实现
+}

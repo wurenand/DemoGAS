@@ -22,7 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* NewWidgetController);
 
-	//在蓝图中实现，在WidgetController被设置后调用，进行Widget的数据初始化等
+	//在蓝图中实现，在WidgetController被设置后调用，绑定函数到WidgetController中的Delegate来更新数据等
 	UFUNCTION(BlueprintImplementableEvent)
 	void AfterWidgetControllerSet();
 };

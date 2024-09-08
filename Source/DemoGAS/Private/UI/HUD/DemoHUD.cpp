@@ -21,7 +21,9 @@ void ADemoHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	//初始化MVC相应之间的联系
 	FWidgetControllerParams Params(PC,PS,ASC,AS);
 	OverlayWidgetController->SetWidgetControllerParams(Params);
-	OverlayWidget->SetWidgetController(OverlayWidgetController);
+	OverlayWidget->SetWidgetController(OverlayWidgetController);//顺便绑定代理到WidgetController中的Delegate
+	//上面的函数绑定Delegate之后，可以广播初始化值
+	OverlayWidgetController->BoardcastInitialValues();
 	
 	OverlayWidget->AddToViewport();
 }

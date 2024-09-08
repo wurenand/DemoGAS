@@ -36,7 +36,7 @@ struct FWidgetControllerParams
 /**
  * MVC种的C  位于每一个DemoUserWidget中
  */
-UCLASS()
+UCLASS(BlueprintType,Blueprintable)
 class DEMOGAS_API UDemoWidgetController : public UObject
 {
 	GENERATED_BODY()
@@ -44,7 +44,9 @@ class DEMOGAS_API UDemoWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
-	
+
+	//由子类实现广播初始值的函数
+	virtual void BoardcastInitialValues();
 protected:
 
 	//信息来源
