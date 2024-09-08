@@ -9,6 +9,8 @@
 //声明委托用于广播Value
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature,float ,NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature,float ,NewMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature,float,NewMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature,float,NewMaxMana);
 
 /**
  * 
@@ -28,9 +30,15 @@ public:
 	FOnHealthChangedSignature OnHealthChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnMaxHealthChangedSignature OnMaxHealthChangedSignature;
+	UPROPERTY(BlueprintAssignable , Category = "GAS|Attributes")
+	FOnManaChangedSignature OnManaChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnMaxManaChangedSignature OnMaxManaChangedSignature;
 
 protected:
 	//~ Attribute值变化的用于bind的函数
 	void OnHealthChanged(const FOnAttributeChangeData& Data) const;
 	void OnMaxHealthChanged(const FOnAttributeChangeData& Data) const;
+	void OnManaChanged(const FOnAttributeChangeData& Data) const;
+	void OnMaxManaChanged(const FOnAttributeChangeData& Data) const;
 };
