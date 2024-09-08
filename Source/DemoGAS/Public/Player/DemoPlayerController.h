@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "DemoPlayController.generated.h"
+#include "DemoPlayerController.generated.h"
 
 class IEnemyInterface;
 struct FInputActionValue;
@@ -14,12 +14,12 @@ class UInputMappingContext;
  * 
  */
 UCLASS()
-class DEMOGAS_API ADemoPlayController : public APlayerController
+class DEMOGAS_API ADemoPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
-	ADemoPlayController();
+	ADemoPlayerController();
 
 protected:
 	virtual void BeginPlay() override;

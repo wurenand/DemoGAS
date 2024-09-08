@@ -30,6 +30,6 @@ private:
 	TObjectPtr<USpringArmComponent> SpringArm;
 	UPROPERTY(EditAnywhere,Category = "Camera")
 	TObjectPtr<UCameraComponent> Camera;
-
+	
 	void InitialASCActorInfo();
 };

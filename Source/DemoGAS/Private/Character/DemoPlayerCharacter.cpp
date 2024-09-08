@@ -7,7 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Player/DemoPlayController.h"
+#include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
 #include "UI/HUD/DemoHUD.h"
 
@@ -73,7 +73,7 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 
 	//Server和Client都会调用这个初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化
 	//调用InitialOverlay最好
-	if(ADemoPlayController* DemoPlayerController = Cast<ADemoPlayController>(GetController()))
+	if(ADemoPlayerController* DemoPlayerController = Cast<ADemoPlayerController>(GetController()))
 	{
 		ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD());
 		DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);

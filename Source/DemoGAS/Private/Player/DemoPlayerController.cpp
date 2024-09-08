@@ -1,20 +1,20 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DemoGAS/Public/Player/DemoPlayController.h"
+#include "DemoGAS/Public/Player/DemoPlayerController.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Interface/EnemyInterface.h"
 
 
-ADemoPlayController::ADemoPlayController()
+ADemoPlayerController::ADemoPlayerController()
 {
 	//TODO(为什么需要复制？)
 	bReplicates = true;
 }
 
-void ADemoPlayController::BeginPlay()
+void ADemoPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -37,23 +37,23 @@ void ADemoPlayController::BeginPlay()
 	SetInputMode(InputModeData);
 }
 
-void ADemoPlayController::SetupInputComponent()
+void ADemoPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	//CastCheck相当于Cast之后使用了check断言，InValid的时候会Crash
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayController::Move);
+	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayerController::Move);
 }
 
-void ADemoPlayController::PlayerTick(float DeltaTime)
+void ADemoPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	//执行鼠标指针射线检测，高亮
 	CursorTrace();
 }
 
-void ADemoPlayController::CursorTrace()
+void ADemoPlayerController::CursorTrace()
 {
 	FHitResult CursorResult;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorResult);
@@ -102,7 +102,7 @@ void ADemoPlayController::CursorTrace()
 }
 
 
-void ADemoPlayController::Move(const FInputActionValue& Value)
+void ADemoPlayerController::Move(const FInputActionValue& Value)
 {
 	const FVector2d InputAxisValue = Value.Get<FVector2d>();
 
