@@ -6,6 +6,9 @@
 #include "GameFramework/HUD.h"
 #include "DemoHUD.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
+class UDemoWidgetController;
 class UDemoUserWidget;
 /**
  * 创建管理OverlayWidget（MainUI）
@@ -18,9 +21,17 @@ class DEMOGAS_API ADemoHUD : public AHUD
 public:
 	UPROPERTY()
 	TObjectPtr<UDemoUserWidget> OverlayWidget;
+	UPROPERTY()
+	TObjectPtr<UDemoWidgetController> OverlayWidgetController;
+
+	//在PlayerCharacter中的InitialActorInfo中调用最好
+	void InitOverlay(APlayerController* PC,APlayerState* PS,UAbilitySystemComponent* ASC,UAttributeSet* AS);
+
 protected:
-	virtual void BeginPlay() override;
+	
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> OverlayWidgetClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UDemoWidgetController> OverlayWidgetControllerClass;
 };

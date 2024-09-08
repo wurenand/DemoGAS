@@ -24,9 +24,10 @@ void ADemoPlayController::BeginPlay()
 	//增强输入本地玩家子系统是单例的，程序运行期间只存在一个
 	UEnhancedInputLocalPlayerSubsystem* EILPSubsystem = ULocalPlayer::GetSubsystem<
 		UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(EILPSubsystem)
-	EILPSubsystem->AddMappingContext(DefaultMappingContent, 0);
-
+	if(EILPSubsystem)
+	{
+		EILPSubsystem->AddMappingContext(DefaultMappingContent, 0);
+	}
 	//进行输入基本设置
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Type::Default;

@@ -7,7 +7,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/DemoPlayController.h"
 #include "Player/DemoPlayerState.h"
+#include "UI/HUD/DemoHUD.h"
 
 ADemoPlayerCharacter::ADemoPlayerCharacter()
 {
@@ -51,6 +53,7 @@ void ADemoPlayerCharacter::PossessedBy(AController* NewController)
 	InitialASCActorInfo();
 }
 
+//一般只调用一次，可以用来初始化
 void ADemoPlayerCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
@@ -67,4 +70,12 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 	//为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
+
+	//Server和Client都会调用这个初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化
+	//调用InitialOverlay最好
+	if(ADemoPlayController* DemoPlayerController = Cast<ADemoPlayController>(GetController()))
+	{
+		ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD());
+		DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);
+	}
 }

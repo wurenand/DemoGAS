@@ -42,6 +42,6 @@ private:
 
 	//检测鼠标指针有没有悬停到Enemy上
 	void CursorTrace();
-	IEnemyInterface* LastFrameActor;
-	IEnemyInterface* CurrentFrameActor;
+	TObjectPtr<IEnemyInterface> LastFrameActor;
+	TObjectPtr<IEnemyInterface> CurrentFrameActor;
 };

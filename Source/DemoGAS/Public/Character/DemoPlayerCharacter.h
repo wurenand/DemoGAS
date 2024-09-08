@@ -22,7 +22,7 @@ protected:
 
 	//只会在Server调用
 	virtual void PossessedBy(AController* NewController) override;
-	//默认只在Client调用
+	//默认只在Client调用 并且一般只调用一次（变化后才会再次调用）
 	virtual void OnRep_PlayerState() override;
 
 private:
