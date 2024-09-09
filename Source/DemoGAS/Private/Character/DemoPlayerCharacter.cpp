@@ -76,6 +76,9 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 	if(ADemoPlayerController* DemoPlayerController = Cast<ADemoPlayerController>(GetController()))
 	{
 		ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD());
-		DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);
+		if(DemoHUD)
+		{
+			DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);
+		}
 	}
 }

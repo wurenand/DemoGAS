@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "DemoEffectActor.generated.h"
 
-class USphereComponent;
+class UGameplayEffect;
 
 /**
  * 用于交互后施加效果的基类
@@ -18,25 +18,16 @@ class DEMOGAS_API ADemoEffectActor : public AActor
 
 public:
 	ADemoEffectActor();
-
-	//关于SPARSE委托和普通委托的区别
-	//https://zhuanlan.zhihu.com/p/561175379
-	//https://benui.ca/unreal/delegates-advanced/#sparse-delegates recommend!!
-	//大概就是，SPARSE自身只有bIsBound一个bool，在不被绑定的时候只占1字节
-	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyGameplayEffectToTarget(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);
+
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Mesh;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> InteractSphere;
+	//视觉效果Mesh和碰撞体Component由蓝图实现。
+	//C++只负责处理碰撞后的逻辑
 };
