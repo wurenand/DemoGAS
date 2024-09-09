@@ -27,6 +27,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 private:
 	//视觉效果Mesh和碰撞体Component由蓝图实现。
 	//C++只负责处理碰撞后的逻辑

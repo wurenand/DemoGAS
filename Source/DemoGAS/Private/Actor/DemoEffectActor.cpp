@@ -22,6 +22,7 @@ void ADemoEffectActor::BeginPlay()
 
 void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
+	
 	//使用ASC函数库来辅助完成获取ASC
 	/**
  * 等效于传统IAbilitySystemInterface
@@ -34,7 +35,7 @@ void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* TargetActor, TSubclas
 
 	//健壮性检查
 	if(!TargetASC) return;
-	check(GameplayEffectClass)
+	checkf(GameplayEffectClass,TEXT("传入的GameplayEffectClass是空"))
 	
 	//Handle只是一个Wrapper，真正的数据存在其中的 Data 成员变量
 	FGameplayEffectContextHandle GameplayEffectContextHandle = TargetASC->MakeEffectContext();
