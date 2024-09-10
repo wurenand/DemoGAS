@@ -56,7 +56,10 @@ protected:
 	void ApplyGameplayEffectToTarget(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
-	bool bDestroyAfterGE = false;//GE被移除后是否摧毁Actor
+	bool bDestroyAfterGE = false;//GE被移除后是否摧毁Actor （暂时没有实现）
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category = "GAS|Effects")
+	float EffectLevel = 1.f;
 	
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;

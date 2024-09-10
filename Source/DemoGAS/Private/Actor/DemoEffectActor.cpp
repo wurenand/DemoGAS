@@ -86,7 +86,7 @@ void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* TargetActor,
 	FGameplayEffectContextHandle GEContextHandle = TargetASC->MakeEffectContext();
 	//FGameplayEffectContent具有存储与GameplayEffect相关信息的能力
 	GEContextHandle.AddSourceObject(this);
-	FGameplayEffectSpecHandle GESpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.0f, GEContextHandle);
+	FGameplayEffectSpecHandle GESpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,EffectLevel, GEContextHandle);
 	FActiveGameplayEffectHandle ActiveGEHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*GESpecHandle.Data.Get());
 
 
