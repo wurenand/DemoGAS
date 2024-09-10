@@ -3,8 +3,12 @@
 
 #include "GameplayAbilities/DemoAttributeSet.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayEffectExtension.h"
+#include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
+
 
 UDemoAttributeSet::UDemoAttributeSet()
 {
@@ -13,6 +17,67 @@ UDemoAttributeSet::UDemoAttributeSet()
 	InitMaxHealth(100);
 	InitMana(50);
 	InitMaxMana(100);
+}
+
+void UDemoAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	//暂时使用这个函数进行Clamp
+	if(Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+	}
+	if(Attribute == GetManaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
+	}
+}
+
+void UDemoAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutProps)
+{
+	//FGameplayEffectContentHandle
+	OutProps.GEContentHandle = Data.EffectSpec.GetContext();
+	//ASC
+	OutProps.SourceASC = OutProps.GEContentHandle.GetOriginalInstigatorAbilitySystemComponent();
+
+	if(IsValid(OutProps.SourceASC))
+	{
+		//AvatarActor
+		OutProps.SourceAvaterActor = OutProps.SourceASC->GetAvatarActor();
+		//先尝试使用ASC获取Controller，获取失败就用AvatarActor转换为Pawn来获取
+		OutProps.SourceController = OutProps.SourceASC->AbilityActorInfo->PlayerController.Get();//PC经常是null
+		if(OutProps.SourceController == nullptr && OutProps.SourceAvaterActor != nullptr)
+		{
+			if(const APawn* Pawn = Cast<APawn>(OutProps.SourceAvaterActor))
+			{
+				OutProps.SourceController = Pawn->GetController();
+			}
+		}
+		//Character
+		if(OutProps.SourceController)
+		{
+			OutProps.SourceCharacter = OutProps.SourceController->GetCharacter();
+		}
+
+		//Target
+		OutProps.TargetAvaterActor = Data.Target.GetAvatarActor();
+		OutProps.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+		OutProps.TargetCharacter = Cast<ACharacter>(OutProps.TargetAvaterActor);
+		OutProps.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutProps.TargetAvaterActor);
+	}
+}
+
+
+
+void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	//获取每次GE执行的各种信息
+	FEffectProperties Props;
+	SetEffectProperties(Data,Props);
+	
 }
 
 void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -44,3 +109,4 @@ void UDemoAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) co
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,MaxMana,OldValue);
 }
+
