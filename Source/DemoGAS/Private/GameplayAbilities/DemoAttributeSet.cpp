@@ -22,15 +22,28 @@ UDemoAttributeSet::UDemoAttributeSet()
 void UDemoAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
+	
+}
 
-	//暂时使用这个函数进行Clamp
-	if(Attribute == GetHealthAttribute())
+void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	//获取每次GE执行的各种信息
+	FEffectProperties Props;
+	SetEffectProperties(Data,Props);
+
+	/*为什么不能在PreAttributeChange中Clamp数值？
+	 * PreAttributeChange只会修改Modifier的返回的结果，并不会永久修改。
+	 * 当其他的使用到Modifier时，仍然会得到Clamp之前的值
+	 */
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+		SetHealth(FMath::Clamp(GetHealth(),0.f,GetMaxHealth()));
 	}
-	if(Attribute == GetManaAttribute())
+	if(Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
-		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
+		SetMana(FMath::Clamp(GetMana(),0.f,GetMaxMana()));
 	}
 }
 
@@ -66,18 +79,6 @@ void UDemoAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		OutProps.TargetCharacter = Cast<ACharacter>(OutProps.TargetAvaterActor);
 		OutProps.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutProps.TargetAvaterActor);
 	}
-}
-
-
-
-void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
-{
-	Super::PostGameplayEffectExecute(Data);
-
-	//获取每次GE执行的各种信息
-	FEffectProperties Props;
-	SetEffectProperties(Data,Props);
-	
 }
 
 void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
