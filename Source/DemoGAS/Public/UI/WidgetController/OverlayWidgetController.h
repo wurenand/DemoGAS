@@ -27,7 +27,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 //声明委托用于广播Value
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,float ,NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,float ,NewValue);
 //受到GEToSelf后，会受到来自ASC的GEMessage，再由它Broadcast给Widget
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReceiveMessageRowSignature,FUIWidgetRow , WidgetRow);
 
