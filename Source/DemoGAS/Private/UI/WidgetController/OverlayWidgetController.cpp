@@ -30,10 +30,20 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	                      .AddUObject(this, &UOverlayWidgetController::OnMaxManaChanged);
 
 	Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent)->OnAppliedGEToSelfAssetTagsDelegate
-	                                                         .AddLambda([](const FGameplayTagContainer& AssetTags)->void
-	                                                         {
-	                                                         	
-	                                                         });
+	      .AddLambda([this](const FGameplayTagContainer& AssetTags)-> void
+		      {
+		        for(const FGameplayTag& Tag : AssetTags)
+		        {
+		        	//通过FName获取FGameplayTag(如果有的话)
+		        	FGameplayTag MessageTagToCheck = FGameplayTag::RequestGameplayTag(FName("Message"));
+		        	//判断是否包含MessageTag
+		        	if(Tag.MatchesTag(MessageTagToCheck))
+		        	{
+		        		const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageDataTable, Tag); //需要捕获this使用
+						OnReceiveMessageRowSignature.Broadcast(*Row);
+		        	}
+		        }
+		      });
 }
 
 void UOverlayWidgetController::OnHealthChanged(const FOnAttributeChangeData& Data) const
