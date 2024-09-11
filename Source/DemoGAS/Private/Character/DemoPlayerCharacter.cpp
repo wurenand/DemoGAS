@@ -49,7 +49,7 @@ void ADemoPlayerCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	//初始化ASC的ActorInfo 对于ASC位于PlayerState上
-	//Server端的ActorInfo在PossessdBy初始化
+	//Server端的ActorInfo在PossessedBy初始化
 	InitialASCActorInfo();
 }
 
@@ -67,18 +67,16 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
 	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
-
 	
 	//为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
 
-	//Server和Client都会调用这个初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化
+	//Server和Client都会调用这个函数初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化
 	//调用InitialOverlay最好
 	if(ADemoPlayerController* DemoPlayerController = Cast<ADemoPlayerController>(GetController()))
 	{
-		ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD());
-		if(DemoHUD)
+		if(ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD()))
 		{
 			DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);
 		}

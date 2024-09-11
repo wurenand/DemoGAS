@@ -22,7 +22,7 @@ class DEMOGAS_API UOverlayWidgetController : public UDemoWidgetController
 
 public:
 	//子类重写 用于初始化的广播，应当在Widget设置其WidgetController之后就被调用
-	virtual void BoardcastInitialValues() override;
+	virtual void BroadcastInitialValues() override;
 	//子类重写 用于绑定函数到AttributeChanged
 	virtual void BindCallBackToDependencies() override;
 

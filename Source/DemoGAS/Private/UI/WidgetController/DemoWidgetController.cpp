@@ -11,7 +11,7 @@ void UDemoWidgetController::SetWidgetControllerParams(const FWidgetControllerPar
 	AttributeSet = Params.AttributeSet;
 }
 
-void UDemoWidgetController::BoardcastInitialValues()
+void UDemoWidgetController::BroadcastInitialValues()
 {
 	//具体由子类实现
 }

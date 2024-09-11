@@ -46,7 +46,7 @@ public:
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
 
 	//由子类实现 广播初始值的函数
-	virtual void BoardcastInitialValues();
+	virtual void BroadcastInitialValues();
 	//由子类实现 用于绑定函数到AttributeChanged
 	virtual void BindCallBackToDependencies();
 

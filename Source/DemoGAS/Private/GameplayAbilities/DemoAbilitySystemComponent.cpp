@@ -15,7 +15,9 @@ void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 void UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC,
                                                                   const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
 {
-	UE_LOG(LogTemp,Warning,TEXT("ApplyGEToSelf"));
+	FGameplayTagContainer GameplayTags;
+	GESpec.GetAllAssetTags(GameplayTags);
+	OnAppliedGEToSelfAssetTagsDelegate.Broadcast(GameplayTags);
 }
 
 void UDemoAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor)
