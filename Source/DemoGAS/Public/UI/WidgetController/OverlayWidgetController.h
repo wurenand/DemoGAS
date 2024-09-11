@@ -27,10 +27,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 //声明委托用于广播Value
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature,float ,NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature,float ,NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature,float,NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature,float,NewMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,float ,NewHealth);
 //受到GEToSelf后，会受到来自ASC的GEMessage，再由它Broadcast给Widget
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReceiveMessageRowSignature,FUIWidgetRow , WidgetRow);
 
@@ -48,14 +45,16 @@ public:
 	//子类重写 用于绑定函数到AttributeChanged
 	virtual void BindCallBackToDependencies() override;
 
+	//~Begin Value 委托
 	UPROPERTY(BlueprintAssignable , Category = "GAS|Attributes")
-	FOnHealthChangedSignature OnHealthChangedSignature;
+	FOnAttributeValueChangedSignature OnHealthChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
-	FOnMaxHealthChangedSignature OnMaxHealthChangedSignature;
+	FOnAttributeValueChangedSignature OnMaxHealthChangedSignature;
 	UPROPERTY(BlueprintAssignable , Category = "GAS|Attributes")
-	FOnManaChangedSignature OnManaChangedSignature;
+	FOnAttributeValueChangedSignature OnManaChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
-	FOnMaxManaChangedSignature OnMaxManaChangedSignature;
+	FOnAttributeValueChangedSignature OnMaxManaChangedSignature;
+	//~End
 	UPROPERTY(BlueprintAssignable,Category = "WidgetMessage")
 	FOnReceiveMessageRowSignature OnReceiveMessageRowSignature;
 
@@ -63,12 +62,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "WidgetMessageData")
 	TObjectPtr<UDataTable> MessageDataTable;//传递GETag消息的表
 	
-	//~ Attribute值变化的用于bind的函数
-	void OnHealthChanged(const FOnAttributeChangeData& Data) const;
-	void OnMaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void OnManaChanged(const FOnAttributeChangeData& Data) const;
-	void OnMaxManaChanged(const FOnAttributeChangeData& Data) const;
-
 	template <typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
 };

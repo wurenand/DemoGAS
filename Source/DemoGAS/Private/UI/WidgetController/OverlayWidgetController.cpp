@@ -21,13 +21,25 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	UDemoAttributeSet* DemoAttributeSet = CastChecked<UDemoAttributeSet>(AttributeSet);
 	//ASC提供的Attribute值改变的Delegate
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetHealthAttribute())
-	                      .AddUObject(this, &UOverlayWidgetController::OnHealthChanged);
+	                      .AddLambda([this](const FOnAttributeChangeData& Data)->void
+	                      {
+		                      OnHealthChangedSignature.Broadcast(Data.NewValue);
+	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetMaxHealthAttribute())
-	                      .AddUObject(this, &UOverlayWidgetController::OnMaxHealthChanged);
+	                      .AddLambda([this](const FOnAttributeChangeData& Data)->void
+	                      {
+		                     OnMaxHealthChangedSignature.Broadcast(Data.NewValue); 
+	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetManaAttribute())
-	                      .AddUObject(this, &UOverlayWidgetController::OnManaChanged);
+	                      .AddLambda([this](const FOnAttributeChangeData& Data)->void
+	                      {
+		                     OnManaChangedSignature.Broadcast(Data.NewValue); 
+	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetMaxManaAttribute())
-	                      .AddUObject(this, &UOverlayWidgetController::OnMaxManaChanged);
+						  .AddLambda([this](const FOnAttributeChangeData& Data)->void
+						  {
+						  	OnMaxManaChangedSignature.Broadcast(Data.NewValue); 
+						  });
 
 	Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent)->OnAppliedGEToSelfAssetTagsDelegate
 	      .AddLambda([this](const FGameplayTagContainer& AssetTags)-> void
@@ -44,24 +56,4 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 		        	}
 		        }
 		      });
-}
-
-void UOverlayWidgetController::OnHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnHealthChangedSignature.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::OnMaxHealthChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxHealthChangedSignature.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::OnManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnManaChangedSignature.Broadcast(Data.NewValue);
-}
-
-void UOverlayWidgetController::OnMaxManaChanged(const FOnAttributeChangeData& Data) const
-{
-	OnMaxManaChangedSignature.Broadcast(Data.NewValue);
 }
