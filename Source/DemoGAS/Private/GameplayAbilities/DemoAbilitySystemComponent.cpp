@@ -4,22 +4,22 @@
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
 
-UDemoAbilitySystemComponent::UDemoAbilitySystemComponent()
+void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 {
-	PrimaryComponentTick.bCanEverTick = true;
-
+	if(bAfterInitASCActorInfo) return;
+	//确保只做一次
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf);
+	bAfterInitASCActorInfo = true;
 }
 
-void UDemoAbilitySystemComponent::BeginPlay()
+void UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC,
+                                                                  const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
 {
-	Super::BeginPlay();
-	
+	UE_LOG(LogTemp,Warning,TEXT("ApplyGEToSelf"));
 }
 
-void UDemoAbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                                FActorComponentTickFunction* ThisTickFunction)
+void UDemoAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
+	AfterInitialASCActorInfo();
 }
-

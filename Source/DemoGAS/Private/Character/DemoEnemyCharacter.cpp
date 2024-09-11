@@ -43,7 +43,11 @@ void ADemoEnemyCharacter::BeginPlay()
 
 	//初始化ASC的ActorInfo
 	//对于AI控制的角色，直接在BeginPlay中初始化就行
+	InitialASCActorInfo();
+}
+
+void ADemoEnemyCharacter::InitialASCActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
-	
 }
 

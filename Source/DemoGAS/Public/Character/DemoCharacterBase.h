@@ -40,4 +40,7 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	//由子类去实现，用于初始化ASC的一些内容
+	virtual void InitialASCActorInfo();
 };

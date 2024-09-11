@@ -67,6 +67,8 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
 	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
+
+	
 	//为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();

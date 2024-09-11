@@ -14,12 +14,17 @@ class DEMOGAS_API UDemoAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
-	UDemoAbilitySystemComponent();
-
+	//在完成InitialASCActor后，自动调用。 用于绑定函数到委托
+	void AfterInitialASCActorInfo();
+	
 protected:
-	virtual void BeginPlay() override;
+	void OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec,
+	                                   FActiveGameplayEffectHandle ActiveGEHandle);
 
-public:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
+	//重写了这个函数，用于在Initial之后bind Delegate
+	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
+
+private:
+	//确保bind Delegate只做一次
+	bool bAfterInitASCActorInfo = false;
 };

@@ -27,3 +27,8 @@ void ADemoCharacterBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+void ADemoCharacterBase::InitialASCActorInfo()
+{
+	
+}
