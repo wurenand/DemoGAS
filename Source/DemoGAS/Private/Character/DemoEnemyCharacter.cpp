@@ -49,5 +49,7 @@ void ADemoEnemyCharacter::BeginPlay()
 void ADemoEnemyCharacter::InitialASCActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	//初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
+	InitialPrimaryAttributes();
 }
 

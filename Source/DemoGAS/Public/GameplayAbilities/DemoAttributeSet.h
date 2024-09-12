@@ -78,19 +78,19 @@ public:
 	3.在GetLifetimeReplicatedProps中注册复制变量
 	4.创建相应的OnRep函数，并在函数中调用宏GAMEPLAYATTRIBUTE_REPNOTIFY来通知ASC完成了属性复制
 	*/
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attribute")
+	//~VitalAttributes
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Attribute|Vital")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Health)
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Vital Attribute")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Attribute|Vital")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,MaxHealth)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Vital Attribute")
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Attribute|Vital")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Mana)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Vital Attribute")
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Attribute|Vital")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,MaxMana)
-	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
@@ -99,6 +99,31 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldValue) const;
+	//~end
+	
+	//~PrimaryAttributes
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Strength,Category = "Attribute|Primary")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Strength)
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Intelligence,Category = "Attribute|Primary")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Intelligence)
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Resilience,Category = "Attribute|Primary")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Resilience)
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Vigor,Category = "Attribute|Primary")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Vigor)
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldValue) const;
+	UFUNCTION()
+	void OnRep_Intelligence(const FGameplayAttributeData& OldValue) const;
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& OldValue) const;
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& OldValue) const;
+	//~end
+
 	
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& OutProps);

@@ -47,6 +47,7 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 }
 
+
 void UDemoAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutProps)
 {
 	//FGameplayEffectContentHandle
@@ -88,6 +89,10 @@ void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,MaxHealth,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Mana,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,MaxMana,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Strength,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Intelligence,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Resilience,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Vigor,COND_None,REPNOTIFY_Always);
 }
 
 void UDemoAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue) const
@@ -111,3 +116,22 @@ void UDemoAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) co
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,MaxMana,OldValue);
 }
 
+void UDemoAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Strength,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Intelligence,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Resilience,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Vigor,OldValue);
+}

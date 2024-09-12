@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "DemoCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
 //Abstract修饰符标识这个类不能被实例
@@ -41,6 +42,14 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	//由子类去实现，用于初始化ASC的一些内容
+	//由子类去实现，用于初始化ASC的一些内容  (Server和Client都会调用)
 	virtual void InitialASCActorInfo();
+
+	//~begin 属性初始化
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
+
+	//用来调用GE来初始化Attributes  在子类的InitialASCActorInfo函数中调用
+	void InitialPrimaryAttributes() const;
+	//~end
 };
