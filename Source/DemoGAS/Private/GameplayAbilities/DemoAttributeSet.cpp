@@ -93,6 +93,11 @@ void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Intelligence,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Resilience,COND_None,REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Vigor,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,HealthRegeneration,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,ManaRegeneration,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,Armor,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,CriticalChance,COND_None,REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet,CriticalBoncePercent,COND_None,REPNOTIFY_Always);
 }
 
 void UDemoAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue) const
@@ -134,4 +139,29 @@ void UDemoAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldValue)
 void UDemoAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Vigor,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,Armor,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_CriticalChance(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,CriticalChance,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_CriticalBoncePercent(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,CriticalBoncePercent,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_HealthRegeneration(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,HealthRegeneration,OldValue);
+}
+
+void UDemoAttributeSet::OnRep_ManaRegeneration(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,ManaRegeneration,OldValue);
 }
