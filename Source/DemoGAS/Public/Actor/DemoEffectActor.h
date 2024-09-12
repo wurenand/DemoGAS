@@ -55,27 +55,27 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void ApplyGameplayEffectToTarget(AActor* TargetActor,TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Setting")
 	bool bDestroyAfterGE = false;//GE被移除后是否摧毁Actor （暂时没有实现）
 
-	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category = "GAS|Effects|Setting")
 	float EffectLevel = 1.f;
 	
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Class")
 	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Policy")
 	EEffectApplicationPolicy InstantGEApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Class")
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Policy")
 	EEffectApplicationPolicy DurationGEApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
 	
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Class")
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Policy")
 	EEffectApplicationPolicy InfiniteGEApplicationPolicy = EEffectApplicationPolicy::DoNotApply;
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects")
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "GAS|Effects|Policy")
 	EEffectRemovePolicy InfiniteGERemovePolicy = EEffectRemovePolicy::RemoveOnEndOverlap;
 	
 private:

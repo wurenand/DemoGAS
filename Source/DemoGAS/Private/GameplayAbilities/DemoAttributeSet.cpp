@@ -13,9 +13,9 @@
 UDemoAttributeSet::UDemoAttributeSet()
 {
 	//初始化Attribute
-	InitHealth(50);
+	InitHealth(10);
 	InitMaxHealth(100);
-	InitMana(50);
+	InitMana(10);
 	InitMaxMana(100);
 }
 
