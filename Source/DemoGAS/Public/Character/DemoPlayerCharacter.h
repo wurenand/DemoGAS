@@ -31,5 +31,5 @@ private:
 	UPROPERTY(EditAnywhere,Category = "Camera")
 	TObjectPtr<UCameraComponent> Camera;
 	
-	virtual void InitialASCActorInfo() override;
+	virtual void InitialAbilitySystem() override;
 };

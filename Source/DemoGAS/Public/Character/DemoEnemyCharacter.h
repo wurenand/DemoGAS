@@ -21,5 +21,5 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void InitialASCActorInfo() override;
+	virtual void InitialAbilitySystem() override;
 };

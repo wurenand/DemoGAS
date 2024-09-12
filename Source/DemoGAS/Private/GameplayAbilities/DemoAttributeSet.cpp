@@ -12,17 +12,23 @@
 
 UDemoAttributeSet::UDemoAttributeSet()
 {
-	//初始化Attribute
+	//TODO 使用GE替换这种初始化方式
 	InitHealth(10);
-	InitMaxHealth(100);
 	InitMana(10);
-	InitMaxMana(100);
 }
 
 void UDemoAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	
+	//TODO 暂时留着吧，不知道有什么用
+	if(Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
+	}
+	if(Attribute == GetManaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
+	}
 }
 
 void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)

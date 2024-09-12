@@ -24,29 +24,29 @@ UAttributeSet* ADemoCharacterBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
-void ADemoCharacterBase::BeginPlay()
+void ADemoCharacterBase::InitialAbilitySystem()
 {
-	Super::BeginPlay();
-	
+	//子类实现
 }
 
-void ADemoCharacterBase::InitialASCActorInfo()
+void ADemoCharacterBase::InitialDefaultAttributes() const
 {
-	
+	ApplyEffectToSelf(DefaultPrimaryAttributesEffectClass,1);
+	ApplyEffectToSelf(SecondaryAttributesUpdateEffectClass,1);
 }
 
-void ADemoCharacterBase::InitialPrimaryAttributes() const
+void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied, float Level) const
 {
-	if(DefaultPrimaryAttributesEffectClass == nullptr)
+	if(EffectClassToBeApplied == nullptr)
 	{
-		UE_LOG(LogTemp,Warning,TEXT("未设置初始化Attributes的GE,ADemoCharacterBase"));
+		UE_LOG(LogTemp,Warning,TEXT("传入的Class为nullptr ADemoCharacterBase"));
 		return;
 	}
 	check(IsValid(GetAbilitySystemComponent()));
 	
 	FGameplayEffectContextHandle GEContentHandle = GetAbilitySystemComponent()->MakeEffectContext();
 	GEContentHandle.AddSourceObject(this);
-	FGameplayEffectSpecHandle EffectSpec = GetAbilitySystemComponent()->MakeOutgoingSpec(DefaultPrimaryAttributesEffectClass,1,GEContentHandle);
+	FGameplayEffectSpecHandle EffectSpec = GetAbilitySystemComponent()->MakeOutgoingSpec(EffectClassToBeApplied,Level,GEContentHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(),GetAbilitySystemComponent());
 }
 

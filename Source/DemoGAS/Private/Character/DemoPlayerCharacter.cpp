@@ -50,7 +50,7 @@ void ADemoPlayerCharacter::PossessedBy(AController* NewController)
 
 	//初始化ASC的ActorInfo 对于ASC位于PlayerState上
 	//Server端的ActorInfo在PossessedBy初始化
-	InitialASCActorInfo();
+	InitialAbilitySystem();
 }
 
 //一般只调用一次，可以用来初始化
@@ -59,20 +59,22 @@ void ADemoPlayerCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	//对于ASC在PlayerState上
 	//Client端的ActorInfo由OnRep_PlayerState初始化
-	InitialASCActorInfo();
+	InitialAbilitySystem();
 }
 
-void ADemoPlayerCharacter::InitialASCActorInfo()
+void ADemoPlayerCharacter::InitialAbilitySystem()
 {
+	//1 初始化ActorInfo
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
 	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
 	
-	//为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
+	//2 为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
 
-	//Server和Client都会调用这个函数初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化
+	//3 初始化HUD
+	//Server和Client都会调用这个函数InitialAbilitySystem初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化/
 	//调用InitialOverlay最好
 	if(ADemoPlayerController* DemoPlayerController = Cast<ADemoPlayerController>(GetController()))
 	{
@@ -82,6 +84,6 @@ void ADemoPlayerCharacter::InitialASCActorInfo()
 		}
 	}
 
-	//初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
-	InitialPrimaryAttributes();
+	//4 初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
+	InitialDefaultAttributes();
 }
