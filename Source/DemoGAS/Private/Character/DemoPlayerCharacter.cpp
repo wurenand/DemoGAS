@@ -62,6 +62,14 @@ void ADemoPlayerCharacter::OnRep_PlayerState()
 	InitialAbilitySystem();
 }
 
+int32 ADemoPlayerCharacter::GetPlayerLevel()
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	check(DemoPlayerState);
+	return  DemoPlayerState->GetPlayerLevel();
+
+}
+
 void ADemoPlayerCharacter::InitialAbilitySystem()
 {
 	//1 初始化ActorInfo

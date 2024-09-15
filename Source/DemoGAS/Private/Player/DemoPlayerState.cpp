@@ -5,6 +5,7 @@
 
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
+#include "Net/UnrealNetwork.h"
 
 ADemoPlayerState::ADemoPlayerState()
 {
@@ -22,6 +23,12 @@ ADemoPlayerState::ADemoPlayerState()
 	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
 }
 
+void ADemoPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ADemoPlayerState,Level); //TODO这个宏和其他的有什么区别？
+}
+
 UAbilitySystemComponent* ADemoPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
@@ -30,4 +37,9 @@ UAbilitySystemComponent* ADemoPlayerState::GetAbilitySystemComponent() const
 UAttributeSet* ADemoPlayerState::GetAttributeSet() const
 {
 	return AttributeSet;
+}
+
+void ADemoPlayerState::OnRep_Level(int32 OldLevel)
+{
+	
 }

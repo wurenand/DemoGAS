@@ -14,12 +14,21 @@ class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase,public IEnemyI
 
 public:
 	ADemoEnemyCharacter();
-	
+
+	//~Begin EnemyInterface
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+	//~End
+
+	//~Begin CombatInterface
+	virtual int32 GetPlayerLevel() override;
+	//~End
 
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void InitialAbilitySystem() override;
+	
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "CharacterDefault")
+	int32 Level = 1; //AIController只存在于Server，所以不需要复制
 };

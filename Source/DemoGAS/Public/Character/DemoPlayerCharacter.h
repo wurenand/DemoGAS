@@ -25,6 +25,10 @@ protected:
 	//默认只在Client调用 并且一般只调用一次（变化后才会再次调用）
 	virtual void OnRep_PlayerState() override;
 
+	//~Begin CombatInterface
+	virtual int32 GetPlayerLevel() override;
+	//~End
+	
 private:
 	UPROPERTY(EditAnywhere,Category = "Camera")
 	TObjectPtr<USpringArmComponent> SpringArm;

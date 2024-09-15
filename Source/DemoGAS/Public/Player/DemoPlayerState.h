@@ -22,11 +22,23 @@ class DEMOGAS_API ADemoPlayerState : public APlayerState,public IAbilitySystemIn
 	//一些注释可以参考DemoCharacterBase
 public:
 	ADemoPlayerState();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	//外部接口提供AS和ASC
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
+
+	//封装后的接口
+	FORCEINLINE int32 GetPlayerLevel() const {return Level;}
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+private:
+	UPROPERTY(VisibleAnywhere,ReplicatedUsing = OnRep_Level,Category = "Level")
+	int32 Level = 1;
+
+	UFUNCTION()
+	void OnRep_Level(int32 OldLevel);
 };

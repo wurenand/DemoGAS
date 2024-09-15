@@ -36,6 +36,11 @@ void ADemoEnemyCharacter::UnHighlightActor()
 	WeaponMesh->SetRenderCustomDepth(false);
 }
 
+int32 ADemoEnemyCharacter::GetPlayerLevel()
+{
+	return Level;
+}
+
 
 void ADemoEnemyCharacter::BeginPlay()
 {

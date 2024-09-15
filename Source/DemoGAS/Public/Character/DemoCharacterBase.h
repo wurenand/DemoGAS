@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interface/CombatInterface.h"
 #include "DemoCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -12,7 +13,7 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 //Abstract修饰符标识这个类不能被实例
 UCLASS(Abstract)
-class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemInterface
+class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemInterface,public ICombatInterface //继承这个Combat接口，再有子类实现
 {
 	GENERATED_BODY()
 
