@@ -54,6 +54,21 @@ public:
 	FOnAttributeValueChangedSignature OnManaChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedSignature;
+	
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnStrengthChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnResilienceChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnIntelligenceChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnVigorChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnArmorChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnCriticalChanceChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnCriticalBoncePercentChangedSignature;
 	//~End
 	UPROPERTY(BlueprintAssignable,Category = "WidgetMessage")
 	FOnReceiveMessageRowSignature OnReceiveMessageRowSignature;
@@ -61,7 +76,8 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "WidgetMessageData")
 	TObjectPtr<UDataTable> MessageDataTable;//传递GETag消息的表
-	
+
+	//T为传入的TableRow的类型
 	template <typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
 };

@@ -51,6 +51,8 @@ protected:
 	//Secondary属性使用InfiniteEffect来不断追踪Primary属性的变化而变化
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
 	TSubclassOf<UGameplayEffect> SecondaryAttributesUpdateEffectClass;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
+	TSubclassOf<UGameplayEffect> InitialVitalAttributesEffectClass;
 	
 	//用来调用GE来初始化Attributes 和 InfiniteGE来不断更新Secondary  在子类的InitialAbilitySystem调用
 	void InitialDefaultAttributes() const;//由子类实现

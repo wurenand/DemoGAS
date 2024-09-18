@@ -33,6 +33,7 @@ void ADemoCharacterBase::InitialDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributesEffectClass,1);
 	ApplyEffectToSelf(SecondaryAttributesUpdateEffectClass,1);
+	ApplyEffectToSelf(InitialVitalAttributesEffectClass,1); //要在MaxHealth和MaxMana设置之后调用s
 }
 
 void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied, float Level) const
