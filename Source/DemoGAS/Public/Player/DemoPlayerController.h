@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "DemoPlayerController.generated.h"
 
+struct FGameplayTag;
+class UDemoInputConfig;
 class IEnemyInterface;
 struct FInputActionValue;
 class UInputAction;
@@ -44,4 +46,14 @@ private:
 	void CursorTrace();
 	IEnemyInterface* LastFrameActor;
 	IEnemyInterface* CurrentFrameActor;
+
+	//~begin Input
+	//InputConfig中配置的所有IA都会在DemoInputComponent中被绑定到这三个函数，通过传入的Tag来区分按键
+	void AbilityInputTagPressesd(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagTriggered(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly,Category = "Input")
+	TObjectPtr<UDemoInputConfig> InputConfig;
+	//~end
 };

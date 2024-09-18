@@ -3,8 +3,8 @@
 
 #include "DemoGAS/Public/Player/DemoPlayerController.h"
 
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Input/DemoInputComponent.h"
 #include "Interface/EnemyInterface.h"
 
 
@@ -41,9 +41,13 @@ void ADemoPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	//CastCheck相当于Cast之后使用了check断言，InValid的时候会Crash
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	//使用自己的Component (记得在项目设置中设置)
+	UDemoInputComponent* DemoInputComponent = CastChecked<UDemoInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayerController::Move);
+	DemoInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayerController::Move);
+
+	DemoInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressesd,
+	                                       &ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagTriggered);
 }
 
 void ADemoPlayerController::PlayerTick(float DeltaTime)
@@ -99,6 +103,18 @@ void ADemoPlayerController::CursorTrace()
 		//C
 		LastFrameActor->UnHighlightActor();
 	}
+}
+
+void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
+{
+}
+
+void ADemoPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+}
+
+void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
+{
 }
 
 
