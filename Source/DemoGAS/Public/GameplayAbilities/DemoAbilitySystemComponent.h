@@ -19,7 +19,9 @@ public:
 	void AfterInitialASCActorInfo();
 
 	FOnAppliedGEToSelfAssetTagsDelegate OnAppliedGEToSelfAssetTagsDelegate;
-	
+
+	//只在Server调用
+	void AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>> AbilitiesToAdd);
 protected:
 	//广播消息给UI
 	void OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec,

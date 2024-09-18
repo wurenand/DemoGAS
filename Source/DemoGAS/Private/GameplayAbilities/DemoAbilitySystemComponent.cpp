@@ -12,6 +12,16 @@ void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 	bAfterInitASCActorInfo = true;
 }
 
+void UDemoAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>> AbilitiesToAdd)
+{
+	for(TSubclassOf<UGameplayAbility> AbilityClass : AbilitiesToAdd)
+	{
+		//在Server授予能力后，创建Spec并且Spec还会被复制到Client
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 void UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC,
                                                                   const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
 {

@@ -2,6 +2,7 @@
 #include "DemoGAS/Public/Character/DemoCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
 
 ADemoCharacterBase::ADemoCharacterBase()
@@ -49,6 +50,13 @@ void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& E
 	GEContentHandle.AddSourceObject(this);
 	FGameplayEffectSpecHandle EffectSpec = GetAbilitySystemComponent()->MakeOutgoingSpec(EffectClassToBeApplied,Level,GEContentHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(),GetAbilitySystemComponent());
+}
+
+void ADemoCharacterBase::AddAbilityToCharacter()
+{
+	if(!HasAuthority()) return;
+	UDemoAbilitySystemComponent* DemoAbilitySystemComponent = Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent);
+	DemoAbilitySystemComponent->AddAbilitiesToCharacter(StartUpAbilities);
 }
 
 

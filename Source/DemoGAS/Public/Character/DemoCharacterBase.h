@@ -8,6 +8,7 @@
 #include "Interface/CombatInterface.h"
 #include "DemoCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -60,6 +61,12 @@ protected:
 	//~end
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
-	
+
+	//只能在Server授予能力
+	void AddAbilityToCharacter();
+private:
+	//初始Abilities
+	UPROPERTY(EditAnywhere,Category = "Ability")
+	TArray<TSubclassOf<UGameplayAbility>> StartUpAbilities;
 
 };

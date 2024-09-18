@@ -51,6 +51,7 @@ void ADemoPlayerCharacter::PossessedBy(AController* NewController)
 	//初始化ASC的ActorInfo 对于ASC位于PlayerState上
 	//Server端的ActorInfo在PossessedBy初始化
 	InitialAbilitySystem();
+	AddAbilityToCharacter();
 }
 
 //一般只调用一次，可以用来初始化
