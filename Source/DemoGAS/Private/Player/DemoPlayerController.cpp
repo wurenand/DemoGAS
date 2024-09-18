@@ -3,7 +3,9 @@
 
 #include "DemoGAS/Public/Player/DemoPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "Input/DemoInputComponent.h"
 #include "Interface/EnemyInterface.h"
 
@@ -107,14 +109,30 @@ void ADemoPlayerController::CursorTrace()
 
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
 {
+	//TODO:没完成
+	if(!GetASC()) return;
 }
 
 void ADemoPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if(!GetASC()) return;
+	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 {
+	if(!GetASC()) return;
+	GetASC()->AbilityInputTagTriggered(InputTag);
+}
+
+UDemoAbilitySystemComponent* ADemoPlayerController::GetASC()
+{
+	//确保只进行一次Cast
+	if(DemoASC == nullptr)
+	{
+		DemoASC = Cast<UDemoAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return DemoASC;
 }
 
 

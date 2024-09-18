@@ -3,6 +3,8 @@
 
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
+#include "GameplayAbilities/DemoGameplayAbilityBase.h"
+
 
 void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 {
@@ -18,8 +20,48 @@ void UDemoAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclass
 	{
 		//在Server授予能力后，创建Spec并且Spec还会被复制到Client
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+
+		//添加StartUpTag
+		if(const UDemoGameplayAbilityBase* DemoGameplayAbility = Cast<UDemoGameplayAbilityBase>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(DemoGameplayAbility->TriggerInputTag);
+			GiveAbility(AbilitySpec);
+		}
 	}
+}
+
+void UDemoAbilitySystemComponent::AbilityInputTagTriggered(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);//需要自己实现功能，只是通知Ability被Pressed了
+			if(!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UDemoAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if(!InputTag.IsValid()) return;
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);//需要自己实现功能，只是通知Ability被Releassed了
+		}
+	}
+}
+
+void UDemoAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
+{
+	//TODO:没完成
+	if(!InputTag.IsValid()) return;
 }
 
 void UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC,

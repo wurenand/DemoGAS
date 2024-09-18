@@ -22,6 +22,11 @@ public:
 
 	//只在Server调用
 	void AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>> AbilitiesToAdd);
+
+	//提供给外部的Input的交互接口
+	void AbilityInputTagTriggered(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
+	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 protected:
 	//广播消息给UI
 	void OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec,

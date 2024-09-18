@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "DemoPlayerController.generated.h"
 
+class UDemoAbilitySystemComponent;
 struct FGameplayTag;
 class UDemoInputConfig;
 class IEnemyInterface;
@@ -56,4 +57,12 @@ private:
 	UPROPERTY(EditDefaultsOnly,Category = "Input")
 	TObjectPtr<UDemoInputConfig> InputConfig;
 	//~end
+
+
+	//~Begin ASC相关
+	UDemoAbilitySystemComponent* GetASC();
+	
+	UPROPERTY()
+	TObjectPtr<UDemoAbilitySystemComponent> DemoASC;
+	//~End
 };
