@@ -4,21 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "DemoCharacterBase.h"
-#include "Interface/EnemyInterface.h"
+#include "Interface/InteractInterface.h"
 #include "DemoEnemyCharacter.generated.h"
 
 UCLASS()
-class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase,public IEnemyInterface
+class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase
 {
 	GENERATED_BODY()
 
 public:
 	ADemoEnemyCharacter();
-
-	//~Begin EnemyInterface
-	virtual void HighlightActor() override;
-	virtual void UnHighlightActor() override;
-	//~End
+	
 
 	//~Begin CombatInterface
 	virtual int32 GetPlayerLevel() override;

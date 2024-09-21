@@ -6,10 +6,11 @@
 #include "GameFramework/PlayerController.h"
 #include "DemoPlayerController.generated.h"
 
+class IInteractInterface;
+class USplineComponent;
 class UDemoAbilitySystemComponent;
 struct FGameplayTag;
 class UDemoInputConfig;
-class IEnemyInterface;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -45,10 +46,11 @@ private:
 
 	//检测鼠标指针有没有悬停到Enemy上
 	void CursorTrace();
-	IEnemyInterface* LastFrameActor;
-	IEnemyInterface* CurrentFrameActor;
+	bool bIsTargeting = false;
+	IInteractInterface* LastFrameActor;
+	IInteractInterface* CurrentFrameActor;
 
-	//~begin Input
+	//~begin Input相应的三个回调函数
 	//InputConfig中配置的所有IA都会在DemoInputComponent中被绑定到这三个函数，通过传入的Tag来区分按键
 	void AbilityInputTagPressesd(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
@@ -64,5 +66,16 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UDemoAbilitySystemComponent> DemoASC;
+	//~End
+
+	//~Begin 点击右键移动
+	FVector CachedDestination = FVector::ZeroVector;//目标点
+	float HoldingTime = 0.f;//按键持续时间
+	float ShortPressThreshold = 0.5f;//短按的阈值
+	bool bAutoRunning = false;//当为true的时候，向目标点移动
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;//到达目标点可容忍接受度
+
+	TObjectPtr<USplineComponent> ClickMovePath; //使用样条线平滑移动路线
 	//~End
 };

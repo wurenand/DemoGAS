@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "DemoGAS/DemoGAS.h"
 #include "GameFramework/PlayerState.h"
 #include "DemoPlayerState.generated.h"
 
@@ -29,6 +30,11 @@ public:
 
 	//封装后的接口
 	FORCEINLINE int32 GetPlayerLevel() const {return Level;}
+
+	//玩家所属阵营
+	UPROPERTY(EditAnywhere,Category = "Team")
+	ETeam Team = ETeam::ETeam_Red;
+	
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

@@ -77,12 +77,15 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
 	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
+
+	//2 获取当前阵营
+	Team =DemoPlayerState->Team;
 	
-	//2 为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
+	//3 为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
 
-	//3 初始化HUD
+	//4 初始化HUD
 	//Server和Client都会调用这个函数InitialAbilitySystem初始化ASC和AS，此时WidgetController需要的PC，PS，ASC，AS都确保完成了初始化/
 	//调用InitialOverlay最好
 	if(ADemoPlayerController* DemoPlayerController = Cast<ADemoPlayerController>(GetController()))
@@ -93,6 +96,6 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 		}
 	}
 
-	//4 初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
+	//5 初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
 	InitialDefaultAttributes();
 }

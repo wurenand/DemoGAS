@@ -5,15 +5,19 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/SplineComponent.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "Input/DemoInputComponent.h"
-#include "Interface/EnemyInterface.h"
+#include "Interface/InteractInterface.h"
+#include "Player/DemoPlayerState.h"
 
 
 ADemoPlayerController::ADemoPlayerController()
 {
 	//TODO(为什么需要复制？)
 	bReplicates = true;
+
+	ClickMovePath = CreateDefaultSubobject<USplineComponent>(TEXT("ClickMovePath"));
 }
 
 void ADemoPlayerController::BeginPlay()
@@ -49,7 +53,7 @@ void ADemoPlayerController::SetupInputComponent()
 	DemoInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADemoPlayerController::Move);
 
 	DemoInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressesd,
-	                                       &ThisClass::AbilityInputTagReleased,&ThisClass::AbilityInputTagTriggered);
+	                                       &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagTriggered);
 }
 
 void ADemoPlayerController::PlayerTick(float DeltaTime)
@@ -69,7 +73,17 @@ void ADemoPlayerController::CursorTrace()
 	}
 	//更新上一帧和当前帧
 	LastFrameActor = CurrentFrameActor;
-	CurrentFrameActor = Cast<IEnemyInterface>(CursorResult.GetActor());
+	CurrentFrameActor = Cast<IInteractInterface>(CursorResult.GetActor());
+	
+	//记录是否悬停在某个Actor身上
+	if(CurrentFrameActor != nullptr)
+	{
+		bIsTargeting = true;
+	}
+	else
+	{
+		bIsTargeting = false;
+	}
 	/*
 	 *	   Last Current
 	 * A	n		n	DoNothing
@@ -92,14 +106,14 @@ void ADemoPlayerController::CursorTrace()
 		}
 		//D
 		LastFrameActor->UnHighlightActor();
-		CurrentFrameActor->HighlightActor();
+		CurrentFrameActor->HighlightActor(GetPlayerState<ADemoPlayerState>()->Team);
 	}
 	else
 	{
 		//B
 		if(LastFrameActor == nullptr)
 		{
-			CurrentFrameActor->HighlightActor();
+			CurrentFrameActor->HighlightActor(GetPlayerState<ADemoPlayerState>()->Team);
 			return;
 		}
 		//C
@@ -110,18 +124,27 @@ void ADemoPlayerController::CursorTrace()
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
 {
 	//TODO:没完成
-	if(!GetASC()) return;
+	if(!GetASC())
+	{
+		return;
+	}
 }
 
 void ADemoPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if(!GetASC()) return;
+	if(!GetASC())
+	{
+		return;
+	}
 	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 {
-	if(!GetASC()) return;
+	if(!GetASC())
+	{
+		return;
+	}
 	GetASC()->AbilityInputTagTriggered(InputTag);
 }
 
@@ -130,7 +153,8 @@ UDemoAbilitySystemComponent* ADemoPlayerController::GetASC()
 	//确保只进行一次Cast
 	if(DemoASC == nullptr)
 	{
-		DemoASC = Cast<UDemoAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		DemoASC = Cast<UDemoAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return DemoASC;
 }

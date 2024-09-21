@@ -2,6 +2,7 @@
 #include "DemoGAS/Public/Character/DemoCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "DemoGAS/DemoGAS.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
 
@@ -9,6 +10,9 @@ ADemoCharacterBase::ADemoCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	//设定后PC中的CursorTrace才能检测到
+	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+	
 	//Weapon初始化
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(GetMesh(),FName(TEXT("WeaponHandSocket")));
@@ -23,6 +27,37 @@ UAbilitySystemComponent* ADemoCharacterBase::GetAbilitySystemComponent() const
 UAttributeSet* ADemoCharacterBase::GetAttributeSet() const
 {
 	return AttributeSet;
+}
+
+void ADemoCharacterBase::HighlightActor(ETeam FromTeam)
+{
+	//理由后期处理材质，实现描边（一定要在项目设置里面打开 自定义深度的 启动模板）
+
+	if(FromTeam == Team)
+	{
+		GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_WHITE);
+		WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_WHITE);
+	}
+	else
+	{
+		GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+		WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	}
+	GetMesh()->SetRenderCustomDepth(true);
+	WeaponMesh->SetRenderCustomDepth(true);
+	GEngine->AddOnScreenDebugMessage(-1,10.f,FColor::Red,FString("Highlight"));
+
+}
+
+void ADemoCharacterBase::UnHighlightActor()
+{
+	GetMesh()->SetRenderCustomDepth(false);
+	WeaponMesh->SetRenderCustomDepth(false);
+}
+
+ETeam ADemoCharacterBase::GetTeam()
+{
+	return Team;
 }
 
 void ADemoCharacterBase::InitialAbilitySystem()

@@ -11,29 +11,12 @@
 ADemoEnemyCharacter::ADemoEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	//设定后PC中的CursorTrace才能检测到
-	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 
 	//构造ASC和AttributeSet
 	AbilitySystemComponent = CreateDefaultSubobject<UDemoAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true); //TODO(为什么只给ASC设置复制?)
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	AttributeSet = CreateDefaultSubobject<UDemoAttributeSet>(TEXT("AttributeSet"));
-}
-
-void ADemoEnemyCharacter::HighlightActor()
-{
-	//理由后期处理材质，实现描边（一定要在项目设置里面打开 自定义深度的 启动模板）
-	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-	WeaponMesh->SetRenderCustomDepth(true);
-	WeaponMesh->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-}
-
-void ADemoEnemyCharacter::UnHighlightActor()
-{
-	GetMesh()->SetRenderCustomDepth(false);
-	WeaponMesh->SetRenderCustomDepth(false);
 }
 
 int32 ADemoEnemyCharacter::GetPlayerLevel()

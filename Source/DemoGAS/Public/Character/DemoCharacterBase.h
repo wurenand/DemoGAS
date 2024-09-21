@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "DemoGAS/DemoGAS.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
+#include "Interface/InteractInterface.h"
 #include "DemoCharacterBase.generated.h"
 
 class UGameplayAbility;
@@ -14,7 +16,7 @@ class UAttributeSet;
 class UAbilitySystemComponent;
 //Abstract修饰符标识这个类不能被实例
 UCLASS(Abstract)
-class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemInterface,public ICombatInterface //继承这个Combat接口，再有子类实现
+class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemInterface,public IInteractInterface,public ICombatInterface //继承这个Combat接口，再有子类实现
 {
 	GENERATED_BODY()
 
@@ -25,6 +27,18 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//自定义，仿制上面的函数，给AttributeSet一个Getter
 	UAttributeSet* GetAttributeSet() const;
+
+	//~Begin InteractInterface
+	virtual void HighlightActor(ETeam FromTeam) override;
+	virtual void UnHighlightActor() override;
+
+		//~Begin Team
+	virtual ETeam GetTeam() override;
+	UPROPERTY(EditAnywhere,Category = "Team")
+	ETeam Team = ETeam::ETeam_Red;
+		//~End
+	//~End
+	
 
 protected:
 
@@ -43,9 +57,6 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 
-	//由子类去实现，用于初始化ASC的一些内容 具体可见DemoPlayerCharacter中的函数实现   (Server和Client都会调用)
-	virtual void InitialAbilitySystem();
-
 	//~begin 属性初始化与设置
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AttributeEffect")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
@@ -61,12 +72,16 @@ protected:
 	//~end
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
-
+	
+	//由子类去实现，用于初始化ASC的一些内容 具体可见DemoPlayerCharacter中的函数实现   (Server和Client都会调用)
+	virtual void InitialAbilitySystem();
 	//只能在Server授予能力
 	void AddAbilityToCharacter();
 private:
 	//初始Abilities
 	UPROPERTY(EditAnywhere,Category = "Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartUpAbilities;
+
+	
 
 };
