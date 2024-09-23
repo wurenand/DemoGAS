@@ -3,7 +3,7 @@
 
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
-#include "GameplayAbilities/DemoGameplayAbilityBase.h"
+#include "GameplayAbilities/Abilities/DemoGameplayAbilityBase.h"
 
 
 void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
