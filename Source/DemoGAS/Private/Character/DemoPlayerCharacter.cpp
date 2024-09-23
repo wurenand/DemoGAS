@@ -29,7 +29,8 @@ ADemoPlayerCharacter::ADemoPlayerCharacter()
 	
 	//设置俯视角游戏的基本设置
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
+	//TODO:需要阅读CharacterMovement源码，看看如何实现转向不减速
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 1000.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;//移动会被约束到平面
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;//开始时与平面对齐
 

@@ -3,6 +3,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "DemoGAS/DemoGAS.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
 

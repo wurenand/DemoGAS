@@ -9,7 +9,8 @@ public class DemoGAS : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", 
-			"EnhancedInput", "GameplayAbilities","GameplayTasks","GameplayTags","UMG","Slate","SlateCore"
+			"EnhancedInput", "GameplayAbilities","GameplayTasks","GameplayTags","UMG","Slate","SlateCore",
+			"NavigationSystem"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
