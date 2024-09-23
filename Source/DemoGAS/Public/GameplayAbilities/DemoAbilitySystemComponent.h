@@ -28,8 +28,10 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 protected:
-	//广播消息给UI
-	void OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec,
+	//广播消息给UI  由于它绑定的OnGameplayEffectAppliedDelegateToSelf只在Server广播，所以这个函数不会在客户端调用
+	//但是需要通过这个函数在GE被应用到自身的时候广播，所以给他设置为ClientRPC，将会在拥有它的Client广播
+	UFUNCTION(Client,Reliable)
+	void ClientOnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& GESpec,
 	                                   FActiveGameplayEffectHandle ActiveGEHandle);
 
 	//重写了这个函数，用于在Initial之后bind Delegate

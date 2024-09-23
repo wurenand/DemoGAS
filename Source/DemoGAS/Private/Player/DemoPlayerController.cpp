@@ -58,47 +58,27 @@ void ADemoPlayerController::SetupInputComponent()
 }
 
 
-void ADemoPlayerController::AutoRun()
-{
-	if(!bAutoRunning) return;
-	
-	//当控制的Pawn存在时（避免角色死亡后还调用）
-	if(APawn* ControlledPawn = GetPawn())
-	{
-		const FVector LocationOnSpline = ClickMovePathSpline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(),ESplineCoordinateSpace::World);
-		//获得样条线上点的切线方向 ？
-		const FVector DirectionOnSpline = ClickMovePathSpline->FindDirectionClosestToWorldLocation(LocationOnSpline,ESplineCoordinateSpace::World);
-		ControlledPawn->AddMovementInput(DirectionOnSpline);
-
-		const float DistanceToDestination = (CachedDestination - LocationOnSpline).Length();
-		if(DistanceToDestination <= AutoRunAcceptanceRadius)
-		{
-			bAutoRunning = false;
-		}
-	}
-}
-
 void ADemoPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-	//执行鼠标指针射线检测，高亮
-	CursorTrace();
+	//执行鼠标指针射线检测
+	GetHitResultUnderCursor(ECC_Visibility, false, CurrentCursorHit);
+	//高亮
+	TryHighlight();
 	//右键移动
-	AutoRun();
+	TryAutoRun();
 }
 
 
-void ADemoPlayerController::CursorTrace()
+void ADemoPlayerController::TryHighlight()
 {
-	FHitResult CursorResult;
-	GetHitResultUnderCursor(ECC_Visibility, false, CursorResult);
-	if(!CursorResult.bBlockingHit)
+	if(!CurrentCursorHit.bBlockingHit)
 	{
 		return;
 	}
 	//更新上一帧和当前帧
 	LastFrameActor = CurrentFrameActor;
-	CurrentFrameActor = Cast<IInteractInterface>(CursorResult.GetActor());
+	CurrentFrameActor = Cast<IInteractInterface>(CurrentCursorHit.GetActor());
 
 	//记录是否悬停在某个Actor身上
 	if(CurrentFrameActor != nullptr)
@@ -146,13 +126,34 @@ void ADemoPlayerController::CursorTrace()
 	}
 }
 
-void ADemoPlayerController::TraceMoveDestination()
+
+void ADemoPlayerController::TryAutoRun()
 {
-	//1 拿到鼠标指针的电
-	FHitResult Result;
-	if(GetHitResultUnderCursor(ECC_Visibility, false, Result))
+	if(!bAutoRunning) return;
+	
+	//当控制的Pawn存在时（避免角色死亡后还调用）
+	if(APawn* ControlledPawn = GetPawn())
 	{
-		CachedDestination = Result.ImpactPoint;
+		const FVector LocationOnSpline = ClickMovePathSpline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(),ESplineCoordinateSpace::World);
+		//获得样条线上点的切线方向 ？
+		const FVector DirectionOnSpline = ClickMovePathSpline->FindDirectionClosestToWorldLocation(LocationOnSpline,ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(DirectionOnSpline);
+
+		const float DistanceToDestination = (CachedDestination - LocationOnSpline).Length();
+		if(DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
+}
+
+
+void ADemoPlayerController::TryMoveDestination()
+{
+	//1 获取当前帧碰撞点
+	if(GetHitResultUnderCursor(ECC_Visibility, false, CurrentCursorHit))
+	{
+		CachedDestination = CurrentCursorHit.ImpactPoint;
 	}
 	if(APawn* ControlledPawn = GetPawn())
 	{
@@ -210,7 +211,7 @@ void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 		else
 		{
 			//移动
-			TraceMoveDestination();
+			TryMoveDestination();
 		}
 	}
 

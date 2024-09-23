@@ -38,10 +38,12 @@ protected:
 private:
 	UPROPERTY(EditAnywhere,Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContent;//记得在Build.cs导入EnhancedInput模块
-
+	
 	//检测鼠标指针有没有悬停到Enemy上
-	void CursorTrace();
+	void TryHighlight();
 	bool bIsTargeting = false;
+	//记录当前这一帧的鼠标悬停检测结果，供需要的功能使用
+	FHitResult CurrentCursorHit;
 	IInteractInterface* LastFrameActor;
 	IInteractInterface* CurrentFrameActor;
 
@@ -49,7 +51,6 @@ private:
 	//InputConfig中配置的所有IA都会在DemoInputComponent中被绑定到这三个函数，通过传入的Tag来区分按键
 	void AbilityInputTagPressesd(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
-
 	void AbilityInputTagTriggered(FGameplayTag InputTag);
 	
 	UPROPERTY(EditDefaultsOnly,Category = "Input")
@@ -65,8 +66,8 @@ private:
 	//~End
 
 	//~Begin 点击右键移动
-	void TraceMoveDestination();
-	void AutoRun();
+	void TryMoveDestination();
+	void TryAutoRun();
 	FVector CachedDestination = FVector::ZeroVector;//目标点
 	bool bAutoRunning = false;//当为true的时候，向目标点移动
 	UPROPERTY(EditDefaultsOnly)

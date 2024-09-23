@@ -10,7 +10,7 @@ void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 {
 	if(bAfterInitASCActorInfo) return;
 	//确保只做一次
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf);
 	bAfterInitASCActorInfo = true;
 }
 
@@ -64,7 +64,7 @@ void UDemoAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 	if(!InputTag.IsValid()) return;
 }
 
-void UDemoAbilitySystemComponent::OnMyGameplayEffectAppliedToSelf(UAbilitySystemComponent* ASC,
+void UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf_Implementation(UAbilitySystemComponent* ASC,
                                                                   const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
 {
 	FGameplayTagContainer GameplayTags;
