@@ -7,7 +7,7 @@
 #include "DemoGameplayAbilityBase.generated.h"
 
 /**
- * 
+ * 所有GA的Base，提供每个GA需要的InputTag
  */
 UCLASS()
 class DEMOGAS_API UDemoGameplayAbilityBase : public UGameplayAbility
