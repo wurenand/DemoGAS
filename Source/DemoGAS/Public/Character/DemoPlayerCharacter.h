@@ -17,6 +17,9 @@ class DEMOGAS_API ADemoPlayerCharacter : public ADemoCharacterBase
 public:
 	ADemoPlayerCharacter();
 
+	//根据不同Hero的不同技能（按照InputTag区分）来返回不同的ProjectileGA的生成位置
+	virtual FVector GetCombatSocketLocation(const FGameplayTag& InputTag) override;
+	
 protected:
 	virtual void BeginPlay() override;
 

@@ -7,6 +7,9 @@ ADemoProjectile::ADemoProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	//只在Server生成，复制给Client
+	SetReplicates(true);
+	
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	SetRootComponent(Sphere);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
