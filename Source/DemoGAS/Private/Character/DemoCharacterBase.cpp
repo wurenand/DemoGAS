@@ -2,8 +2,8 @@
 #include "DemoGAS/Public/Character/DemoCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "DemoGAS/DemoGAS.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 
 
@@ -18,6 +18,10 @@ ADemoCharacterBase::ADemoCharacterBase()
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetupAttachment(GetMesh(),FName(TEXT("WeaponHandSocket")));
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+
+	//关闭摄像机通道
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 }
 
 UAbilitySystemComponent* ADemoCharacterBase::GetAbilitySystemComponent() const

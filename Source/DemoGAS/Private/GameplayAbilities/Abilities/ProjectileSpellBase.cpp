@@ -7,7 +7,8 @@
 #include "Interface/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void UProjectileSpellBase::SpawnOneProjectile(bool bUseOverrideTrans , FTransform OverrideTransform )
+void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation, 
+                                              FVector OverrideSpawnLocation,bool bUseOverrideSpawnLoc)
 {
 	//Server Check，只在Server生成，通过Replication到Client
 	//TODO:Client目前不会生成
@@ -21,13 +22,22 @@ void UProjectileSpellBase::SpawnOneProjectile(bool bUseOverrideTrans , FTransfor
 	//通过ICombat接口，获取当前这个InputTag的GA的投射物生成位置
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	FVector SpawnLocation = CombatInterface->GetCombatSocketLocation(TriggerInputTag);
-	FTransform SpawnTransform(GetAvatarActorFromActorInfo()->GetActorRotation(), SpawnLocation, FVector::One());
 
-	if(bUseOverrideTrans)
+	if(bUseOverrideSpawnLoc)
 	{
-		SpawnTransform = OverrideTransform;
+		SpawnLocation = OverrideSpawnLocation;
 	}
+
+	//统一高度，避免打不到人
+	TargetLocation.Z = 50.f;
+	SpawnLocation.Z = 50.f;
+
+	//计算角度
+	FRotator TargetRot = (TargetLocation - SpawnLocation).ToOrientationRotator();
 	
+	FTransform SpawnTransform(TargetRot, SpawnLocation, FVector::One());
+
+
 	AActor* GAOwnerActor = GetOwningActorFromActorInfo();
 	ADemoProjectile* DemoProjectile = GetWorld()->SpawnActorDeferred<ADemoProjectile>(
 		ProjectileClass,

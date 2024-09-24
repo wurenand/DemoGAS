@@ -17,13 +17,13 @@ class DEMOGAS_API UProjectileSpellBase : public UDemoGameplayAbilityBase
 
 public:
 	/**
-	 * 生成投射物1个 默认根据ICombatInterface获取生成位置
-	 * @param bUseOverrideTrans 需要传入生成Trans时设置其为true，否则使用ICombatInterface中根据InputTag获取的Trans
-	 * @param OverrideTransform 覆盖的新Trans
-	 * @return 
+	* 生成投射物1个 默认根据ICombatInterface获取生成位置  (高度将不会生效，设定为50？)
+	 * @param TargetLocation 发射的目标位置
+	 * @param bUseOverrideSpawnLoc 需要传入生成Trans时设置其为true，否则使用ICombatInterface中根据InputTag获取的Trans
+	 * @param OverrideSpawnLocation 重载的生成位置，不使用的话可以随意传入
 	 */
 	UFUNCTION(BlueprintCallable)
-	void SpawnOneProjectile(bool bUseOverrideTrans = false, FTransform OverrideTransform = FTransform());
+	void SpawnOneProjectile(FVector TargetLocation,FVector OverrideSpawnLocation,bool bUseOverrideSpawnLoc = false);
 	
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
