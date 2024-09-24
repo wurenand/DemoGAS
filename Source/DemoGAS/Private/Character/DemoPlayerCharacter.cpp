@@ -16,7 +16,7 @@ ADemoPlayerCharacter::ADemoPlayerCharacter()
 	//摄像机和弹簧臂基本设置
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->SetRelativeRotation(FRotator(-45.f,0.f,0.f));
+	SpringArm->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));
 	SpringArm->TargetArmLength = 750.f;
 	//禁止摄像机继承Character旋转
 	SpringArm->bInheritPitch = false;
@@ -24,20 +24,27 @@ ADemoPlayerCharacter::ADemoPlayerCharacter()
 	SpringArm->bInheritRoll = false;
 	SpringArm->bEnableCameraLag = true;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(SpringArm,USpringArmComponent::SocketName);
-	
-	
+	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+
 	//设置俯视角游戏的基本设置
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	//TODO:需要阅读CharacterMovement源码，看看如何实现转向不减速
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 1000.f, 0.f);
-	GetCharacterMovement()->bConstrainToPlane = true;//移动会被约束到平面
-	GetCharacterMovement()->bSnapToPlaneAtStart = true;//开始时与平面对齐
+	GetCharacterMovement()->bConstrainToPlane = true; //移动会被约束到平面
+	GetCharacterMovement()->bSnapToPlaneAtStart = true; //开始时与平面对齐
 
 	//避免摄像机视角影响角色视角
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+}
+
+FVector ADemoPlayerCharacter::GetCombatSocketLocation(const FGameplayTag& InputTag)
+{
+	FVector Forword = GetActorForwardVector();
+	Forword.Z = 0;
+	return GetActorLocation() + Forword * 100;
 }
 
 void ADemoPlayerCharacter::BeginPlay()
@@ -68,8 +75,7 @@ int32 ADemoPlayerCharacter::GetPlayerLevel()
 {
 	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
 	check(DemoPlayerState);
-	return  DemoPlayerState->GetPlayerLevel();
-
+	return DemoPlayerState->GetPlayerLevel();
 }
 
 void ADemoPlayerCharacter::InitialAbilitySystem()
@@ -77,11 +83,11 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 	//1 初始化ActorInfo
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
-	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState,this);
+	DemoPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DemoPlayerState, this);
 
 	//2 获取当前阵营
-	Team =DemoPlayerState->Team;
-	
+	Team = DemoPlayerState->Team;
+
 	//3 为PlayerCharacter中的ASC引用和AttributeSet指定PS中的对象
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
@@ -93,7 +99,7 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 	{
 		if(ADemoHUD* DemoHUD = Cast<ADemoHUD>(DemoPlayerController->GetHUD()))
 		{
-			DemoHUD->InitOverlay(DemoPlayerController,DemoPlayerState,AbilitySystemComponent,AttributeSet);
+			DemoHUD->InitOverlay(DemoPlayerController, DemoPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
 
