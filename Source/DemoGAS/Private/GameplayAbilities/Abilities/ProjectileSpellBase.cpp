@@ -7,18 +7,11 @@
 #include "Interface/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                           const FGameplayAbilityActorInfo* ActorInfo,
-                                           const FGameplayAbilityActivationInfo ActivationInfo,
-                                           const FGameplayEventData* TriggerEventData)
+void UProjectileSpellBase::SpawnOneProjectile(bool bUseOverrideTrans , FTransform OverrideTransform )
 {
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	//TODO:为什么从Client激活会激活两次？
-	UKismetSystemLibrary::PrintString(this, FString(TEXT("C++ 激活")));
-
-	//Spawn Projectile
 	//Server Check，只在Server生成，通过Replication到Client
-	const bool bIsServer = HasAuthority(&ActivationInfo);
+	//TODO:Client目前不会生成
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if(!bIsServer)
 	{
 		return;
@@ -30,6 +23,11 @@ void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	FVector SpawnLocation = CombatInterface->GetCombatSocketLocation(TriggerInputTag);
 	FTransform SpawnTransform(GetAvatarActorFromActorInfo()->GetActorRotation(), SpawnLocation, FVector::One());
 
+	if(bUseOverrideTrans)
+	{
+		SpawnTransform = OverrideTransform;
+	}
+	
 	AActor* GAOwnerActor = GetOwningActorFromActorInfo();
 	ADemoProjectile* DemoProjectile = GetWorld()->SpawnActorDeferred<ADemoProjectile>(
 		ProjectileClass,
@@ -41,4 +39,14 @@ void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	//TODO:给Projectile一个GE Spec来施加Damage
 
 	DemoProjectile->FinishSpawning(SpawnTransform);
+}
+
+void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                           const FGameplayAbilityActorInfo* ActorInfo,
+                                           const FGameplayAbilityActivationInfo ActivationInfo,
+                                           const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	//TODO:为什么从Client激活会激活两次？
+	UKismetSystemLibrary::PrintString(this, FString(TEXT("C++ 激活")));
 }
