@@ -8,7 +8,7 @@
 
 struct FGameplayTag;
 
-UINTERFACE()
+UINTERFACE(BlueprintType)
 class UCombatInterface : public UInterface
 {
 	GENERATED_BODY()
@@ -27,4 +27,8 @@ public:
 	//获取施法(Projectile)位置  
 	//由继承者实现，根据InputTag,返回施法的位置，一般为继承者Weapon或Mesh上的某个Socket
 	virtual FVector GetCombatSocketLocation(const FGameplayTag& InputTag);
+
+	//利用MotionWarping插件实现转向，这个是执行转向的接口
+	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
+	void UpdateFacingTarget(const FVector& TargetLocation);
 };
