@@ -33,4 +33,8 @@ protected:
 	//这个GA生成的投射物的Class
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<ADemoProjectile> ProjectileClass;
+
+	//投射物造成伤害的Effect
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

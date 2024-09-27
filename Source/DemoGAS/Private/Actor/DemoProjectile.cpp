@@ -1,5 +1,7 @@
 ﻿#include "Actor/DemoProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -57,6 +59,11 @@ void ADemoProjectile::OnSphereOverlappedBegin(UPrimitiveComponent* OverlappedCom
 
 	if(HasAuthority())
 	{
+		if(UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data);		
+		}
+		
 		Destroy();
 	}
 	else

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffectTypes.h"
 #include "InteractBaseActor.h"
 #include "GameFramework/Actor.h"
 #include "DemoProjectile.generated.h"
@@ -21,6 +22,10 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
+
+	//轻量级的拿到这个Effect，并且生成时公开
+	UPROPERTY(BlueprintReadWrite,meta = (ExposeOnSpawn = true))
+	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 
 	//用于Client避免Server的Destory复制到Client在Client的Collision发生之前，导致Client不产生效果就被销毁（感觉是只碰撞一次的时候使用）
 	bool bHit = false;

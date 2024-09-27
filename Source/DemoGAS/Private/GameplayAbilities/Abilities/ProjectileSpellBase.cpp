@@ -3,6 +3,8 @@
 
 #include "GameplayAbilities/Abilities/ProjectileSpellBase.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/DemoProjectile.h"
 #include "Character/DemoCharacterBase.h"
 #include "Interface/CombatInterface.h"
@@ -58,8 +60,10 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 		DemoProjectile->SetTargetActor(nullptr); //TODO:这里根据需要，通过SpawnOneProjectile的参数传入，暂时不处理
 	}
 
-
-	//TODO:给Projectile一个GE Spec来施加Damage
+	//创建DamageEffectSpec,用于碰撞后施加GE
+	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceASC->MakeEffectContext());
+	DemoProjectile->DamageEffectSpecHandle = SpecHandle;
 
 
 	DemoProjectile->FinishSpawning(SpawnTransform);
