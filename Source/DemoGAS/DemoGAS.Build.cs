@@ -10,7 +10,7 @@ public class DemoGAS : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", 
 			"EnhancedInput", "GameplayAbilities","GameplayTasks","GameplayTags","UMG","Slate","SlateCore",
-			"NavigationSystem"
+			"NavigationSystem","Niagara"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

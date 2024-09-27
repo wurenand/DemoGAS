@@ -19,42 +19,42 @@ void ADemoEffectActor::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ADemoEffectActor::OnBeginOverlap(AActor* TargetActor)
+void ADemoEffectActor::OnBeginOverlap(AActor* EffectTargetActor)
 {
 	//依次判断情况
 	if(InstantGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnBeginOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, InstantGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, InstantGameplayEffectClass);
 	}
 	if(DurationGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnBeginOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, DurationGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, DurationGameplayEffectClass);
 	}
 	if(InfiniteGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnBeginOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, InfiniteGameplayEffectClass);
 	}
 }
 
-void ADemoEffectActor::OnEndOverlap(AActor* TargetActor)
+void ADemoEffectActor::OnEndOverlap(AActor* EffectTargetActor)
 {
 	//依次判断情况
 	if(InstantGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, InstantGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, InstantGameplayEffectClass);
 	}
 	if(DurationGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, DurationGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, DurationGameplayEffectClass);
 	}
 	if(InfiniteGEApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
 	{
-		ApplyGameplayEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+		ApplyGameplayEffectToTarget(EffectTargetActor, InfiniteGameplayEffectClass);
 	}
 	if(InfiniteGERemovePolicy == EEffectRemovePolicy::RemoveOnEndOverlap)
 	{
 		//remove
-		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(EffectTargetActor);
 		if(!TargetASC) return;
 		FActiveGameplayEffectHandle* ActiveGESpecToBeRemoved = InfiniteOverlapActors.Find(TargetASC);
 		if(!ActiveGESpecToBeRemoved) return;
@@ -65,7 +65,7 @@ void ADemoEffectActor::OnEndOverlap(AActor* TargetActor)
 	}
 }
 
-void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* TargetActor,
+void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* EffectTargetActor,
                                                    TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	//使用ASC函数库来辅助完成获取ASC
@@ -76,7 +76,7 @@ void ADemoEffectActor::ApplyGameplayEffectToTarget(AActor* TargetActor,
 	Interface->GetAbilitySystemComponent();
 }
  */
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(EffectTargetActor);
 
 	//健壮性检查
 	if(!TargetASC) return;
