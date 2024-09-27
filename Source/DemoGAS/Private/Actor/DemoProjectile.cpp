@@ -15,6 +15,7 @@ ADemoProjectile::ADemoProjectile()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	SetRootComponent(Sphere);
 	Sphere->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+	Sphere->SetCollisionObjectType(ECC_Ability);
 	Sphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic,ECR_Overlap);
 	Sphere->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Overlap);

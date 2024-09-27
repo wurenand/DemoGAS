@@ -13,6 +13,9 @@ ADemoCharacterBase::ADemoCharacterBase()
 
 	//设定后PC中的CursorTrace才能检测到
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
+	//能够与投射物，范围等交互
+	GetMesh()->SetCollisionResponseToChannel(ECC_Ability,ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);//必须打开，不然不能碰撞
 	
 	//Weapon初始化
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));

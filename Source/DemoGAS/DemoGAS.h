@@ -15,3 +15,6 @@ enum class ETeam : uint8
 	ETeam_Red UMETA(DisplayName = "Red"),
 	ETeam_Blue UMETA(DisplayName = "Blue"),
 };
+
+//自定义的Ability通道，重命名一下方便使用
+#define ECC_Ability ECollisionChannel::ECC_GameTraceChannel1
