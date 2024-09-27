@@ -1,7 +1,9 @@
 ﻿#include "Actor/DemoProjectile.h"
 
+#include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ADemoProjectile::ADemoProjectile()
 {
@@ -24,16 +26,41 @@ ADemoProjectile::ADemoProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0.f;
 }
 
+void ADemoProjectile::Destroyed()
+{
+	if(!bHit && !HasAuthority())
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation(),FRotator::ZeroRotator);
+        UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactNiagara,GetActorLocation());
+	}
+	
+	Super::Destroyed();
+}
+
 void ADemoProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
+	SetLifeSpan(LifeSpan);
 	Sphere->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::ADemoProjectile::OnSphereOverlappedBegin);
 }
 
 void ADemoProjectile::OnSphereOverlappedBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Black,FString(TEXT("父类重叠")));
+	//TODO:这里应该根据需要，区分情况：(这些参数是否应该放在InteractBaseActor?)例如，攻击对象为敌对还是队友，同时还应该区分追踪还是定向。修改在ProjectileSpellBase
+
+	//暂时只处理一种情况了
+	
+	UGameplayStatics::PlaySoundAtLocation(this,ImpactSound,GetActorLocation(),FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactNiagara,GetActorLocation());
+
+	if(HasAuthority())
+	{
+		Destroy();
+	}
+	else
+	{
+		bHit = true;
+	}
 }
 

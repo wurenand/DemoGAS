@@ -17,9 +17,16 @@ class DEMOGAS_API ADemoProjectile : public AInteractBaseActor
 public:
 	ADemoProjectile();
 
+	virtual void Destroyed() override;
+	
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
+	//用于Client避免Server的Destory复制到Client在Client的Collision发生之前，导致Client不产生效果就被销毁（感觉是只碰撞一次的时候使用）
+	bool bHit = false;
+
+	UPROPERTY(EditAnywhere,Category = "LifeSpan")
+	float LifeSpan = 15.f;
 protected:
 	virtual void BeginPlay() override;
 

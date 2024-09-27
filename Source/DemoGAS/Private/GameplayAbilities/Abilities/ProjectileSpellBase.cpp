@@ -50,7 +50,7 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 		Cast<APawn>(GAOwnerActor),
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-	//*****信息
+	//*****效果对象和方式
 	const ADemoCharacterBase* DemoCharacterBase = Cast<ADemoCharacterBase>(GetAvatarActorFromActorInfo());
 	if(DemoCharacterBase)
 	{
@@ -72,5 +72,6 @@ void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	//TODO:为什么从Client激活会激活两次？
+	//暂时解决：Client会先本地activate，并通知Server Activate
 	UKismetSystemLibrary::PrintString(this, FString(TEXT("C++ 激活")));
 }
