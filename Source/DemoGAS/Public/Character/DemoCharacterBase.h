@@ -23,6 +23,8 @@ class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemI
 public:
 	ADemoCharacterBase();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	//来自IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//自定义，仿制上面的函数，给AttributeSet一个Getter
@@ -34,7 +36,7 @@ public:
 
 		//~Begin Team
 	virtual ETeam GetTeam() override;
-	UPROPERTY(EditAnywhere,Category = "Team")
+	UPROPERTY(EditAnywhere,ReplicatedUsing = "OnRep_Team",Category = "Team") //TODO:暂时先设置为EditAnyWhere
 	ETeam Team = ETeam::ETeam_Red;
 		//~End
 	//~End
@@ -82,6 +84,7 @@ private:
 	UPROPERTY(EditAnywhere,Category = "Ability")
 	TArray<TSubclassOf<UGameplayAbility>> StartUpAbilities;
 
-	
+	UFUNCTION()
+	void OnRep_Team();
 
 };

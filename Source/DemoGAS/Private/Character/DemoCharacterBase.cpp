@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 ADemoCharacterBase::ADemoCharacterBase()
@@ -25,6 +26,12 @@ ADemoCharacterBase::ADemoCharacterBase()
 	//关闭摄像机通道
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+}
+
+void ADemoCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ADemoCharacterBase,Team);
 }
 
 UAbilitySystemComponent* ADemoCharacterBase::GetAbilitySystemComponent() const
@@ -100,6 +107,11 @@ void ADemoCharacterBase::AddAbilityToCharacter()
 	if(!HasAuthority()) return;
 	UDemoAbilitySystemComponent* DemoAbilitySystemComponent = Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent);
 	DemoAbilitySystemComponent->AddAbilitiesToCharacter(StartUpAbilities);
+}
+
+void ADemoCharacterBase::OnRep_Team()
+{
+	
 }
 
 

@@ -5,7 +5,12 @@
 #include "CoreMinimal.h"
 #include "DemoCharacterBase.h"
 #include "Interface/InteractInterface.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "DemoEnemyCharacter.generated.h"
+
+class UWidgetComponent;
+
+
 
 UCLASS()
 class DEMOGAS_API ADemoEnemyCharacter : public ADemoCharacterBase
@@ -20,6 +25,14 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	//~End
 
+	//~Begin HealthBar组件要绑定的委托 (来自WidgetController)
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeValueChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeValueChangedSignature OnMaxHealthChanged;
+	//~End
+	
 protected:
 	virtual void BeginPlay() override;
 
@@ -27,4 +40,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "CharacterDefault")
 	int32 Level = 1; //AIController只存在于Server，所以不需要复制
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "UI")
+	TObjectPtr<UWidgetComponent> HealthBar;
 };

@@ -27,6 +27,7 @@ void ADemoPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADemoPlayerState,Level); //TODO这个宏和其他的有什么区别？
+	DOREPLIFETIME(ADemoPlayerState,Team);
 }
 
 UAbilitySystemComponent* ADemoPlayerState::GetAbilitySystemComponent() const
@@ -40,6 +41,11 @@ UAttributeSet* ADemoPlayerState::GetAttributeSet() const
 }
 
 void ADemoPlayerState::OnRep_Level(int32 OldLevel)
+{
+	
+}
+
+void ADemoPlayerState::OnRep_Team()
 {
 	
 }

@@ -14,6 +14,7 @@ enum class ETeam : uint8
 {
 	ETeam_Red UMETA(DisplayName = "Red"),
 	ETeam_Blue UMETA(DisplayName = "Blue"),
+	ETeam_NoTeam UMETA(DisplayName = "NoTeam"),
 };
 
 //自定义的Ability通道，重命名一下方便使用

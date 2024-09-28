@@ -32,7 +32,7 @@ public:
 	FORCEINLINE int32 GetPlayerLevel() const {return Level;}
 
 	//玩家所属阵营
-	UPROPERTY(EditAnywhere,Category = "Team")
+	UPROPERTY(EditAnywhere,ReplicatedUsing = OnRep_Team,Category = "Team")
 	ETeam Team = ETeam::ETeam_Red;
 	
 protected:
@@ -47,4 +47,6 @@ private:
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+	UFUNCTION()
+	void OnRep_Team();
 };
