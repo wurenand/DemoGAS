@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
+#include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -82,9 +83,10 @@ void ADemoCharacterBase::InitialAbilitySystem()
 
 void ADemoCharacterBase::InitialDefaultAttributes() const
 {
-	ApplyEffectToSelf(DefaultPrimaryAttributesEffectClass,1);
-	ApplyEffectToSelf(SecondaryAttributesUpdateEffectClass,1);
-	ApplyEffectToSelf(InitialVitalAttributesEffectClass,1); //要在MaxHealth和MaxMana设置之后调用s
+	//ApplyEffectToSelf(DefaultPrimaryAttributesEffectClass,1);
+	//ApplyEffectToSelf(SecondaryAttributesUpdateEffectClass,1);
+	//ApplyEffectToSelf(InitialVitalAttributesEffectClass,1); //要在MaxHealth和MaxMana设置之后调用
+	UDemoSystemLibrary::InitialDefaultAttributes(this,CharacterClass,1,const_cast<ADemoCharacterBase*>(this));
 }
 
 void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied, float Level) const

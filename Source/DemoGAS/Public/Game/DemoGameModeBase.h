@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "DemoGameModeBase.generated.h"
 
+class UCharacterClassInfo;
 /**
  * 
  */
@@ -13,4 +14,8 @@ UCLASS()
 class DEMOGAS_API ADemoGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
+	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 };

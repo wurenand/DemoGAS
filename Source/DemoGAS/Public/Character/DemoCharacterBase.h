@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameFramework/Character.h"
+#include "GameplayAbilities/Data/CharacterClassInfo.h"
 #include "Interface/CombatInterface.h"
 #include "Interface/InteractInterface.h"
 #include "DemoCharacterBase.generated.h"
@@ -40,7 +41,24 @@ public:
 	ETeam Team = ETeam::ETeam_Red;
 		//~End
 	//~End
+
+	//~begin 属性初始化与设置
+	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AttributeEffect")
+	//TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
+	//Secondary属性使用InfiniteEffect来不断追踪Primary属性的变化而变化
+	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
+	//TSubclassOf<UGameplayEffect> SecondaryAttributesUpdateEffectClass;
+	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
+	//TSubclassOf<UGameplayEffect> InitialVitalAttributesEffectClass;
+	UPROPERTY(EditAnywhere,Category = "CharacterClassInfo")
+	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;
+	//用来调用GE来初始化Attributes 和 InfiniteGE来不断更新Secondary  在子类的InitialAbilitySystem调用
+	virtual void InitialDefaultAttributes() const;//由子类实现
 	
+	//~end
+	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
+	//只能在Server授予能力
+	void AddAbilityToCharacter();
 
 protected:
 
@@ -58,27 +76,10 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-
-	//~begin 属性初始化与设置
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AttributeEffect")
-	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
-	//Secondary属性使用InfiniteEffect来不断追踪Primary属性的变化而变化
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
-	TSubclassOf<UGameplayEffect> SecondaryAttributesUpdateEffectClass;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
-	TSubclassOf<UGameplayEffect> InitialVitalAttributesEffectClass;
-	
-	//用来调用GE来初始化Attributes 和 InfiniteGE来不断更新Secondary  在子类的InitialAbilitySystem调用
-	void InitialDefaultAttributes() const;//由子类实现
-	
-	//~end
-
-	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
 	
 	//由子类去实现，用于初始化ASC的一些内容 具体可见DemoPlayerCharacter中的函数实现   (Server和Client都会调用)
 	virtual void InitialAbilitySystem();
-	//只能在Server授予能力
-	void AddAbilityToCharacter();
+
 private:
 	//初始Abilities
 	UPROPERTY(EditAnywhere,Category = "Ability")

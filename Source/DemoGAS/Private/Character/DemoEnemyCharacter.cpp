@@ -68,5 +68,5 @@ void ADemoEnemyCharacter::InitialAbilitySystem()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	//初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
-	InitialDefaultAttributes(); //TODO:暂时打开用作测试Projectile的GE Damage
+	InitialDefaultAttributes();
 }
