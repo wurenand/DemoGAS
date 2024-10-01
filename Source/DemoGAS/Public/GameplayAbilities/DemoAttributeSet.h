@@ -23,12 +23,14 @@ USTRUCT(BlueprintType)
 struct FEffectProperties
 {
 	GENERATED_BODY()
-	
-	FEffectProperties(){}
-	
+
+	FEffectProperties()
+	{
+	}
+
 	FGameplayEffectContextHandle GEContentHandle;
 	UPROPERTY()
-	
+
 	UAbilitySystemComponent* SourceASC = nullptr;
 	UPROPERTY()
 	AActor* SourceAvaterActor = nullptr;
@@ -69,7 +71,7 @@ public:
 
 	//更好的Clamp Attribute值的函数  只有BaseValue被修改且通过GE修改时才会调用
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/**明确了新增AttributeData的流程：
@@ -81,38 +83,38 @@ public:
 	//~VitalAttributes
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Attribute|Vital")
 	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Health)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Attribute|Vital")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Health)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Mana, Category = "Attribute|Vital")
 	FGameplayAttributeData Mana;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Mana)
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Mana)
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldValue) const;
 	//~end
-	
+
 	//~PrimaryAttributes
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Strength,Category = "Attribute|Primary")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Attribute|Primary")
 	FGameplayAttributeData Strength;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Strength)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Intelligence,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Strength)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "Attribute|Primary")
 	FGameplayAttributeData Intelligence;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Intelligence)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Resilience,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Intelligence)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "Attribute|Primary")
 	FGameplayAttributeData Resilience;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Resilience)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Vigor,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Resilience)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Attribute|Primary")
 	FGameplayAttributeData Vigor;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Vigor)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Armor,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Vigor)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Attribute|Primary")
 	FGameplayAttributeData Armor;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,Armor)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_CriticalChance,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Armor)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalChance, Category = "Attribute|Primary")
 	FGameplayAttributeData CriticalChance;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,CriticalChance)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_CriticalBoncePercent,Category = "Attribute|Primary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, CriticalChance)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalBoncePercent, Category = "Attribute|Primary")
 	FGameplayAttributeData CriticalBoncePercent;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,CriticalBoncePercent)
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, CriticalBoncePercent)
 	UFUNCTION()
 	void OnRep_Strength(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
@@ -132,16 +134,16 @@ public:
 	//~Secondary Attributes
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Attribute|Secondary")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,MaxHealth)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Mana,Category = "Attribute|Secondary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, MaxHealth)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Mana, Category = "Attribute|Secondary")
 	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,MaxMana)
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, MaxMana)
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_HealthRegeneration, Category = "Attribute|Secondary")
 	FGameplayAttributeData HealthRegeneration;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,HealthRegeneration)
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_ManaRegeneration,Category = "Attribute|Secondary")
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, HealthRegeneration)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ManaRegeneration, Category = "Attribute|Secondary")
 	FGameplayAttributeData ManaRegeneration;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,ManaRegeneration)
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, ManaRegeneration)
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
@@ -151,9 +153,18 @@ public:
 	UFUNCTION()
 	void OnRep_ManaRegeneration(const FGameplayAttributeData& OldValue) const;
 	//~end
-	
-	
+
+
+	/**
+	 * meta attributes
+	 * 作为中间数据，不需要复制
+	 * 例如：其他GE造成伤害，不直接扣血，而是把伤害设置到InComingDamage这个meta attribute上
+	 * 受到伤害的人用这个meta attribute再结合MMC最终造成伤害
+	 */
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData InComingDamage;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,InComingDamage)
+
 private:
-	void SetEffectProperties(const FGameplayEffectModCallbackData& Data,FEffectProperties& OutProps);
-	
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutProps);
 };

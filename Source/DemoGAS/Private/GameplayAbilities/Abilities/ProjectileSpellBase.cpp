@@ -5,6 +5,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayTagsManager.h"
 #include "Actor/DemoProjectile.h"
 #include "Character/DemoCharacterBase.h"
 #include "Interface/CombatInterface.h"
@@ -63,8 +64,12 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 	//创建DamageEffectSpec,用于碰撞后施加GE
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceASC->MakeEffectContext());
-	DemoProjectile->DamageEffectSpecHandle = SpecHandle;
 
+	//获取当前等级的伤害值（基础的）
+	const float ScaledDamage = DamageValue.GetValueAtLevel(GetAbilityLevel());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,UGameplayTagsManager::Get().RequestGameplayTag(FName("DamageCaller")),ScaledDamage);
+	DemoProjectile->DamageEffectSpecHandle = SpecHandle;
+	
 
 	DemoProjectile->FinishSpawning(SpawnTransform);
 }

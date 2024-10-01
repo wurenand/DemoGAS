@@ -83,9 +83,6 @@ void ADemoCharacterBase::InitialAbilitySystem()
 
 void ADemoCharacterBase::InitialDefaultAttributes() const
 {
-	//ApplyEffectToSelf(DefaultPrimaryAttributesEffectClass,1);
-	//ApplyEffectToSelf(SecondaryAttributesUpdateEffectClass,1);
-	//ApplyEffectToSelf(InitialVitalAttributesEffectClass,1); //要在MaxHealth和MaxMana设置之后调用
 	UDemoSystemLibrary::InitialDefaultAttributes(this,CharacterClass,1,const_cast<ADemoCharacterBase*>(this));
 }
 

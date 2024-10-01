@@ -42,14 +42,7 @@ public:
 		//~End
 	//~End
 
-	//~begin 属性初始化与设置
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "AttributeEffect")
-	//TSubclassOf<UGameplayEffect> DefaultPrimaryAttributesEffectClass;
-	//Secondary属性使用InfiniteEffect来不断追踪Primary属性的变化而变化
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
-	//TSubclassOf<UGameplayEffect> SecondaryAttributesUpdateEffectClass;
-	//UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="AttributeEffect")
-	//TSubclassOf<UGameplayEffect> InitialVitalAttributesEffectClass;
+
 	UPROPERTY(EditAnywhere,Category = "CharacterClassInfo")
 	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;
 	//用来调用GE来初始化Attributes 和 InfiniteGE来不断更新Secondary  在子类的InitialAbilitySystem调用
