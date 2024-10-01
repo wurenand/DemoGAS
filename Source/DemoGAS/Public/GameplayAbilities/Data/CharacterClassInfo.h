@@ -7,6 +7,7 @@
 #include "CharacterClassInfo.generated.h"
 
 class UGameplayEffect;
+class UGameplayAbility;
 
 UENUM(BlueprintType)
 enum class ECharacterClass : uint8
@@ -39,15 +40,20 @@ class DEMOGAS_API UCharacterClassInfo : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	//所有数据
+	//独立的数组数据
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
 	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInfomation;
 	
 	//每种英雄共享的部分
+	
 	UPROPERTY(EditDefaultsOnly,Category = "CommonClassDefaults")
 	TSubclassOf<UGameplayEffect> SecondaryAttributesEffectClass;
 	UPROPERTY(EditDefaultsOnly,Category = "CommonClassDefaults")
 	TSubclassOf<UGameplayEffect> VitalAttributesEffectClass;
 
+	UPROPERTY(EditDefaultsOnly,Category = "StateAbilities")
+	TArray<TSubclassOf<UGameplayAbility>> StateAbilities;
+
+	
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 };

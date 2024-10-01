@@ -32,6 +32,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeValueChangedSignature OnMaxHealthChanged;
 	//~End
+
+	virtual void StateCallback(const FGameplayTag CallbackTag, int32 NewCount) override;
 	
 protected:
 	virtual void BeginPlay() override;

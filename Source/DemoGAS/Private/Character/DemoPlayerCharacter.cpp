@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
 #include "UI/HUD/DemoHUD.h"
@@ -78,6 +79,11 @@ int32 ADemoPlayerCharacter::GetPlayerLevel()
 	return DemoPlayerState->GetPlayerLevel();
 }
 
+void ADemoPlayerCharacter::StateCallback(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StateCallback(CallbackTag, NewCount);
+}
+
 void ADemoPlayerCharacter::InitialAbilitySystem()
 {
 	//1 初始化ActorInfo
@@ -105,4 +111,10 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 
 	//5 初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
 	InitialDefaultAttributes();
+
+	//6 绑定事件到GameplayTag增删
+	RegisterStateEvent();
+
+	//7 Give用于实现State状态的GA
+	UDemoSystemLibrary::GiveStateAbilities(this,this);
 }

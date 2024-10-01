@@ -2,6 +2,8 @@
 
 
 #include "GameplayAbilities/Library/DemoSystemLibrary.h"
+
+#include "AbilitySystemComponent.h"
 #include "Character/DemoCharacterBase.h"
 #include "Game/DemoGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -25,5 +27,21 @@ void UDemoSystemLibrary::InitialDefaultAttributes(const UObject* WorldContentObj
 	CharacterBase->ApplyEffectToSelf(CharacterClassInfo.PrimaryAttributesEffectClass,Level);
 	CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->SecondaryAttributesEffectClass,Level);
 	CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->VitalAttributesEffectClass,Level);
-	//TODO:Give GA ?
+}
+
+void UDemoSystemLibrary::GiveStateAbilities(const UObject* WorldContentObject, ADemoCharacterBase* CharacterBase)
+{
+	//添加用于实现状态的Ability
+	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(WorldContentObject));
+	if(DemoGameModeBase == nullptr)
+	{
+		return;
+	}
+	checkf(DemoGameModeBase->CharacterClassInfo,TEXT("没有设置GM中的CharacterClassInfo"))
+	for(TSubclassOf<UGameplayAbility> StateAbilityClass : DemoGameModeBase->CharacterClassInfo->StateAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(StateAbilityClass);
+		CharacterBase->GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
+	
 }

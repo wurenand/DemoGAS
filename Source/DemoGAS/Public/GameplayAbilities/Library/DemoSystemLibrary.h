@@ -21,4 +21,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DemoSystemLibrary|CharacterClassDefaults")
 	static void InitialDefaultAttributes(const UObject* WorldContentObject, ECharacterClass CharacterClass, float Level,
 	                                     ADemoCharacterBase* CharacterBase);
+
+	//根据CharacterClassInfo给予共享的GA（实现State的GA）
+	static void GiveStateAbilities(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
 };

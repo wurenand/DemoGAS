@@ -31,6 +31,8 @@ protected:
 	//~Begin CombatInterface
 	virtual int32 GetPlayerLevel() override;
 	//~End
+
+	virtual void StateCallback(const FGameplayTag CallbackTag, int32 NewCount) override;
 	
 private:
 	UPROPERTY(EditAnywhere,Category = "Camera")

@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameFramework/Character.h"
+#include "GameplayAbilities/Abilities/DemoGameplayAbilityBase.h"
 #include "GameplayAbilities/Data/CharacterClassInfo.h"
 #include "Interface/CombatInterface.h"
 #include "Interface/InteractInterface.h"
@@ -23,7 +24,7 @@ class DEMOGAS_API ADemoCharacterBase : public ACharacter, public IAbilitySystemI
 
 public:
 	ADemoCharacterBase();
-
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	//来自IAbilitySystemInterface
@@ -42,6 +43,10 @@ public:
 		//~End
 	//~End
 
+
+	//~Begin CombatInterface
+	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
+	//~End
 
 	UPROPERTY(EditAnywhere,Category = "CharacterClassInfo")
 	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;
@@ -73,6 +78,16 @@ protected:
 	//由子类去实现，用于初始化ASC的一些内容 具体可见DemoPlayerCharacter中的函数实现   (Server和Client都会调用)
 	virtual void InitialAbilitySystem();
 
+	//注册事件到指定的(state)GameplayTag添加或移除 （建议子类要在InitialAbilitySystem的最后手动调用）
+	void RegisterStateEvent();
+	//State Callback函数
+	virtual void StateCallback(const FGameplayTag CallbackTag,int32 NewCount);
+
+
+	//眩晕蒙太奇动画
+	UPROPERTY(EditDefaultsOnly,Category = "Montage")
+	TObjectPtr<UAnimMontage> StunnedMontage;
+	
 private:
 	//初始Abilities
 	UPROPERTY(EditAnywhere,Category = "Ability")

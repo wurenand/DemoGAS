@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
+#include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "UI/Widget/DemoUserWidget.h"
 
 
@@ -28,6 +29,11 @@ int32 ADemoEnemyCharacter::GetPlayerLevel()
 	return Level;
 }
 
+
+void ADemoEnemyCharacter::StateCallback(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StateCallback(CallbackTag, NewCount);
+}
 
 void ADemoEnemyCharacter::BeginPlay()
 {
@@ -69,4 +75,8 @@ void ADemoEnemyCharacter::InitialAbilitySystem()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	//初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
 	InitialDefaultAttributes();
+	
+	RegisterStateEvent();
+
+	UDemoSystemLibrary::GiveStateAbilities(this,this);
 }

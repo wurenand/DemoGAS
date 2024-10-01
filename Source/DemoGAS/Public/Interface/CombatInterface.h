@@ -31,4 +31,8 @@ public:
 	//利用MotionWarping插件实现转向，这个是执行转向的接口
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void UpdateFacingTarget(const FVector& TargetLocation);
+
+	//得到眩晕的蒙太奇动画
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	UAnimMontage* GetStunnedMontage();
 };
