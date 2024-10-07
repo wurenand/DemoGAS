@@ -83,6 +83,19 @@ UAnimMontage* ADemoCharacterBase::GetStunnedMontage_Implementation()
 	return StunnedMontage;
 }
 
+void ADemoCharacterBase::Die()
+{
+	MulticastHandleDeath();
+	
+	UKismetSystemLibrary::Delay(this,5.f,FLatentActionInfo());
+	Destroy();
+}
+
+void ADemoCharacterBase::MulticastHandleDeath_Implementation()
+{
+	//可以在这设置布娃娃系统等...
+}
+
 
 void ADemoCharacterBase::InitialAbilitySystem()
 {

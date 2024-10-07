@@ -35,4 +35,7 @@ public:
 	//得到眩晕的蒙太奇动画
 	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
 	UAnimMontage* GetStunnedMontage();
+
+	//死亡接口 Called On Server
+	virtual void Die() = 0;
 };

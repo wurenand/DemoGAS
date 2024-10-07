@@ -46,7 +46,14 @@ public:
 
 	//~Begin CombatInterface
 	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
+
+	virtual void Die() override;
 	//~End
+
+	//处理死亡的函数，Run On Server和Client
+	UFUNCTION(NetMulticast,Reliable)
+	virtual void MulticastHandleDeath();
+	
 
 	UPROPERTY(EditAnywhere,Category = "CharacterClassInfo")
 	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;

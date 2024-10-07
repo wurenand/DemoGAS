@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "Interface/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -68,6 +69,16 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
 
 		const bool bFatal = NewHealth <= 0.f;
+
+		//死亡逻辑
+		if(bFatal)
+		{
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvaterActor);
+			if(CombatInterface)
+			{
+				CombatInterface->Die();
+			}
+		}
 	}
 }
 
