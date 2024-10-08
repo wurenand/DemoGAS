@@ -13,6 +13,7 @@
 #include "Input/DemoInputComponent.h"
 #include "Interface/InteractInterface.h"
 #include "Player/DemoPlayerState.h"
+#include "UI/Widget/DamageWidgetComponent.h"
 
 
 ADemoPlayerController::ADemoPlayerController()
@@ -67,6 +68,21 @@ void ADemoPlayerController::PlayerTick(float DeltaTime)
 	TryHighlight();
 	//右键移动
 	TryAutoRun();
+}
+
+void ADemoPlayerController::ShowDamageNumber_Implementation(float DamageValue, AActor* TargetActor)
+{
+	//TODO:使用IsValid是确保TargetActor是否处于PendingKill状态？
+	if(IsValid(TargetActor) && DamageWidgetComponentClass)
+	{
+		UDamageWidgetComponent* DamageWidget = NewObject<UDamageWidgetComponent>(TargetActor,DamageWidgetComponentClass);
+		DamageWidget->RegisterComponent(); //一般都在CreateDefaultSubObject中由UE自动调用
+		DamageWidget->AttachToComponent(TargetActor->GetRootComponent(),FAttachmentTransformRules::KeepRelativeTransform);
+		DamageWidget->SetRelativeLocation(FVector(0.f,0.f,50.f));
+		//附加之后就会调用Construct 播放动画了
+		DamageWidget->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		DamageWidget->SetDamageText(DamageValue);
+	}
 }
 
 
@@ -129,14 +145,19 @@ void ADemoPlayerController::TryHighlight()
 
 void ADemoPlayerController::TryAutoRun()
 {
-	if(!bAutoRunning) return;
-	
+	if(!bAutoRunning)
+	{
+		return;
+	}
+
 	//当控制的Pawn存在时（避免角色死亡后还调用）
 	if(APawn* ControlledPawn = GetPawn())
 	{
-		const FVector LocationOnSpline = ClickMovePathSpline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(),ESplineCoordinateSpace::World);
+		const FVector LocationOnSpline = ClickMovePathSpline->FindLocationClosestToWorldLocation(
+			ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
 		//获得样条线上点的切线方向 ？
-		const FVector DirectionOnSpline = ClickMovePathSpline->FindDirectionClosestToWorldLocation(LocationOnSpline,ESplineCoordinateSpace::World);
+		const FVector DirectionOnSpline = ClickMovePathSpline->FindDirectionClosestToWorldLocation(
+			LocationOnSpline, ESplineCoordinateSpace::World);
 		ControlledPawn->AddMovementInput(DirectionOnSpline);
 
 		const float DistanceToDestination = (CachedDestination - LocationOnSpline).Length();
@@ -166,9 +187,9 @@ void ADemoPlayerController::TryMoveDestination()
 			ClickMovePathSpline->ClearSplinePoints();
 			for(const FVector& Point : Path->PathPoints)
 			{
-				ClickMovePathSpline->AddSplinePoint(Point,ESplineCoordinateSpace::World);
+				ClickMovePathSpline->AddSplinePoint(Point, ESplineCoordinateSpace::World);
 				//绘制一下调试球
-				DrawDebugSphere(GetWorld(),Point,5.f,8,FColor::Green);
+				DrawDebugSphere(GetWorld(), Point, 5.f, 8, FColor::Green);
 			}
 			bAutoRunning = true;
 		}
@@ -178,7 +199,6 @@ void ADemoPlayerController::TryMoveDestination()
 		}
 	}
 }
-
 
 
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
@@ -221,7 +241,6 @@ void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 	}
 	GetASC()->AbilityInputTagTriggered(InputTag);
 }
-
 
 
 UDemoAbilitySystemComponent* ADemoPlayerController::GetASC()

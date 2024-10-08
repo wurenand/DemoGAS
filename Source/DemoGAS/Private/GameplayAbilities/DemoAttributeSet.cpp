@@ -8,7 +8,9 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Interface/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/DemoPlayerController.h"
 
 
 UDemoAttributeSet::UDemoAttributeSet()
@@ -66,11 +68,19 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 		//计算新血量
 		const float NewHealth = GetHealth() - LocalInComingDamage;
-		SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
-		const bool bFatal = NewHealth <= 0.f;
+		//通知Client显示伤害数字
+		if(Props.SourceCharacter != Props.TargetCharacter)
+		{
+			//拿到造成伤害的远程控制器 (目前OnServer)
+			ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0));
+			DemoPC->ShowDamageNumber(LocalInComingDamage,Props.TargetCharacter);
+		}
+
 
 		//死亡逻辑
+		const bool bFatal = NewHealth <= 0.f;
 		if(bFatal)
 		{
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvaterActor);

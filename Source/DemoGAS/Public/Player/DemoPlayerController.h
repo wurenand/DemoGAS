@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "DemoPlayerController.generated.h"
 
+class UDamageWidgetComponent;
 class IInteractInterface;
 class USplineComponent;
 class UDemoAbilitySystemComponent;
@@ -25,6 +26,10 @@ class DEMOGAS_API ADemoPlayerController : public APlayerController
 public:
 	ADemoPlayerController();
 
+	//生成显示浮动伤害数字的组件 ClientRPC
+	UFUNCTION(Client,Reliable) 
+	void ShowDamageNumber(float DamageValue,AActor* TargetActor);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,6 +39,7 @@ protected:
 	//PlayerController 具有 PlayerInput 对象时，才会调用 PlayerTick。
 	//因此，它只会对本地控制的 PlayerController 进行调用。(复制的不会)
 	virtual void PlayerTick(float DeltaTime) override;
+
 
 private:
 	UPROPERTY(EditAnywhere,Category = "Input")
@@ -75,4 +81,8 @@ private:
 
 	TObjectPtr<USplineComponent> ClickMovePathSpline; //使用样条线平滑移动路线
 	//~End
+
+	//显示浮动伤害的组件类
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageWidgetComponent> DamageWidgetComponentClass;
 };
