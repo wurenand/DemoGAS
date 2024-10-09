@@ -39,6 +39,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "InteracteBaset")
 	const ADemoCharacterBase* TargetActor = nullptr;
-	
-
 };

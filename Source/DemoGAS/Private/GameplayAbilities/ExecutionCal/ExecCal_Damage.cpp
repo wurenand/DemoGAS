@@ -4,6 +4,7 @@
 #include "GameplayAbilities/ExecutionCal/ExecCal_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameplayTagsManager.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
 
 /**
@@ -13,11 +14,11 @@ struct DemoDamageStatics
 {
 	//利用Marco来实现属性的捕获1 创建捕获Definiton
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Armor);
-	
+
 	DemoDamageStatics()
 	{
 		//利用Marco来实现属性的捕获2 设定捕获属性，捕获来源，是否快照
-		DEFINE_ATTRIBUTE_CAPTUREDEF(UDemoAttributeSet,Armor,Target,false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDemoAttributeSet, Armor, Target, false);
 	}
 };
 
@@ -38,30 +39,36 @@ UExecCal_Damage::UExecCal_Damage()
 void UExecCal_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
+	//TODO:标准流程
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 
-	//TODO:？？
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 	const FGameplayTagContainer* TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	FAggregatorEvaluateParameters EvaluateParameters;
 	EvaluateParameters.SourceTags = SourceTags;
 	EvaluateParameters.TargetTags = TargetTags;
 
-	float Armor = 0.f;
-	//利用Marco来实现属性的捕获4 实际捕获属性
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef,EvaluateParameters,Armor);
-	//TODO:为什么要再次Clamp？
-	Armor = FMath::Max<float>(0.f,Armor);
 
-	//进行复杂计算
-	Armor++;
+	//执行计算
+	//拿到SetByCaller的值
+	float Damage = Spec.GetSetByCallerMagnitude(UGameplayTagsManager::Get().RequestGameplayTag(FName("DamageCaller")));
+
+	float TargetArmor = 0.f;
+	//利用Marco来实现属性的捕获4 实际捕获属性
+	TargetArmor = ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+		DamageStatics().ArmorDef, EvaluateParameters, TargetArmor);
+	//TODO:为什么要Clamp一次？
+	TargetArmor = FMath::Max<float>(0.f, TargetArmor);
+
+	
+	Damage = (100 / (100 + TargetArmor)) * Damage;
 
 	//最终输出修改
-	FGameplayModifierEvaluatedData EvaluatedData(DamageStatics().ArmorProperty,EGameplayModOp::Additive,Armor);
+	FGameplayModifierEvaluatedData EvaluatedData(UDemoAttributeSet::GetInComingDamageAttribute(),
+	                                             EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
-	
 }
