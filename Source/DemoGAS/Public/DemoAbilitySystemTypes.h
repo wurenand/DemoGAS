@@ -5,7 +5,7 @@
 #include "DemoAbilitySystemTypes.generated.h"
 /**
  * 自定义子类EffectContext
- * 传递一些信息
+ * 用于在Effect MMC EC AS ASC之间传递信息
  * 子类必须要：1 GetScriptStruct 2 NetSerialize 3 TStructOpsTypeTraits<FDemoGameplayEffectContext>
  */
 USTRUCT(BlueprintType)

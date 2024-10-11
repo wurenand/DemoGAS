@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "DemoSystemLibrary.generated.h"
 
+struct FGameplayEffectContextHandle;
 class ADemoCharacterBase;
 /**
  * 蓝图函数库，提供一些函数
@@ -24,4 +25,14 @@ public:
 
 	//根据CharacterClassInfo给予共享的GA（实现State的GA）
 	static void GiveStateAbilities(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
+
+
+	/**
+	 * GEContext自定义参数设置
+	 */
+	//传入GEContextHandle来得到这次伤害是否暴击 Se
+	UFUNCTION(BlueprintPure, Category = "DemoSystemLibrary|GameplayEffects")
+	static bool IsCriticalHit(const FGameplayEffectContextHandle& ContextHandle);
+	UFUNCTION(BlueprintCallable, Category = "DemoSystemLibrary|GameplayEffects")
+	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& ContextHandle,bool bIsCriticalHit);
 };

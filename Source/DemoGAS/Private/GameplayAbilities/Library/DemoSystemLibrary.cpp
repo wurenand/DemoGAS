@@ -4,6 +4,7 @@
 #include "GameplayAbilities/Library/DemoSystemLibrary.h"
 
 #include "AbilitySystemComponent.h"
+#include "DemoAbilitySystemTypes.h"
 #include "Character/DemoCharacterBase.h"
 #include "Game/DemoGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
@@ -44,4 +45,21 @@ void UDemoSystemLibrary::GiveStateAbilities(const UObject* WorldContentObject, A
 		CharacterBase->GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
 	}
 	
+}
+
+bool UDemoSystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& ContextHandle)
+{
+	if(const FDemoGameplayEffectContext* DemoContext = static_cast<const FDemoGameplayEffectContext*>(ContextHandle.Get()))
+	{
+		return DemoContext->IsCriticalHit();
+	}
+	return false;
+}
+
+void UDemoSystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& ContextHandle, bool bIsCriticalHit)
+{
+	if(FDemoGameplayEffectContext* DemoContext = static_cast<FDemoGameplayEffectContext*>(ContextHandle.Get()))
+	{
+		DemoContext->SetIsCriticalHit(bIsCriticalHit);
+	}
 }

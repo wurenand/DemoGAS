@@ -7,6 +7,7 @@
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Interface/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
@@ -76,6 +77,12 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			//拿到造成伤害的远程控制器 (目前OnServer)
 			ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0));
 			DemoPC->ShowDamageNumber(LocalInComingDamage,Props.TargetCharacter);
+
+			//临时测试Context的信息传递能力
+			if(UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("CriticalHit"));
+			}
 		}
 
 
