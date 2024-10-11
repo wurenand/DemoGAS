@@ -25,11 +25,11 @@ void UDemoAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 	//TODO 暂时留着吧，不知道有什么用
-	if(Attribute == GetHealthAttribute())
+	if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 	}
-	if(Attribute == GetManaAttribute())
+	if (Attribute == GetManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
 	}
@@ -43,23 +43,24 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
-	/*为什么不能在PreAttributeChange中Clamp数值？
+	/*
+	 *为什么不能在PreAttributeChange中Clamp数值？
 	 * PreAttributeChange只会修改Modifier的返回的结果，并不会永久修改。
 	 * 当其他的使用到Modifier时，仍然会得到Clamp之前的值
 	 */
-	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 	}
-	if(Data.EvaluatedData.Attribute == GetManaAttribute())
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
 
 	//meta attributes 自定义受到伤害的计算逻辑
-	if(Data.EvaluatedData.Attribute == GetInComingDamageAttribute())
+	if (Data.EvaluatedData.Attribute == GetInComingDamageAttribute())
 	{
-		if(GetInComingDamage() == 0.f)
+		if (GetInComingDamage() == 0.f)
 		{
 			return;
 		}
@@ -72,26 +73,22 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
 
 		//通知Client显示伤害数字
-		if(Props.SourceCharacter != Props.TargetCharacter)
+		if (Props.SourceCharacter != Props.TargetCharacter)
 		{
 			//拿到造成伤害的远程控制器 (目前OnServer)
-			ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0));
-			DemoPC->ShowDamageNumber(LocalInComingDamage,Props.TargetCharacter);
-
-			//临时测试Context的信息传递能力
-			if(UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle))
-			{
-				UE_LOG(LogTemp, Warning, TEXT("CriticalHit"));
-			}
+			ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(
+				UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0));
+			DemoPC->ShowDamageNumber(LocalInComingDamage, UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle),
+			                         Props.TargetCharacter);
 		}
 
 
 		//死亡逻辑
 		const bool bFatal = NewHealth <= 0.f;
-		if(bFatal)
+		if (bFatal)
 		{
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvaterActor);
-			if(CombatInterface)
+			if (CombatInterface)
 			{
 				CombatInterface->Die();
 			}
@@ -107,21 +104,21 @@ void UDemoAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	//ASC
 	OutProps.SourceASC = OutProps.GEContentHandle.GetOriginalInstigatorAbilitySystemComponent();
 
-	if(IsValid(OutProps.SourceASC))
+	if (IsValid(OutProps.SourceASC))
 	{
 		//AvatarActor
 		OutProps.SourceAvaterActor = OutProps.SourceASC->GetAvatarActor();
 		//先尝试使用ASC获取Controller，获取失败就用AvatarActor转换为Pawn来获取
 		OutProps.SourceController = OutProps.SourceASC->AbilityActorInfo->PlayerController.Get(); //PC经常是null
-		if(OutProps.SourceController == nullptr && OutProps.SourceAvaterActor != nullptr)
+		if (OutProps.SourceController == nullptr && OutProps.SourceAvaterActor != nullptr)
 		{
-			if(const APawn* Pawn = Cast<APawn>(OutProps.SourceAvaterActor))
+			if (const APawn* Pawn = Cast<APawn>(OutProps.SourceAvaterActor))
 			{
 				OutProps.SourceController = Pawn->GetController();
 			}
 		}
 		//Character
-		if(OutProps.SourceController)
+		if (OutProps.SourceController)
 		{
 			OutProps.SourceCharacter = OutProps.SourceController->GetCharacter();
 		}

@@ -28,7 +28,7 @@ public:
 
 	//生成显示浮动伤害数字的组件 ClientRPC
 	UFUNCTION(Client,Reliable) 
-	void ShowDamageNumber(float DamageValue,AActor* TargetActor);
+	void ShowDamageNumber(float DamageValue,bool bIsCriticalHit ,AActor* TargetActor);
 
 protected:
 	virtual void BeginPlay() override;

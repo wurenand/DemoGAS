@@ -70,7 +70,7 @@ void ADemoPlayerController::PlayerTick(float DeltaTime)
 	TryAutoRun();
 }
 
-void ADemoPlayerController::ShowDamageNumber_Implementation(float DamageValue, AActor* TargetActor)
+void ADemoPlayerController::ShowDamageNumber_Implementation(float DamageValue,bool bIsCriticalHit, AActor* TargetActor)
 {
 	//TODO:使用IsValid是确保TargetActor是否处于PendingKill状态？
 	if(IsValid(TargetActor) && DamageWidgetComponentClass)
@@ -81,7 +81,7 @@ void ADemoPlayerController::ShowDamageNumber_Implementation(float DamageValue, A
 		DamageWidget->SetRelativeLocation(FVector(0.f,0.f,50.f));
 		//附加之后就会调用Construct 播放动画了
 		DamageWidget->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		DamageWidget->SetDamageText(DamageValue);
+		DamageWidget->SetDamageText(DamageValue,bIsCriticalHit);
 	}
 }
 
