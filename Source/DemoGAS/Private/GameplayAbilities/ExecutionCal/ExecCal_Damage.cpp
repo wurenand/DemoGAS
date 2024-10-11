@@ -64,10 +64,8 @@ void UExecCal_Damage::Execute_Implementation(const FGameplayEffectCustomExecutio
 
 	float TargetArmor = 0.f;
 	//利用Marco来实现属性的捕获4 实际捕获属性
-	TargetArmor = ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
 		DamageStatics().ArmorDef, EvaluateParameters, TargetArmor);
-	//TODO:为什么要Clamp一次？
-	TargetArmor = FMath::Max<float>(0.f, TargetArmor);
 
 	//捕获暴击率并计算是否暴击
 	float CriticalChance = 0.f;
@@ -83,7 +81,7 @@ void UExecCal_Damage::Execute_Implementation(const FGameplayEffectCustomExecutio
 	//计算暴击伤害
 	Damage = bIsCriticalHit ? Damage * 2 : Damage;
 	//计算削去护甲的伤害
-	Damage = (100 / (100 + TargetArmor)) * Damage; //TODO:护甲捕获是不是有问题？一直是1
+	Damage = (100 / (100 + TargetArmor)) * Damage; 
 
 	//最终输出修改
 	FGameplayModifierEvaluatedData EvaluatedData(UDemoAttributeSet::GetInComingDamageAttribute(),
