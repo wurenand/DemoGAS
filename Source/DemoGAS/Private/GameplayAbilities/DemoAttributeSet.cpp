@@ -195,6 +195,11 @@ void UDemoAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldValue) cons
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, Armor, OldValue);
 }
 
+void UDemoAttributeSet::OnRep_SpellArmor(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, SpellArmor, OldValue);
+}
+
 void UDemoAttributeSet::OnRep_CriticalChance(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, CriticalChance, OldValue);

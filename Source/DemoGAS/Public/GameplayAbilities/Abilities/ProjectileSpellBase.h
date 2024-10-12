@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DemoGameplayAbilityBase.h"
+#include "DamageGameplayAbility.h"
 #include "ProjectileSpellBase.generated.h"
 
 class ADemoProjectile;
@@ -11,7 +11,7 @@ class ADemoProjectile;
  * 投射物能力类的基类
  */
 UCLASS()
-class DEMOGAS_API UProjectileSpellBase : public UDemoGameplayAbilityBase
+class DEMOGAS_API UProjectileSpellBase : public UDamageGameplayAbility
 {
 	GENERATED_BODY()
 
@@ -33,8 +33,4 @@ protected:
 	//这个GA生成的投射物的Class
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TSubclassOf<ADemoProjectile> ProjectileClass;
-
-	//投射物造成伤害的Effect
-	UPROPERTY(EditAnywhere,BlueprintReadOnly)
-	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

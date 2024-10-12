@@ -18,7 +18,4 @@ public:
 	//触发这个Ability需要的InputTag
 	UPROPERTY(EditDefaultsOnly,Category = "Input")
 	FGameplayTag TriggerInputTag;
-
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Damage")
-	FScalableFloat DamageValue;
 };

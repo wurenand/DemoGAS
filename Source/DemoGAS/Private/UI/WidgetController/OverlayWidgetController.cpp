@@ -21,6 +21,7 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnIntelligenceChangedSignature.Broadcast(DemoAttributeSet->GetIntelligence());
 	OnVigorChangedSignature.Broadcast(DemoAttributeSet->GetVigor());
 	OnArmorChangedSignature.Broadcast(DemoAttributeSet->GetArmor());
+	OnSpellArmorChangedSignature.Broadcast(DemoAttributeSet->GetSpellArmor());
 	OnCriticalChanceChangedSignature.Broadcast(DemoAttributeSet->GetCriticalChance());
 	OnCriticalBoncePercentChangedSignature.Broadcast(DemoAttributeSet->GetCriticalBoncePercent());
 	//~end
@@ -79,6 +80,11 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	                      {
 		                      OnArmorChangedSignature.Broadcast(Data.NewValue);
 	                      });
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetSpellArmorAttribute())
+	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
+	                      {
+		                      OnSpellArmorChangedSignature.Broadcast(Data.NewValue);
+	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetCriticalChanceAttribute())
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
 	                      {
@@ -98,14 +104,14 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	                                                         .AddLambda([this](
 		                                                         const FGameplayTagContainer& AssetTags)-> void
 		                                                         {
-			                                                         for(const FGameplayTag& Tag : AssetTags)
+			                                                         for (const FGameplayTag& Tag : AssetTags)
 			                                                         {
 				                                                         //通过FName获取FGameplayTag(如果有的话)
 				                                                         FGameplayTag MessageTagToCheck =
 					                                                         FGameplayTag::RequestGameplayTag(
 						                                                         FName("Message"));
 				                                                         //判断是否包含MessageTag
-				                                                         if(Tag.MatchesTag(MessageTagToCheck))
+				                                                         if (Tag.MatchesTag(MessageTagToCheck))
 				                                                         {
 					                                                         const FUIWidgetRow* Row =
 						                                                         GetDataTableRowByTag<FUIWidgetRow>(

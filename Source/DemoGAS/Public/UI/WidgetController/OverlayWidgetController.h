@@ -66,6 +66,8 @@ public:
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnArmorChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnSpellArmorChangedSignature;
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnCriticalChanceChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnCriticalBoncePercentChangedSignature;

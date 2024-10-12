@@ -109,6 +109,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Attribute|Primary")
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Armor)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_SpellArmor, Category = "Attribute|Primary")
+	FGameplayAttributeData SpellArmor;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, SpellArmor)
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalChance, Category = "Attribute|Primary")
 	FGameplayAttributeData CriticalChance;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, CriticalChance)
@@ -125,6 +128,8 @@ public:
 	void OnRep_Vigor(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldValue) const;
+	UFUNCTION()
+	void OnRep_SpellArmor(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_CriticalChance(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
