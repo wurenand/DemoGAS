@@ -76,10 +76,12 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (Props.SourceCharacter != Props.TargetCharacter)
 		{
 			//拿到造成伤害的远程控制器 (目前OnServer)
-			ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(
-				UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0));
-			DemoPC->ShowDamageNumber(LocalInComingDamage, UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle),
-			                         Props.TargetCharacter);
+			if(Props.SourceController)
+			{
+				ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(Props.SourceController);
+				DemoPC->ShowDamageNumber(LocalInComingDamage, UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle),
+										 Props.TargetCharacter);
+			}
 		}
 
 
