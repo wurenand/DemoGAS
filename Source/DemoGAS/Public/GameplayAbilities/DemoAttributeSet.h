@@ -75,10 +75,17 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/**明确了新增AttributeData的流程：
-	1.生命FGameplayAttributeData变量，标记为ReplicatedUsing
-	2.利用ATTRIBUTE_ACCESSORS宏，创建访问函数
-	3.在GetLifetimeReplicatedProps中注册复制变量
-	4.创建相应的OnRep函数，并在函数中调用宏GAMEPLAYATTRIBUTE_REPNOTIFY来通知ASC完成了属性复制
+	*1.生命FGameplayAttributeData变量，标记为ReplicatedUsing
+	*2.利用ATTRIBUTE_ACCESSORS宏，创建访问函数
+	*3.在GetLifetimeReplicatedProps中注册复制变量
+	*4.创建相应的OnRep函数，并在函数中调用宏GAMEPLAYATTRIBUTE_REPNOTIFY来通知ASC完成了属性复制
+	*5.在DT_PrimaryAttributesTable中添加相应的Tag
+	*(可选：在AttributeInfo中显示)
+	*1.在OverlayWidgetController中定义Attribute的change委托
+	*2.在OverlayWidgetController构造函数中先广播一次初始化
+	*3.BindCallBackToDependencies中绑定委托的lambda回调函数
+	*4.在DT_AttributeInfo中填写Tag映射到的Widget信息（名字图标之类的）
+	*5.在WBP_AttributeInfo中添加新Item，填写Tag，然后绑定回调函数到Item中的WidgetController的change委托
 	*/
 	//~VitalAttributes
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Attribute|Vital")
@@ -94,6 +101,9 @@ public:
 	//~end
 
 	//~PrimaryAttributes
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_AttackDistance, Category = "Attribute|Primary")
+	FGameplayAttributeData AttackDistance;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, AttackDistance)
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Attribute|Primary")
 	FGameplayAttributeData Strength;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Strength)
@@ -118,6 +128,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalBoncePercent, Category = "Attribute|Primary")
 	FGameplayAttributeData CriticalBoncePercent;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, CriticalBoncePercent)
+	UFUNCTION()
+	void OnRep_AttackDistance(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_Strength(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
@@ -168,7 +180,7 @@ public:
 	 */
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
 	FGameplayAttributeData InComingDamage;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet,InComingDamage)
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, InComingDamage)
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutProps);

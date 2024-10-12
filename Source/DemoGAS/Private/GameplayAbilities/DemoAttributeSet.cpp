@@ -172,6 +172,11 @@ void UDemoAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) co
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, MaxMana, OldValue);
 }
 
+void UDemoAttributeSet::OnRep_AttackDistance(const FGameplayAttributeData& OldValue) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,AttackDistance,OldValue);
+}
+
 void UDemoAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, Strength, OldValue);

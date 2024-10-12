@@ -54,7 +54,9 @@ public:
 	FOnAttributeValueChangedSignature OnManaChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedSignature;
-	
+
+	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnAttackDistanceChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnStrengthChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")

@@ -16,6 +16,7 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnMaxManaChangedSignature.Broadcast(DemoAttributeSet->GetMaxHealth());
 
 	//~begin Attribute Info
+	OnAttackDistanceChangedSignature.Broadcast(DemoAttributeSet->GetAttackDistance());
 	OnStrengthChangedSignature.Broadcast(DemoAttributeSet->GetStrength());
 	OnResilienceChangedSignature.Broadcast(DemoAttributeSet->GetResilience());
 	OnIntelligenceChangedSignature.Broadcast(DemoAttributeSet->GetIntelligence());
@@ -55,6 +56,11 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	//end
 
 	//~begin Attribute Info
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetAttackDistanceAttribute())
+	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
+	                      {
+	                      	OnAttackDistanceChangedSignature.Broadcast(Data.NewValue);
+	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetStrengthAttribute())
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
 	                      {
