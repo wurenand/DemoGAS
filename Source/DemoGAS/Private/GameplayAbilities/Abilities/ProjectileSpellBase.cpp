@@ -15,8 +15,6 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
                                               FVector OverrideSpawnLocation, bool bUseOverrideSpawnLoc)
 {
 	//Server Check，只在Server生成，通过Replication到Client
-
-	//TODO:Client目前不会生成
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if(!bIsServer)
 	{
@@ -88,7 +86,5 @@ void UProjectileSpellBase::ActivateAbility(const FGameplayAbilitySpecHandle Hand
                                            const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	//TODO:为什么从Client激活会激活两次？
-	//暂时解决：Client会先本地activate，并通知Server Activate
-	UKismetSystemLibrary::PrintString(this, FString(TEXT("C++ 激活")));
+	//Client会先本地activate，并通知Server Activate
 }

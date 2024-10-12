@@ -60,8 +60,18 @@ void UDemoAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 
 void UDemoAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
-	//TODO:没完成
 	if(!InputTag.IsValid()) return;
+	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		{
+			AbilitySpecInputPressed(AbilitySpec);
+			if(!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
 }
 
 void UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf_Implementation(UAbilitySystemComponent* ASC,

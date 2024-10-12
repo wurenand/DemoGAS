@@ -203,11 +203,11 @@ void ADemoPlayerController::TryMoveDestination()
 
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
 {
-	//TODO:没完成
 	if(!GetASC())
 	{
 		return;
 	}
+	GetASC()->AbilityInputTagTriggered(InputTag);
 }
 
 void ADemoPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -234,12 +234,6 @@ void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 			TryMoveDestination();
 		}
 	}
-
-	if(!GetASC())
-	{
-		return;
-	}
-	GetASC()->AbilityInputTagTriggered(InputTag);
 }
 
 
