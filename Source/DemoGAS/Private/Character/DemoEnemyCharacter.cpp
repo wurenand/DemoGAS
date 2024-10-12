@@ -45,12 +45,12 @@ void ADemoEnemyCharacter::BeginPlay()
 
 	//~Begin
 	//设定WidgetController为Self
-	if(UDemoUserWidget* DemoUserWidget = Cast<UDemoUserWidget>(HealthBar->GetUserWidgetObject()))
+	if (UDemoUserWidget* DemoUserWidget = Cast<UDemoUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		DemoUserWidget->SetWidgetController(this);
 	}
 	//绑定属性变化委托，并传递给 WidgetController
-	if(const UDemoAttributeSet* DemoAS = Cast<UDemoAttributeSet>(GetAttributeSet()))
+	if (const UDemoAttributeSet* DemoAS = Cast<UDemoAttributeSet>(GetAttributeSet()))
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAS->GetHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)-> void
@@ -73,10 +73,11 @@ void ADemoEnemyCharacter::BeginPlay()
 void ADemoEnemyCharacter::InitialAbilitySystem()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	//初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
-	InitialDefaultAttributes();
 	
-	RegisterStateEvent();
-
-	UDemoSystemLibrary::GiveStateAbilities(this,this);
+	if (HasAuthority())
+	{
+		InitialDefaultAttributes();
+		RegisterStateEvent();
+		UDemoSystemLibrary::GiveStateAbilities(this, this);
+	}
 }

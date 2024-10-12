@@ -20,9 +20,19 @@ public:
 	//子类必须重写 （类似UClass的GetClass函数）
 	virtual UScriptStruct* GetScriptStruct() const override
 	{
-		return FGameplayEffectContext::GetScriptStruct();
+		return StaticStruct();
 	}
 
+	virtual FDemoGameplayEffectContext* Duplicate() const override
+	{
+		FDemoGameplayEffectContext* NewContext = new FDemoGameplayEffectContext();
+		*NewContext = *this;
+		if(GetHitResult())
+		{
+			NewContext->AddHitResult(*GetHitResult(),true);
+		}
+		return NewContext;
+	}
 	
 	/**
 	 * 
@@ -34,6 +44,7 @@ public:
 	virtual bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 
 protected:
+	UPROPERTY()
 	bool bIsCriticalHit = false;
 };
 
@@ -42,7 +53,7 @@ struct TStructOpsTypeTraits<FDemoGameplayEffectContext> : public TStructOpsTypeT
 {
 	enum
 	{
-		WithNetSerialize = true,
+		WithNetSerializer = true,
 		WithCopy = true,
 	};
 };

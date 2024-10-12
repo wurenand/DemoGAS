@@ -13,8 +13,6 @@ UCLASS()
 class DEMOGAS_API UDemoAbilitySystemGlobals : public UAbilitySystemGlobals
 {
 	GENERATED_BODY()
-
-	//TODO: 单人运行正常，多人会崩溃？？？？？？？
 public:
 	virtual FGameplayEffectContext* AllocGameplayEffectContext() const override;
 };
