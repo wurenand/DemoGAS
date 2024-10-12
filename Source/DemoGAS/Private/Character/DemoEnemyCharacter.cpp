@@ -79,5 +79,6 @@ void ADemoEnemyCharacter::InitialAbilitySystem()
 		InitialDefaultAttributes();
 		RegisterStateEvent();
 		UDemoSystemLibrary::GiveStateAbilities(this, this);
+		AddAbilityToCharacter();
 	}
 }

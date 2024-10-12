@@ -3,10 +3,8 @@ DerivedDataCache
 Intermediate
 Saved
 Build
+.vs
 
 *.sln
 /DemoGAS.sln.DotSettings.user
-/.vs/ProjectEvaluation/demogas.metadata.v9.bin
-/.vs/ProjectEvaluation/demogas.projects.v9.bin
-/.vs/ProjectEvaluation/demogas.strings.v9.bin
-/.vs/DemoGAS/v17/Solution.VC.db
+

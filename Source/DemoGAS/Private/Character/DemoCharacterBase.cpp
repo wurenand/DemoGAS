@@ -158,7 +158,18 @@ void ADemoCharacterBase::AddAbilityToCharacter()
 		return;
 	}
 	UDemoAbilitySystemComponent* DemoAbilitySystemComponent = Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent);
-	DemoAbilitySystemComponent->AddAbilitiesToCharacter(StartUpAbilities);
+	//DemoAbilitySystemComponent->AddAbilitiesToCharacter(StartUpAbilities); 暂时隐藏掉
+	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(DemoGameModeBase)
+	{
+		FCharacterClassDefaultInfo CharacterClassInfo = DemoGameModeBase->CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+		TArray<TSubclassOf<UGameplayAbility>> GAs{CharacterClassInfo.NormalAttackClass};
+		GAs.Append(CharacterClassInfo.AbilitiesClass);
+		DemoAbilitySystemComponent->AddAbilitiesToCharacter(GAs);
+	}
+	
+
+	
 }
 
 void ADemoCharacterBase::OnRep_Team()

@@ -26,14 +26,20 @@ struct FCharacterClassDefaultInfo
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults")
-	TSubclassOf<UGameplayEffect> PrimaryAttributesEffectClass;	
+	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GE|PrimaryAttributes")
+	TSubclassOf<UGameplayEffect> PrimaryAttributesEffectClass;
+
+	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GA|NormalAttack")
+	TSubclassOf<UGameplayAbility> NormalAttackClass;
+
+	//最多5个吧 (QWER和被动)
+	UPROPERTY(EditDefaultsOnly , Category = "ClassDefaults|GA|AbilitiesAttack")
+	TArray<TSubclassOf<UGameplayAbility>> AbilitiesClass;
 };
 
 /**
  * 英雄的信息，包括GA，数值表，GE
  */
-//TODO:是不是还应该有GA呢？
 UCLASS()
 class DEMOGAS_API UCharacterClassInfo : public UDataAsset
 {
