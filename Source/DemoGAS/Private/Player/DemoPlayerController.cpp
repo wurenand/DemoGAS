@@ -18,9 +18,7 @@
 
 ADemoPlayerController::ADemoPlayerController()
 {
-	//TODO(为什么需要复制？)
 	bReplicates = true;
-
 	ClickMovePathSpline = CreateDefaultSubobject<USplineComponent>(TEXT("ClickMovePathSpline"));
 }
 
@@ -226,7 +224,9 @@ void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 	{
 		if(bIsTargeting)
 		{
-			//检测是否在攻击范围内，如果在，直接攻击， 不在就先移动再攻击
+			//TODO:检测是否在攻击范围内，如果在，直接攻击， 不在就先移动再攻击
+			//TODO:有bug，在攻击期间应该不能响应RMB
+			DemoASC->AbilityInputTagTriggered(InputTag);
 		}
 		else
 		{

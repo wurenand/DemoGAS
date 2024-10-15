@@ -6,6 +6,7 @@
 #include "DamageGameplayAbility.h"
 #include "ProjectileSpellBase.generated.h"
 
+class ADemoCharacterBase;
 class ADemoProjectile;
 /**
  * 投射物能力类的基类
@@ -23,14 +24,17 @@ public:
 	 * @param OverrideSpawnLocation 重载的生成位置，不使用的话可以随意传入
 	 */
 	UFUNCTION(BlueprintCallable)
-	void SpawnOneProjectile(FVector TargetLocation,FVector OverrideSpawnLocation,bool bUseOverrideSpawnLoc = false);
-	
+	void SpawnOneProjectile(FVector TargetLocation,
+	                        FVector OverrideSpawnLocation,
+	                        bool bUseOverrideSpawnLoc = false,
+	                        ADemoCharacterBase* InTargetActor = nullptr);
+
 protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                             const FGameplayAbilityActivationInfo ActivationInfo,
 	                             const FGameplayEventData* TriggerEventData) override;
 
 	//这个GA生成的投射物的Class
-	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ADemoProjectile> ProjectileClass;
 };

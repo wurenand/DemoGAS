@@ -12,7 +12,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
-                                              FVector OverrideSpawnLocation, bool bUseOverrideSpawnLoc)
+                                              FVector OverrideSpawnLocation, bool bUseOverrideSpawnLoc,
+                                              ADemoCharacterBase* InTargetActor)
 {
 	//Server Check，只在Server生成，通过Replication到Client
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
@@ -56,7 +57,7 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 	if(DemoCharacterBase)
 	{
 		DemoProjectile->SetTeam(DemoCharacterBase->Team);
-		DemoProjectile->SetTargetActor(nullptr); //TODO:这里根据需要，通过SpawnOneProjectile的参数传入，暂时不处理
+		DemoProjectile->SetTargetActor(InTargetActor);
 	}
 
 	//创建DamageEffectSpec,用于碰撞后施加GE
