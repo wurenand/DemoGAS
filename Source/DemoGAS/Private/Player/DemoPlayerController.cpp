@@ -201,7 +201,7 @@ void ADemoPlayerController::TryMoveDestination()
 
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
 {
-	if(!GetASC())
+	if(!GetASC() || InputTag.MatchesTagExact(UGameplayTagsManager::Get().RequestGameplayTag(FName("InputAction.RMB"))))
 	{
 		return;
 	}

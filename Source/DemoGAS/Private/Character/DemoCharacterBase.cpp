@@ -26,6 +26,9 @@ ADemoCharacterBase::ADemoCharacterBase()
 	WeaponMesh->SetupAttachment(GetMesh(), FName(TEXT("WeaponHandSocket")));
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 
+	TargetComponent = CreateDefaultSubobject<USceneComponent>(TEXT("TargetComponent"));
+	TargetComponent->SetupAttachment(GetMesh());
+
 	//关闭摄像机通道
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);

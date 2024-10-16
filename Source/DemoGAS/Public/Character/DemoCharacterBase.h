@@ -43,6 +43,7 @@ public:
 		//~End
 	//~End
 
+	USceneComponent* GetTargetComponent() const {return TargetComponent;};
 
 	//~Begin CombatInterface
 	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
@@ -74,6 +75,10 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> WeaponMesh;
+
+	//用作追踪形技能的目标点（趋于中间）
+	UPROPERTY(EditAnywhere, Category = "Component")
+	TObjectPtr<USceneComponent> TargetComponent;
 
 	//对于PlayerCharacter：只是PlayerState中构造的ASC和AttributeSet的引用，并不实际构造
 	//对于EnemyCharacter：实际构造
