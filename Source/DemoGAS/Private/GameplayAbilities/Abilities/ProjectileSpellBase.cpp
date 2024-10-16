@@ -71,7 +71,7 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 	
 	//生成Spec
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),ContextHandle);
-
+	
 	//获取当前等级的伤害值（基础的）
 	const float ScaledDamage = DamageValue.GetValueAtLevel(GetAbilityLevel());
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,UGameplayTagsManager::Get().RequestGameplayTag(FName("DamageCaller")),ScaledDamage);

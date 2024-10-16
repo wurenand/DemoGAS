@@ -59,7 +59,7 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetAttackDistanceAttribute())
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
 	                      {
-	                      	OnAttackDistanceChangedSignature.Broadcast(Data.NewValue);
+		                      OnAttackDistanceChangedSignature.Broadcast(Data.NewValue);
 	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetStrengthAttribute())
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
@@ -106,26 +106,27 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	//~end
 
 	//~begin
-	Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent)->OnAppliedGEToSelfAssetTagsDelegate
-	                                                         .AddLambda([this](
-		                                                         const FGameplayTagContainer& AssetTags)-> void
-		                                                         {
-			                                                         for (const FGameplayTag& Tag : AssetTags)
-			                                                         {
-				                                                         //通过FName获取FGameplayTag(如果有的话)
-				                                                         FGameplayTag MessageTagToCheck =
-					                                                         FGameplayTag::RequestGameplayTag(
-						                                                         FName("Message"));
-				                                                         //判断是否包含MessageTag
-				                                                         if (Tag.MatchesTag(MessageTagToCheck))
-				                                                         {
-					                                                         const FUIWidgetRow* Row =
-						                                                         GetDataTableRowByTag<FUIWidgetRow>(
-							                                                         MessageDataTable,
-							                                                         Tag); //需要捕获this使用
-					                                                         OnReceiveMessageRowSignature.Broadcast(
-						                                                         *Row);
-				                                                         }
-			                                                         }
-		                                                         });
+	Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent)->
+		OnAppliedGEToSelfAssetTagsDelegate
+		.AddLambda([this](
+			const FGameplayTagContainer& AssetTags)-> void
+			{
+				for (const FGameplayTag& Tag : AssetTags)
+				{
+					//通过FName获取FGameplayTag(如果有的话)
+					FGameplayTag MessageTagToCheck =
+						FGameplayTag::RequestGameplayTag(
+							FName("Message"));
+					//判断是否包含MessageTag
+					if (Tag.MatchesTag(MessageTagToCheck))
+					{
+						const FUIWidgetRow* Row =
+							GetDataTableRowByTag<FUIWidgetRow>(
+								MessageDataTable,
+								Tag); //需要捕获this使用
+						OnReceiveMessageRowSignature.Broadcast(
+							*Row);
+					}
+				}
+			});
 }

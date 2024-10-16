@@ -6,6 +6,8 @@
 #include "DemoGameplayAbilityBase.h"
 #include "DamageGameplayAbility.generated.h"
 
+class ADemoCharacterBase;
+
 UENUM(BlueprintType)
 enum class EDamageType : uint8
 {
@@ -23,6 +25,9 @@ class DEMOGAS_API UDamageGameplayAbility : public UDemoGameplayAbilityBase
 
 public:
 	EDamageType GetDamageType() const { return DamageType; }
+
+	UFUNCTION(BlueprintCallable)
+	void CauseDamage(ADemoCharacterBase* InTargetActor);
 	
 protected:
 	//投造成伤害的Effect

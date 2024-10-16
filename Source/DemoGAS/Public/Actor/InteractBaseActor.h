@@ -28,7 +28,7 @@ public:
 	FORCEINLINE ETeam GetTeam() {return Team;}
 	
 	void SetTargetActor(const ADemoCharacterBase* InTargetActor);
-	FORCEINLINE const ADemoCharacterBase* GetTTargetActor() {return TargetActor;}
+	FORCEINLINE const ADemoCharacterBase* GetTargetActor() {return TargetActor;}
 
 protected:
 	virtual void BeginPlay() override;
