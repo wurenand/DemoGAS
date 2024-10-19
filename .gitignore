@@ -8,3 +8,5 @@ Build
 *.sln
 /DemoGAS.sln.DotSettings.user
 
+/.vs/
+/.idea/
