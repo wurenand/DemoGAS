@@ -8,6 +8,7 @@
 #include "DemoAbilitySystemComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAppliedGEToSelfAssetTagsDelegate,const FGameplayTagContainer& GameplayTags);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityGivenDelegate,UDemoAbilitySystemComponent* DemoASC);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DEMOGAS_API UDemoAbilitySystemComponent : public UAbilitySystemComponent
@@ -19,6 +20,7 @@ public:
 	void AfterInitialASCActorInfo();
 
 	FOnAppliedGEToSelfAssetTagsDelegate OnAppliedGEToSelfAssetTagsDelegate;
+	FOnAbilityGivenDelegate OnAbilityGivenDelegate;
 
 	//只在Server调用
 	void AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>> AbilitiesToAdd);

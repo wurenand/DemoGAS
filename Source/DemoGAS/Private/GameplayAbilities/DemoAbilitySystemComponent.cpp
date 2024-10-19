@@ -28,6 +28,7 @@ void UDemoAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclass
 			GiveAbility(AbilitySpec);
 		}
 	}
+	OnAbilityGivenDelegate.Broadcast(this);
 }
 
 void UDemoAbilitySystemComponent::AbilityInputTagTriggered(const FGameplayTag& InputTag)

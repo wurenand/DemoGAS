@@ -5,6 +5,7 @@
 
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
+#include "GameplayAbilities/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -105,28 +106,50 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 
 	//~end
 
-	//~begin
-	Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent)->
-		OnAppliedGEToSelfAssetTagsDelegate
-		.AddLambda([this](
-			const FGameplayTagContainer& AssetTags)-> void
-			{
-				for (const FGameplayTag& Tag : AssetTags)
-				{
-					//通过FName获取FGameplayTag(如果有的话)
-					FGameplayTag MessageTagToCheck =
-						FGameplayTag::RequestGameplayTag(
-							FName("Message"));
-					//判断是否包含MessageTag
-					if (Tag.MatchesTag(MessageTagToCheck))
-					{
-						const FUIWidgetRow* Row =
-							GetDataTableRowByTag<FUIWidgetRow>(
-								MessageDataTable,
-								Tag); //需要捕获this使用
-						OnReceiveMessageRowSignature.Broadcast(
-							*Row);
-					}
-				}
-			});
+	UDemoAbilitySystemComponent* DemoAbilitySystemComponent = Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent);
+
+	//~begin AbilityGiven
+	DemoAbilitySystemComponent->OnAbilityGivenDelegate
+	                          .AddLambda(
+		                          [this](UDemoAbilitySystemComponent* DemoASC)-> void
+		                          {
+			                            //TODO:这里真的需要判断是否已经完成了GA的Given吗??
+		                          		for(FGameplayAbilitySpec& GASpec : DemoASC->GetActivatableAbilities())
+		                          		{
+		                          			for (FGameplayTag Tag : GASpec.Ability.Get()->AbilityTags)
+		                          			{
+		                          				//TODO:这里用CoolDown来标识吧
+		                          				if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag("CoolDown")))
+		                          				{
+		                          					FDemoAbilityInfo DemoAbilityInfo = AbilityInfo->FindAbilityInfoByTag(Tag);
+		                          					OnGivenAbilitySignature.Broadcast(DemoAbilityInfo);
+		                          				}
+		                          			}
+		                          		}
+		                          });
+	//~end
+
+	//~begin Message
+	DemoAbilitySystemComponent->OnAppliedGEToSelfAssetTagsDelegate
+	                          .AddLambda([this](
+		                          const FGameplayTagContainer& AssetTags)-> void
+		                          {
+			                          for (const FGameplayTag& Tag : AssetTags)
+			                          {
+				                          //通过FName获取FGameplayTag(如果有的话)
+				                          FGameplayTag MessageTagToCheck =
+					                          FGameplayTag::RequestGameplayTag(
+						                          FName("Message"));
+				                          //判断是否包含MessageTag
+				                          if (Tag.MatchesTag(MessageTagToCheck))
+				                          {
+					                          const FUIWidgetRow* Row =
+						                          GetDataTableRowByTag<FUIWidgetRow>(
+							                          MessageDataTable,
+							                          Tag); //需要捕获this使用
+					                          OnReceiveMessageRowSignature.Broadcast(
+						                          *Row);
+				                          }
+			                          }
+		                          });
 }

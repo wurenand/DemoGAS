@@ -6,6 +6,8 @@
 #include "DemoWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+struct FDemoAbilityInfo;
+class UAbilityInfo;
 class UDemoUserWidget;
 
 /**
@@ -30,6 +32,8 @@ struct FUIWidgetRow : public FTableRowBase
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,float ,NewValue);
 //受到GEToSelf后，会受到来自ASC的GEMessage，再由它Broadcast给Widget
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReceiveMessageRowSignature,FUIWidgetRow , WidgetRow);
+//广播GA的信息
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGivenAbilitySignature,FDemoAbilityInfo& ,Info);
 
 /**
  * 
@@ -74,12 +78,19 @@ public:
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnCriticalBoncePercentChangedSignature;
 	//~End
+	
 	UPROPERTY(BlueprintAssignable,Category = "WidgetMessage")
 	FOnReceiveMessageRowSignature OnReceiveMessageRowSignature;
+
+	UPROPERTY(BlueprintAssignable,Category = "AbilityInfo")
+	FOnGivenAbilitySignature OnGivenAbilitySignature;
 
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "WidgetMessageData")
 	TObjectPtr<UDataTable> MessageDataTable;//传递GETag消息的表
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "AbilityInfos")
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 
 	//T为传入的TableRow的类型
 	template <typename T>
