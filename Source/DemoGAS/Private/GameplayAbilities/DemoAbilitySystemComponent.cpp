@@ -28,7 +28,12 @@ void UDemoAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclass
 			GiveAbility(AbilitySpec);
 		}
 	}
-	OnAbilityGivenDelegate.Broadcast(this);
+	//Server端广播初始的GA
+	if(!bStartUpGivenAbility)
+	{
+		bStartUpGivenAbility = true;
+		OnAbilityGivenDelegate.Broadcast(this);
+	}
 }
 
 void UDemoAbilitySystemComponent::AbilityInputTagTriggered(const FGameplayTag& InputTag)
@@ -87,4 +92,14 @@ void UDemoAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AAc
 {
 	Super::InitAbilityActorInfo(InOwnerActor, InAvatarActor);
 	AfterInitialASCActorInfo();
+}
+
+void UDemoAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+	if(!bStartUpGivenAbility)
+	{
+		bStartUpGivenAbility = true;
+		OnAbilityGivenDelegate.Broadcast(this);
+	}
 }

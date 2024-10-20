@@ -33,7 +33,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,fl
 //受到GEToSelf后，会受到来自ASC的GEMessage，再由它Broadcast给Widget
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReceiveMessageRowSignature,FUIWidgetRow , WidgetRow);
 //广播GA的信息
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGivenAbilitySignature,FDemoAbilityInfo& ,Info);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGivenAbilitySignature,const FDemoAbilityInfo& ,Info);
 
 /**
  * 

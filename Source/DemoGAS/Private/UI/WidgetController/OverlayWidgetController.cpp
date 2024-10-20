@@ -113,7 +113,6 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	                          .AddLambda(
 		                          [this](UDemoAbilitySystemComponent* DemoASC)-> void
 		                          {
-			                            //TODO:这里真的需要判断是否已经完成了GA的Given吗??
 		                          		for(FGameplayAbilitySpec& GASpec : DemoASC->GetActivatableAbilities())
 		                          		{
 		                          			for (FGameplayTag Tag : GASpec.Ability.Get()->AbilityTags)

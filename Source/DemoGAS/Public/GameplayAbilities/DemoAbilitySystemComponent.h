@@ -14,7 +14,7 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DEMOGAS_API UDemoAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-
+ 
 public:
 	//在完成InitialASCActor后，自动调用。 用于绑定函数到委托
 	void AfterInitialASCActorInfo();
@@ -38,6 +38,10 @@ protected:
 
 	//重写了这个函数，用于在Initial之后bind Delegate
 	virtual void InitAbilityActorInfo(AActor* InOwnerActor, AActor* InAvatarActor) override;
+
+	//利用OnRep函数实现Client端的GA广播到UI
+	virtual void OnRep_ActivateAbilities() override;
+	bool bStartUpGivenAbility = false;//用于确保广播初始GA的图标只广播一次
 
 private:
 	//确保bind Delegate只做一次
