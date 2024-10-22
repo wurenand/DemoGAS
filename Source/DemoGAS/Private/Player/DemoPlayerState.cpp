@@ -27,6 +27,7 @@ void ADemoPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADemoPlayerState,Level); //TODO这个宏和其他的有什么区别？
+	DOREPLIFETIME(ADemoPlayerState,XP);
 	DOREPLIFETIME(ADemoPlayerState,Team);
 }
 
@@ -40,12 +41,43 @@ UAttributeSet* ADemoPlayerState::GetAttributeSet() const
 	return AttributeSet;
 }
 
+void ADemoPlayerState::SetXP(int32 InXP)
+{
+	XP = InXP;
+	OnXPChangedDelegate.Broadcast(XP);
+}
+
+void ADemoPlayerState::AddXP(int32 InXP)
+{
+	XP += InXP;
+	OnXPChangedDelegate.Broadcast(XP);
+}
+
+void ADemoPlayerState::SetLevel(int32 InLevel)
+{
+	Level = InLevel;
+	OnLevelChangedDelegate.Broadcast(Level);
+}
+
+void ADemoPlayerState::AddLevel(int32 InLevel)
+{
+	Level += InLevel;
+	OnLevelChangedDelegate.Broadcast(Level);
+}
+
 void ADemoPlayerState::OnRep_Level(int32 OldLevel)
 {
-	
+	//由于Set和Add函数只在Server调用，所以这个委托需要有OnRep函数在Client广播
+	OnLevelChangedDelegate.Broadcast(Level);
 }
 
 void ADemoPlayerState::OnRep_Team()
 {
 	
+}
+
+void ADemoPlayerState::OnRep_XP()
+{
+	//由于Set和Add函数只在Server调用，所以这个委托需要有OnRep函数在Client广播
+	OnXPChangedDelegate.Broadcast(XP);
 }

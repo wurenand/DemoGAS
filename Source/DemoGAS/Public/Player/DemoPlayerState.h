@@ -10,13 +10,17 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+
+//PS中一个参数变化的通用Delegate
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateParamChanged, int32);
+
 /**
  * 在PlayerState中给玩家添加AbilitySystemComponent和AttributeSet
  * 这样可以在玩家死亡时依然保留ASC和属性集
  * 但是对于AI，可以直接在Character上创建ASC和属性集
  */
 UCLASS()
-class DEMOGAS_API ADemoPlayerState : public APlayerState,public IAbilitySystemInterface
+class DEMOGAS_API ADemoPlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -28,13 +32,26 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
+	//~begin Level XP
 	//封装后的接口
-	FORCEINLINE int32 GetPlayerLevel() const {return Level;}
-
-	//玩家所属阵营
-	UPROPERTY(EditAnywhere,ReplicatedUsing = OnRep_Team,Category = "Team")
-	ETeam Team = ETeam::ETeam_Red;
+	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
+	FORCEINLINE int32 GetXP() const { return XP; }
+	//下面几个函数应该只在Server调用
+	void SetXP(int32 InXP);
+	void AddXP(int32 InXP);
+	void SetLevel(int32 InLevel);
+	void AddLevel(int32 InLevel);
 	
+	FOnPlayerStateParamChanged OnXPChangedDelegate;
+	FOnPlayerStateParamChanged OnLevelChangedDelegate;
+
+	//~end
+	
+	
+	//玩家所属阵营
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Team, Category = "Team")
+	ETeam Team = ETeam::ETeam_Red;
+
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -42,11 +59,16 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 private:
-	UPROPERTY(VisibleAnywhere,ReplicatedUsing = OnRep_Level,Category = "Level")
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level, Category = "Level")
 	int32 Level = 1;
+
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_XP, Category = "Level")
+	int32 XP = 0;
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
 	UFUNCTION()
 	void OnRep_Team();
+	UFUNCTION()
+	void OnRep_XP();
 };
