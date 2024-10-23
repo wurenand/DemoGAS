@@ -117,4 +117,6 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 
 	//7 Give用于实现State状态的GA
 	UDemoSystemLibrary::GiveStateAbilities(this,this);
+	//8 GiveAndActive与经验等有关的被动Listen触发GA
+	UDemoSystemLibrary::GivePassiveAbilitiesAndActive(this,this);
 }

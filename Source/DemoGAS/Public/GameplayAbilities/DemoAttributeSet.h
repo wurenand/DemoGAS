@@ -182,6 +182,12 @@ public:
 	FGameplayAttributeData InComingDamage;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, InComingDamage)
 
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData InComingXP;
+	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, InComingXP)
+
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutProps);
+	//在造成角色死亡后，发送GameplayEvent通知PassiveGA来ApplyGE获得XP
+	void SendXPEvent(const FEffectProperties& Props);
 };

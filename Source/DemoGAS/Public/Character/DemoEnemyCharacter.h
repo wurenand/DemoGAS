@@ -40,7 +40,7 @@ protected:
 
 	virtual void InitialAbilitySystem() override;
 	
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "CharacterDefault")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = "CharacterDefault")
 	int32 Level = 1; //AIController只存在于Server，所以不需要复制
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = "UI")

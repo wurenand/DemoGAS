@@ -47,6 +47,23 @@ void UDemoSystemLibrary::GiveStateAbilities(const UObject* WorldContentObject, A
 	
 }
 
+void UDemoSystemLibrary::GivePassiveAbilitiesAndActive(const UObject* WorldContentObject,
+	ADemoCharacterBase* CharacterBase)
+{
+	//添加用于实现状态的Ability
+	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(WorldContentObject));
+	if(DemoGameModeBase == nullptr)
+	{
+		return;
+	}
+	checkf(DemoGameModeBase->CharacterClassInfo,TEXT("没有设置GM中的CharacterClassInfo"))
+	for(TSubclassOf<UGameplayAbility> PassiveAbility : DemoGameModeBase->CharacterClassInfo->PassiveAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(PassiveAbility);
+		CharacterBase->GetAbilitySystemComponent()->GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 bool UDemoSystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& ContextHandle)
 {
 	if(const FDemoGameplayEffectContext* DemoContext = static_cast<const FDemoGameplayEffectContext*>(ContextHandle.Get()))

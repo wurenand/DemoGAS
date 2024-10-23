@@ -32,6 +32,12 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 
+	/**
+	 * 关于经验的获取
+	 * 使用一个Passive GA一直listen gameplay Event(因为一直要激活，所有可以进行优化例如:不复制)
+	 * 接受到了就Apply 一个GE用于 设置获得的XP到一个Meta Attribute上
+	 * 再通过这个Meta Attribute往PS中的XP变量添加
+	 */
 	//~begin Level XP
 	//封装后的接口
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }

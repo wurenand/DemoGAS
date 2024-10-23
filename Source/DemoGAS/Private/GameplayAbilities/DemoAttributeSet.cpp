@@ -6,12 +6,14 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
+#include "GameplayTagsManager.h"
 #include "GameFramework/Character.h"
+#include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Interface/CombatInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/DemoPlayerController.h"
+#include "Player/DemoPlayerState.h"
 
 
 UDemoAttributeSet::UDemoAttributeSet()
@@ -57,6 +59,25 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
 
+	//meta attributes 自定义获得XP的逻辑
+	if (Data.EvaluatedData.Attribute == GetInComingXPAttribute())
+	{
+		if (GetInComingXP() == 0.f)
+		{
+			return;
+		}
+		const int32 XP = GetInComingXP();
+		SetInComingXP(0.f);
+		if (ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(Props.TargetController))
+		{
+			ADemoPlayerState* DemoPS = DemoPC->GetPlayerState<ADemoPlayerState>();
+			if (DemoPS)
+			{
+				DemoPS->AddXP(XP);
+			}
+		}
+	}
+
 	//meta attributes 自定义受到伤害的计算逻辑
 	if (Data.EvaluatedData.Attribute == GetInComingDamageAttribute())
 	{
@@ -76,11 +97,11 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		if (Props.SourceCharacter != Props.TargetCharacter)
 		{
 			//拿到造成伤害的远程控制器 (目前OnServer)
-			if(Props.SourceController)
+			if (Props.SourceController)
 			{
 				ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(Props.SourceController);
 				DemoPC->ShowDamageNumber(LocalInComingDamage, UDemoSystemLibrary::IsCriticalHit(Props.GEContentHandle),
-										 Props.TargetCharacter);
+				                         Props.TargetCharacter);
 			}
 		}
 
@@ -92,7 +113,8 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvaterActor);
 			if (CombatInterface)
 			{
-				CombatInterface->Die();
+				CombatInterface->Die(Cast<UDemoAbilitySystemComponent>(Props.SourceASC));
+				SendXPEvent(Props);
 			}
 		}
 	}
@@ -130,6 +152,26 @@ void UDemoAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		OutProps.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		OutProps.TargetCharacter = Cast<ACharacter>(OutProps.TargetAvaterActor);
 		OutProps.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutProps.TargetAvaterActor);
+	}
+}
+
+void UDemoAttributeSet::SendXPEvent(const FEffectProperties& Props)
+{
+	if (ICombatInterface* TargetCombatI = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		int32 TargetLevel = TargetCombatI->GetPlayerLevel();
+		//TODO：这里可以使用Curve或者别的来配置不同等级获得的经验值，我这里先直接处理了
+		FGameplayEventData Payload;
+		//TODO:这里的EventTag和SetByCaller中的Tag一样没问题吗?
+		FGameplayTag EventTag = UGameplayTagsManager::Get().RequestGameplayTag("Attributes.Meta.InComingXP");
+		//payload中填入的EventTag只是被传递后用做SetByCaller使用
+		Payload.EventTag = EventTag;
+		Payload.EventMagnitude = TargetLevel * 200.f;
+		//这里的EventTag就是表示Event用的EventTag了
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			Props.SourceCharacter,
+			EventTag,
+			Payload);
 	}
 }
 
@@ -174,7 +216,7 @@ void UDemoAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldValue) co
 
 void UDemoAttributeSet::OnRep_AttackDistance(const FGameplayAttributeData& OldValue) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet,AttackDistance,OldValue);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, AttackDistance, OldValue);
 }
 
 void UDemoAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldValue) const

@@ -86,7 +86,7 @@ UAnimMontage* ADemoCharacterBase::GetStunnedMontage_Implementation()
 	return StunnedMontage;
 }
 
-void ADemoCharacterBase::Die()
+void ADemoCharacterBase::Die(UDemoAbilitySystemComponent* Killer)
 {
 	MulticastHandleDeath();
 	

@@ -59,6 +59,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category = "StateAbilities")
 	TArray<TSubclassOf<UGameplayAbility>> StateAbilities;
+	//与经验等有关的PassiveAbility 默认就激活
+	UPROPERTY(EditDefaultsOnly,Category = "DataPassiveAbilities")
+	TArray<TSubclassOf<UGameplayAbility>> PassiveAbilities;
 
 	
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);

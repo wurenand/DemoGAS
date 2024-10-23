@@ -25,6 +25,7 @@ public:
 
 	//根据CharacterClassInfo给予共享的GA（实现State的GA）
 	static void GiveStateAbilities(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
+	static void GivePassiveAbilitiesAndActive(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
 
 
 	/**

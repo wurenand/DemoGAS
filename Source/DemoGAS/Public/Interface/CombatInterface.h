@@ -6,6 +6,7 @@
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
+class UDemoAbilitySystemComponent;
 struct FGameplayTag;
 
 UINTERFACE(BlueprintType)
@@ -37,5 +38,5 @@ public:
 	UAnimMontage* GetStunnedMontage();
 
 	//死亡接口 Called On Server
-	virtual void Die() = 0;
+	virtual void Die(UDemoAbilitySystemComponent* Killer) = 0;
 };

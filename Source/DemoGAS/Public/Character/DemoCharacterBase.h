@@ -48,7 +48,7 @@ public:
 	//~Begin CombatInterface
 	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
 
-	virtual void Die() override;
+	virtual void Die(UDemoAbilitySystemComponent* Killer) override;
 	//~End
 
 	//处理死亡的函数，Run On Server和Client
