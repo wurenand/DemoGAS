@@ -28,12 +28,14 @@ struct FUIWidgetRow : public FTableRowBase
 	TObjectPtr<UTexture2D> Image = nullptr;
 };
 
-//声明委托用于广播Value
+//声明委托用于广播Attribute Value 或者XPPercent
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature,float ,NewValue);
 //受到GEToSelf后，会受到来自ASC的GEMessage，再由它Broadcast给Widget
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReceiveMessageRowSignature,FUIWidgetRow , WidgetRow);
 //广播GA的信息
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGivenAbilitySignature,const FDemoAbilityInfo& ,Info);
+//广播Level
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOneValueChangedSignature,int32 ,NewValue);
 
 /**
  * 
@@ -78,12 +80,18 @@ public:
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnCriticalBoncePercentChangedSignature;
 	//~End
-	
+
+	//Message
 	UPROPERTY(BlueprintAssignable,Category = "WidgetMessage")
 	FOnReceiveMessageRowSignature OnReceiveMessageRowSignature;
-
+	//GA
 	UPROPERTY(BlueprintAssignable,Category = "AbilityInfo")
 	FOnGivenAbilitySignature OnGivenAbilitySignature;
+	//Level
+	UPROPERTY(BlueprintAssignable,Category = "Level")
+	FOnOneValueChangedSignature OnLevelChangedSignature;
+	UPROPERTY(BlueprintAssignable,Category = "Level")
+	FOnAttributeValueChangedSignature OnXPPercentChangedSignature;
 
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "WidgetMessageData")
@@ -95,6 +103,8 @@ protected:
 	//T为传入的TableRow的类型
 	template <typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable,const FGameplayTag& Tag);
+
+	void OnXPChanged(int32 InXP);
 };
 
 //采用包含模式，模板函数的声明和定义都在h文件中

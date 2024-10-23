@@ -8,7 +8,7 @@
 #include "GameFramework/PlayerState.h"
 #include "DemoPlayerState.generated.h"
 
-class UAbilitySystemComponent;
+class ULevelUpInfo;class UAbilitySystemComponent;
 class UAttributeSet;
 
 //PS中一个参数变化的通用Delegate
@@ -38,12 +38,17 @@ public:
 	FORCEINLINE int32 GetXP() const { return XP; }
 	//下面几个函数应该只在Server调用
 	void SetXP(int32 InXP);
+	UFUNCTION(BlueprintCallable)
 	void AddXP(int32 InXP);
 	void SetLevel(int32 InLevel);
 	void AddLevel(int32 InLevel);
 	
 	FOnPlayerStateParamChanged OnXPChangedDelegate;
 	FOnPlayerStateParamChanged OnLevelChangedDelegate;
+
+	//填入升级配置的DataAsset
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Level")
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	//~end
 	

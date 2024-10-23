@@ -6,6 +6,8 @@
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
 #include "GameplayAbilities/Data/AbilityInfo.h"
+#include "GameplayAbilities/Data/LevelUpInfo.h"
+#include "Player/DemoPlayerState.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -128,6 +130,20 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 		                          });
 	//~end
 
+	//~begin XP Level
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(PlayerState);
+	if(DemoPlayerState)
+	{
+		DemoPlayerState->OnLevelChangedDelegate
+		.AddLambda([this](int32 NewLevel)->void
+		{
+			OnLevelChangedSignature.Broadcast(NewLevel);
+		});
+		DemoPlayerState->OnXPChangedDelegate
+		.AddUObject(this,&UOverlayWidgetController::OnXPChanged);
+	}
+	//~end
+	
 	//~begin Message
 	DemoAbilitySystemComponent->OnAppliedGEToSelfAssetTagsDelegate
 	                          .AddLambda([this](
@@ -151,4 +167,24 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 				                          }
 			                          }
 		                          });
+}
+
+void UOverlayWidgetController::OnXPChanged(int32 InXP)
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(PlayerState);
+	if(DemoPlayerState)
+	{
+		ULevelUpInfo* LevelUpInfo = DemoPlayerState->LevelUpInfo;
+		checkf(LevelUpInfo,TEXT("Level Up Info is null"));
+		int32 Level = LevelUpInfo->FindLevelFromXP(InXP);
+		if(Level == LevelUpInfo->LevelUpRequirementXPS.Num() + 1)
+		{
+			OnXPPercentChangedSignature.Broadcast(1.f);
+			return;
+		}
+		const int32 NextLevelXPRe = LevelUpInfo->LevelUpRequirementXPS[Level - 1];
+		const int32 CurrentXPRe = Level == 1 ? 0 : LevelUpInfo->LevelUpRequirementXPS[Level - 2];
+		float CurrentXPPercentage = (float)(InXP - CurrentXPRe) / (NextLevelXPRe - CurrentXPRe);
+		OnXPPercentChangedSignature.Broadcast(CurrentXPPercentage);
+	}
 }
