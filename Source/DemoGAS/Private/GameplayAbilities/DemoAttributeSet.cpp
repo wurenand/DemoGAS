@@ -79,6 +79,7 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			if (NumOfLevelToUp > 0)
 			{
 				//TODO:升级奖励
+				IPlayerInterface::Execute_AddPlayerLevel(Props.SourceCharacter,NumOfLevelToUp);
 				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 			}
 			//添加XP
