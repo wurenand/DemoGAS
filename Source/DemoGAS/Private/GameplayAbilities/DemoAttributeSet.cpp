@@ -11,6 +11,7 @@
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Interface/CombatInterface.h"
+#include "Interface/PlayerInterface.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
@@ -68,13 +69,20 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		}
 		const int32 XP = GetInComingXP();
 		SetInComingXP(0.f);
-		if (ADemoPlayerController* DemoPC = Cast<ADemoPlayerController>(Props.TargetController))
+		if(Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>()) 
 		{
-			ADemoPlayerState* DemoPS = DemoPC->GetPlayerState<ADemoPlayerState>();
-			if (DemoPS)
+			//添加XP之前
+			int32 CurrentLevel = Cast<ICombatInterface>(Props.SourceCharacter)->GetPlayerLevel();
+			int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+			int32 NewLevel = IPlayerInterface::Execute_FindLevelFromXP(Props.SourceCharacter,CurrentXP + XP);
+			int32 NumOfLevelToUp = NewLevel - CurrentLevel;
+			if (NumOfLevelToUp > 0)
 			{
-				DemoPS->AddXP(XP);
+				//TODO:升级奖励
+				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 			}
+			//添加XP
+			IPlayerInterface::Execute_AddXP(Props.SourceCharacter, XP);
 		}
 	}
 

@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameplayAbilities/Data/LevelUpInfo.h"
 #include "GameplayAbilities/Library/DemoSystemLibrary.h"
 #include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
@@ -77,6 +78,53 @@ int32 ADemoPlayerCharacter::GetPlayerLevel()
 	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
 	check(DemoPlayerState);
 	return DemoPlayerState->GetPlayerLevel();
+}
+
+void ADemoPlayerCharacter::AddXP_Implementation(int32 InXP)
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		DemoPlayerState->AddXP(InXP);
+	}
+}
+
+void ADemoPlayerCharacter::AddPlayerLevel_Implementation(int32 LevelToAdd)
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		DemoPlayerState->AddLevel(LevelToAdd);
+	}
+}
+
+void ADemoPlayerCharacter::LevelUp_Implementation()
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		
+	}
+}
+
+int32 ADemoPlayerCharacter::GetXP_Implementation()
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		return DemoPlayerState->GetXP();
+	}
+	return 0;
+}
+
+int32 ADemoPlayerCharacter::FindLevelFromXP_Implementation(int32 XP)
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		return DemoPlayerState->LevelUpInfo->FindLevelFromXP(XP);
+	}
+	return 1;
 }
 
 void ADemoPlayerCharacter::StateCallback(const FGameplayTag CallbackTag, int32 NewCount)

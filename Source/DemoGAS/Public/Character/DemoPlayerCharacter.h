@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "DemoCharacterBase.h"
+#include "Interface/PlayerInterface.h"
 #include "DemoPlayerCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class DEMOGAS_API ADemoPlayerCharacter : public ADemoCharacterBase
+class DEMOGAS_API ADemoPlayerCharacter : public ADemoCharacterBase,public IPlayerInterface
 {
 	GENERATED_BODY()
 
@@ -32,6 +33,14 @@ protected:
 	virtual int32 GetPlayerLevel() override;
 	//~End
 
+	//~begin PlayerInterface
+	virtual void AddXP_Implementation(int32 InXP) override;
+	virtual void AddPlayerLevel_Implementation(int32 LevelToAdd) override;
+	virtual void LevelUp_Implementation() override;
+	virtual int32 GetXP_Implementation() override;
+	virtual int32 FindLevelFromXP_Implementation(int32 XP) override;
+	//~end
+	
 	virtual void StateCallback(const FGameplayTag CallbackTag, int32 NewCount) override;
 	
 private:
