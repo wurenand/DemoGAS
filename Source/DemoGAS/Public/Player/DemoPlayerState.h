@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameFramework/PlayerState.h"
 #include "DemoPlayerState.generated.h"
@@ -58,7 +59,10 @@ public:
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	//~end
-	
+
+	//为技能升级
+	UFUNCTION(Server,Reliable,Category="AbilityLevel")
+	void TryAddAbilityLevel(FGameplayTag InputActionTag);
 	
 	//玩家所属阵营
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Team, Category = "Team")

@@ -79,6 +79,21 @@ void ADemoPlayerState::AddLevelPoints(int32 InLevelPoints)
 	//TODO:在HUD中显示
 }
 
+void ADemoPlayerState::TryAddAbilityLevel_Implementation(FGameplayTag InputActionTag)
+{
+	for(FGameplayAbilitySpec& AbilitySpec : AbilitySystemComponent->GetActivatableAbilities())
+	{
+		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputActionTag))
+		{
+			if(AbilitySpec.Level < 5 && LevelPoints > 0)
+			{
+				AbilitySpec.Level++;
+				UE_LOG(LogTemp,Display,TEXT("AbilityLevel: %d"),AbilitySpec.Level);
+			}
+		}
+	}
+}
+
 void ADemoPlayerState::OnRep_Level(int32 OldLevel)
 {
 	//由于Set和Add函数只在Server调用，所以这个委托需要有OnRep函数在Client广播

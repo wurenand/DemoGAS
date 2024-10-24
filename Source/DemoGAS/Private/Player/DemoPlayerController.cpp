@@ -61,7 +61,8 @@ void ADemoPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	//执行鼠标指针射线检测
-	GetHitResultUnderCursor(ECC_Visibility, false, CurrentCursorHit);
+	GetHitResultUnderCursor(ECC_Pawn, false, CurrentPawnHitResult);
+	GetHitResultUnderCursor(ECC_WorldStatic, false, CurrentPathHitResult);
 	//高亮
 	TryHighlight();
 	//右键移动
@@ -86,13 +87,13 @@ void ADemoPlayerController::ShowDamageNumber_Implementation(float DamageValue,bo
 
 void ADemoPlayerController::TryHighlight()
 {
-	if(!CurrentCursorHit.bBlockingHit)
+	if(!CurrentPawnHitResult.bBlockingHit)
 	{
 		return;
 	}
 	//更新上一帧和当前帧
 	LastFrameActor = CurrentFrameActor;
-	CurrentFrameActor = Cast<IInteractInterface>(CurrentCursorHit.GetActor());
+	CurrentFrameActor = Cast<IInteractInterface>(CurrentPawnHitResult.GetActor());
 
 	//记录是否悬停在某个Actor身上
 	if(CurrentFrameActor != nullptr)
@@ -170,10 +171,7 @@ void ADemoPlayerController::TryAutoRun()
 void ADemoPlayerController::TryMoveDestination()
 {
 	//1 获取当前帧碰撞点
-	if(GetHitResultUnderCursor(ECC_Visibility, false, CurrentCursorHit))
-	{
-		CachedDestination = CurrentCursorHit.ImpactPoint;
-	}
+	CachedDestination = CurrentPathHitResult.ImpactPoint;
 	if(APawn* ControlledPawn = GetPawn())
 	{
 		//2 利用Navigation系统来寻找路径
@@ -201,15 +199,29 @@ void ADemoPlayerController::TryMoveDestination()
 
 void ADemoPlayerController::AbilityInputTagPressesd(FGameplayTag InputTag)
 {
+	if(InputTag.MatchesTagExact(UGameplayTagsManager::Get().RequestGameplayTag(FName("InputAction.CTRL"))))
+	{
+		InputTagContainer.AddTag(InputTag);
+		return;
+	}
 	if(!GetASC() || InputTag.MatchesTagExact(UGameplayTagsManager::Get().RequestGameplayTag(FName("InputAction.RMB"))))
 	{
 		return;
 	}
-	GetASC()->AbilityInputTagTriggered(InputTag);
+	if(InputTagContainer.HasTagExact(UGameplayTagsManager::Get().RequestGameplayTag(FName("InputAction.CTRL"))))
+	{
+		GetPlayerState<ADemoPlayerState>()->TryAddAbilityLevel(InputTag);
+		return;
+	}
+	GetASC()->AbilityInputTagPressed(InputTag);
 }
 
 void ADemoPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if(InputTag.MatchesTagExact(UGameplayTagsManager::Get().RequestGameplayTag(FName("InputAction.CTRL"))))
+	{
+		InputTagContainer.RemoveTag(InputTag);
+	}
 	if(!GetASC())
 	{
 		return;

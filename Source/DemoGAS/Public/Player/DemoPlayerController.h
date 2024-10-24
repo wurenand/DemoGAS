@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 #include "DemoPlayerController.generated.h"
 
@@ -40,6 +41,7 @@ protected:
 	//因此，它只会对本地控制的 PlayerController 进行调用。(复制的不会)
 	virtual void PlayerTick(float DeltaTime) override;
 
+	FGameplayTagContainer InputTagContainer;
 
 private:
 	UPROPERTY(EditAnywhere,Category = "Input")
@@ -49,7 +51,8 @@ private:
 	void TryHighlight();
 	bool bIsTargeting = false;
 	//记录当前这一帧的鼠标悬停检测结果，供需要的功能使用
-	FHitResult CurrentCursorHit;
+	FHitResult CurrentPathHitResult;
+	FHitResult CurrentPawnHitResult;
 	IInteractInterface* LastFrameActor;
 	IInteractInterface* CurrentFrameActor;
 
