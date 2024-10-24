@@ -23,7 +23,6 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	OnStrengthChangedSignature.Broadcast(DemoAttributeSet->GetStrength());
 	OnResilienceChangedSignature.Broadcast(DemoAttributeSet->GetResilience());
 	OnIntelligenceChangedSignature.Broadcast(DemoAttributeSet->GetIntelligence());
-	OnVigorChangedSignature.Broadcast(DemoAttributeSet->GetVigor());
 	OnArmorChangedSignature.Broadcast(DemoAttributeSet->GetArmor());
 	OnSpellArmorChangedSignature.Broadcast(DemoAttributeSet->GetSpellArmor());
 	OnCriticalChanceChangedSignature.Broadcast(DemoAttributeSet->GetCriticalChance());
@@ -78,11 +77,6 @@ void UOverlayWidgetController::BindCallBackToDependencies()
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
 	                      {
 		                      OnResilienceChangedSignature.Broadcast(Data.NewValue);
-	                      });
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetVigorAttribute())
-	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void
-	                      {
-		                      OnVigorChangedSignature.Broadcast(Data.NewValue);
 	                      });
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(DemoAttributeSet->GetArmorAttribute())
 	                      .AddLambda([this](const FOnAttributeChangeData& Data) -> void

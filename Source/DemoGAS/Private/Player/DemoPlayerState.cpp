@@ -3,6 +3,7 @@
 
 #include "Player/DemoPlayerState.h"
 
+#include "Character/DemoPlayerCharacter.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
 #include "Net/UnrealNetwork.h"
@@ -63,6 +64,12 @@ void ADemoPlayerState::SetLevel(int32 InLevel)
 void ADemoPlayerState::AddLevel(int32 InLevel)
 {
 	Level += InLevel;
+	//升级要更新GE
+	if(IsValid(GetPawn()))
+	{
+		ADemoPlayerCharacter* Character = Cast<ADemoPlayerCharacter>(GetPawn());
+		Character->InitialDefaultAttributes();
+	}
 	OnLevelChangedDelegate.Broadcast(Level);
 }
 

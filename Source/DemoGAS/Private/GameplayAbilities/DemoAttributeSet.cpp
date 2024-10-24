@@ -19,9 +19,6 @@
 
 UDemoAttributeSet::UDemoAttributeSet()
 {
-	//TODO 使用GE替换这种初始化方式
-	InitHealth(10);
-	InitMana(10);
 }
 
 void UDemoAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -80,7 +77,6 @@ void UDemoAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			{
 				IPlayerInterface::Execute_AddPlayerLevel(Props.SourceCharacter,NumOfLevelToUp);
 				IPlayerInterface::Execute_AddLevelPoints(Props.SourceCharacter,NumOfLevelToUp);
-				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 			}
 			//添加XP
 			IPlayerInterface::Execute_AddXP(Props.SourceCharacter, XP);
@@ -194,7 +190,6 @@ void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Armor, COND_None, REPNOTIFY_Always);
@@ -241,11 +236,6 @@ void UDemoAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldValu
 void UDemoAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldValue) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, Resilience, OldValue);
-}
-
-void UDemoAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldValue) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDemoAttributeSet, Vigor, OldValue);
 }
 
 void UDemoAttributeSet::OnRep_Armor(const FGameplayAttributeData& OldValue) const

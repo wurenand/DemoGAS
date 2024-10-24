@@ -36,7 +36,6 @@ protected:
 	//~begin PlayerInterface
 	virtual void AddXP_Implementation(int32 InXP) override;
 	virtual void AddPlayerLevel_Implementation(int32 LevelToAdd) override;
-	virtual void LevelUp_Implementation() override;
 	virtual int32 GetXP_Implementation() override;
 	virtual int32 FindLevelFromXP_Implementation(int32 XP) override;
 	virtual void AddLevelPoints_Implementation(int32 InLevelPoints) override;

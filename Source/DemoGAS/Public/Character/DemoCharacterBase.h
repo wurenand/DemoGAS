@@ -59,12 +59,14 @@ public:
 
 	UPROPERTY(EditAnywhere,Category = "CharacterClassInfo")
 	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;
-	//用来调用GE来初始化Attributes 和 InfiniteGE来不断更新Secondary  在子类的InitialAbilitySystem调用
+	//用来调用GE来初始化Attributes 在子类的InitialAbilitySystem调用
 	virtual void InitialDefaultAttributes() const;//由子类实现
+	//（第一次初始化的时候Apply用于把Health或者Mana回复满，后续升级的时候就Skip）
+	bool bFirstInitial = false;
 	
 	//~end
-	//返回被应用的GE的SpecHandle用于管理
-	FGameplayEffectSpecHandle* ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
+
+	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
 	//只能在Server授予能力 (普通攻击，技能能力)
 	void AddAbilityToCharacter();
 

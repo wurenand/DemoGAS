@@ -70,8 +70,6 @@ public:
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnIntelligenceChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
-	FOnAttributeValueChangedSignature OnVigorChangedSignature;
-	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnArmorChangedSignature;
 	UPROPERTY(BlueprintAssignable ,Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnSpellArmorChangedSignature;

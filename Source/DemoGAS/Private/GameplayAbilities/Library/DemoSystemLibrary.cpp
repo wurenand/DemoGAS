@@ -26,8 +26,12 @@ void UDemoSystemLibrary::InitialDefaultAttributes(const UObject* WorldContentObj
 
 	//Apply GE
 	CharacterBase->ApplyEffectToSelf(CharacterClassInfo.PrimaryAttributesEffectClass,Level);
-	CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->SecondaryAttributesEffectClass,Level);
-	CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->VitalAttributesEffectClass,Level);
+	if(!CharacterBase->bFirstInitial)
+	{
+		CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->VitalAttributesEffectClass,Level);
+		CharacterBase->bFirstInitial = true;
+	}
+	//TODO:这里可以加一个else用作升级时Health的更改，转移CharacterBase是否存活？
 }
 
 void UDemoSystemLibrary::GiveStateAbilities(const UObject* WorldContentObject, ADemoCharacterBase* CharacterBase)
