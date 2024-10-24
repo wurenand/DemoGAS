@@ -35,4 +35,6 @@ public:
 	void LevelUp();
 	UFUNCTION(BlueprintNativeEvent)
 	void AddPlayerLevel(int32 LevelToAdd);
+	UFUNCTION(BlueprintNativeEvent)
+	void AddLevelPoints(int32 InLevelPoints);
 };

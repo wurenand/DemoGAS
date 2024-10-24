@@ -48,6 +48,7 @@ public:
 	void AddXP(int32 InXP);
 	void SetLevel(int32 InLevel);
 	void AddLevel(int32 InLevel);
+	void AddLevelPoints(int32 InLevelPoints);
 	
 	FOnPlayerStateParamChanged OnXPChangedDelegate;
 	FOnPlayerStateParamChanged OnLevelChangedDelegate;
@@ -76,8 +77,14 @@ private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_XP, Category = "Level")
 	int32 XP = 0;
 
+	//升级技能使用的技能点
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_LevelPoints, Category = "LevelUp")
+	int32 LevelPoints = 0;
+
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+	UFUNCTION()
+	void OnRep_LevelPoints();
 	UFUNCTION()
 	void OnRep_Team();
 	UFUNCTION()

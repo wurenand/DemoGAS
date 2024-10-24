@@ -127,6 +127,15 @@ int32 ADemoPlayerCharacter::FindLevelFromXP_Implementation(int32 XP)
 	return 1;
 }
 
+void ADemoPlayerCharacter::AddLevelPoints_Implementation(int32 InLevelPoints)
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	if(DemoPlayerState)
+	{
+		DemoPlayerState->AddLevelPoints(InLevelPoints);
+	}
+}
+
 void ADemoPlayerCharacter::StateCallback(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	Super::StateCallback(CallbackTag, NewCount);

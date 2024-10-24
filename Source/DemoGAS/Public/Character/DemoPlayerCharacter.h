@@ -39,6 +39,7 @@ protected:
 	virtual void LevelUp_Implementation() override;
 	virtual int32 GetXP_Implementation() override;
 	virtual int32 FindLevelFromXP_Implementation(int32 XP) override;
+	virtual void AddLevelPoints_Implementation(int32 InLevelPoints) override;
 	//~end
 	
 	virtual void StateCallback(const FGameplayTag CallbackTag, int32 NewCount) override;
