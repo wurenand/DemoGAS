@@ -86,6 +86,12 @@ UAnimMontage* ADemoCharacterBase::GetStunnedMontage_Implementation()
 	return StunnedMontage;
 }
 
+int32 ADemoCharacterBase::GetPlayerLevel()
+{
+	//应当由子类去Override
+	return 1;
+}
+
 void ADemoCharacterBase::Die(UDemoAbilitySystemComponent* Killer)
 {
 	MulticastHandleDeath();
@@ -134,16 +140,17 @@ void ADemoCharacterBase::StateCallback(const FGameplayTag CallbackTag, int32 New
 
 void ADemoCharacterBase::InitialDefaultAttributes() const
 {
-	UDemoSystemLibrary::InitialDefaultAttributes(this, CharacterClass, 1, const_cast<ADemoCharacterBase*>(this));
+	float CurrentLevel = const_cast<ADemoCharacterBase*>(this)->GetPlayerLevel();
+	UDemoSystemLibrary::InitialDefaultAttributes(this, CharacterClass, CurrentLevel, const_cast<ADemoCharacterBase*>(this));
 }
 
-void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,
+FGameplayEffectSpecHandle* ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,
                                            float Level) const
 {
 	if(EffectClassToBeApplied == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("传入的Class为nullptr ADemoCharacterBase"));
-		return;
+		return nullptr;
 	}
 	check(IsValid(GetAbilitySystemComponent()));
 
@@ -152,6 +159,7 @@ void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& E
 	FGameplayEffectSpecHandle EffectSpec = GetAbilitySystemComponent()->MakeOutgoingSpec(
 		EffectClassToBeApplied, Level, GEContentHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), GetAbilitySystemComponent());
+	return &EffectSpec;
 }
 
 void ADemoCharacterBase::AddAbilityToCharacter()

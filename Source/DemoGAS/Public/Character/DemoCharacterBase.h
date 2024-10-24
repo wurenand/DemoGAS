@@ -47,6 +47,7 @@ public:
 
 	//~Begin CombatInterface
 	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
+	virtual int32 GetPlayerLevel() override;
 
 	virtual void Die(UDemoAbilitySystemComponent* Killer) override;
 	//~End
@@ -62,7 +63,8 @@ public:
 	virtual void InitialDefaultAttributes() const;//由子类实现
 	
 	//~end
-	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
+	//返回被应用的GE的SpecHandle用于管理
+	FGameplayEffectSpecHandle* ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
 	//只能在Server授予能力 (普通攻击，技能能力)
 	void AddAbilityToCharacter();
 
