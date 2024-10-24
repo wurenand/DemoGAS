@@ -30,9 +30,6 @@ public:
 	int32 GetXP();
 	UFUNCTION(BlueprintNativeEvent)
 	int32 FindLevelFromXP(int32 XP);
-	//有什么用？
-	UFUNCTION(BlueprintNativeEvent)
-	void LevelUp();
 	UFUNCTION(BlueprintNativeEvent)
 	void AddPlayerLevel(int32 LevelToAdd);
 	UFUNCTION(BlueprintNativeEvent)

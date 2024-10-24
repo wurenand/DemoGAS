@@ -113,9 +113,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Resilience, Category = "Attribute|Primary")
 	FGameplayAttributeData Resilience;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Resilience)
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vigor, Category = "Attribute|Primary")
-	FGameplayAttributeData Vigor;
-	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Vigor)
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Armor, Category = "Attribute|Primary")
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, Armor)
@@ -137,8 +134,6 @@ public:
 	UFUNCTION()
 	void OnRep_Resilience(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
-	void OnRep_Vigor(const FGameplayAttributeData& OldValue) const;
-	UFUNCTION()
 	void OnRep_Armor(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_SpellArmor(const FGameplayAttributeData& OldValue) const;
@@ -146,9 +141,6 @@ public:
 	void OnRep_CriticalChance(const FGameplayAttributeData& OldValue) const;
 	UFUNCTION()
 	void OnRep_CriticalBoncePercent(const FGameplayAttributeData& OldValue) const;
-	//~end
-
-	//~Secondary Attributes
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Attribute|Secondary")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UDemoAttributeSet, MaxHealth)

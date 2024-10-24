@@ -50,15 +50,13 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
 	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInfomation;
 	
-	//每种英雄共享的部分
-	
-	UPROPERTY(EditDefaultsOnly,Category = "CommonClassDefaults")
-	TSubclassOf<UGameplayEffect> SecondaryAttributesEffectClass;
+	//关于Health和Mana的设置 （第一次初始化的时候Apply用于把Health或者Mana回复满，后续升级的时候就Skip）
 	UPROPERTY(EditDefaultsOnly,Category = "CommonClassDefaults")
 	TSubclassOf<UGameplayEffect> VitalAttributesEffectClass;
 
 	UPROPERTY(EditDefaultsOnly,Category = "StateAbilities")
 	TArray<TSubclassOf<UGameplayAbility>> StateAbilities;
+	//TODO: 把生命回复和蓝量回复做到这里
 	//与经验等有关的PassiveAbility 默认就激活
 	UPROPERTY(EditDefaultsOnly,Category = "DataPassiveAbilities")
 	TArray<TSubclassOf<UGameplayAbility>> PassiveAbilities;

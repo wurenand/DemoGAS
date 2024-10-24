@@ -98,15 +98,6 @@ void ADemoPlayerCharacter::AddPlayerLevel_Implementation(int32 LevelToAdd)
 	}
 }
 
-void ADemoPlayerCharacter::LevelUp_Implementation()
-{
-	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
-	if(DemoPlayerState)
-	{
-		
-	}
-}
-
 int32 ADemoPlayerCharacter::GetXP_Implementation()
 {
 	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());

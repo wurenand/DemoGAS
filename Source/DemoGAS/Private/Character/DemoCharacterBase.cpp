@@ -144,13 +144,13 @@ void ADemoCharacterBase::InitialDefaultAttributes() const
 	UDemoSystemLibrary::InitialDefaultAttributes(this, CharacterClass, CurrentLevel, const_cast<ADemoCharacterBase*>(this));
 }
 
-FGameplayEffectSpecHandle* ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,
+void ADemoCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,
                                            float Level) const
 {
 	if(EffectClassToBeApplied == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("传入的Class为nullptr ADemoCharacterBase"));
-		return nullptr;
+		return ;
 	}
 	check(IsValid(GetAbilitySystemComponent()));
 
@@ -159,7 +159,6 @@ FGameplayEffectSpecHandle* ADemoCharacterBase::ApplyEffectToSelf(const TSubclass
 	FGameplayEffectSpecHandle EffectSpec = GetAbilitySystemComponent()->MakeOutgoingSpec(
 		EffectClassToBeApplied, Level, GEContentHandle);
 	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*EffectSpec.Data.Get(), GetAbilitySystemComponent());
-	return &EffectSpec;
 }
 
 void ADemoCharacterBase::AddAbilityToCharacter()
@@ -178,9 +177,6 @@ void ADemoCharacterBase::AddAbilityToCharacter()
 		GAs.Append(CharacterClassInfo.AbilitiesClass);
 		DemoAbilitySystemComponent->AddAbilitiesToCharacter(GAs);
 	}
-	
-
-	
 }
 
 void ADemoCharacterBase::OnRep_Team()
