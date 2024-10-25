@@ -31,8 +31,11 @@ struct FCharacterClassDefaultInfo
 
 	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GA|NormalAttack")
 	TSubclassOf<UGameplayAbility> NormalAttackClass;
+	
+	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GA|PassiveAbility")
+	TSubclassOf<UGameplayAbility> PassiveAbilityClass;
 
-	//最多5个吧 (QWER和被动)
+	// Q W E R
 	UPROPERTY(EditDefaultsOnly , Category = "ClassDefaults|GA|AbilitiesAttack")
 	TArray<TSubclassOf<UGameplayAbility>> AbilitiesClass;
 };

@@ -8,43 +8,46 @@
 
 void UDemoAbilitySystemComponent::AfterInitialASCActorInfo()
 {
-	if(bAfterInitASCActorInfo) return;
+	if (bAfterInitASCActorInfo)
+	{
+		return;
+	}
 	//确保只做一次
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(
+		this, &UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf);
 	bAfterInitASCActorInfo = true;
 }
 
 void UDemoAbilitySystemComponent::AddAbilitiesToCharacter(const TArray<TSubclassOf<UGameplayAbility>> AbilitiesToAdd)
 {
-	for(TSubclassOf<UGameplayAbility> AbilityClass : AbilitiesToAdd)
+	for (TSubclassOf<UGameplayAbility> AbilityClass : AbilitiesToAdd)
 	{
 		//在Server授予能力后，创建Spec并且Spec还会被复制到Client
-		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass,1);
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
 
 		//添加StartUpTag
-		if(const UDemoGameplayAbilityBase* DemoGameplayAbility = Cast<UDemoGameplayAbilityBase>(AbilitySpec.Ability))
+		if (const UDemoGameplayAbilityBase* DemoGameplayAbility = Cast<UDemoGameplayAbilityBase>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(DemoGameplayAbility->TriggerInputTag);
 			GiveAbility(AbilitySpec);
 		}
 	}
-	//Server端广播初始的GA
-	if(!bStartUpGivenAbility)
-	{
-		bStartUpGivenAbility = true;
-		OnAbilityGivenDelegate.Broadcast(this);
-	}
+	//Server端广播GA
+	OnAbilityGivenDelegate.Broadcast(this);
 }
 
 void UDemoAbilitySystemComponent::AbilityInputTagTriggered(const FGameplayTag& InputTag)
 {
-	if(!InputTag.IsValid()) return;
-	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	if (!InputTag.IsValid())
 	{
-		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		return;
+	}
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
-			AbilitySpecInputPressed(AbilitySpec);//需要自己实现功能，只是通知Ability被Pressed了
-			if(!AbilitySpec.IsActive())
+			AbilitySpecInputPressed(AbilitySpec); //需要自己实现功能，只是通知Ability被Pressed了
+			if (!AbilitySpec.IsActive())
 			{
 				TryActivateAbility(AbilitySpec.Handle);
 			}
@@ -54,25 +57,31 @@ void UDemoAbilitySystemComponent::AbilityInputTagTriggered(const FGameplayTag& I
 
 void UDemoAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
-	if(!InputTag.IsValid()) return;
-	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	if (!InputTag.IsValid())
 	{
-		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		return;
+	}
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
-			AbilitySpecInputReleased(AbilitySpec);//需要自己实现功能，只是通知Ability被Releassed了
+			AbilitySpecInputReleased(AbilitySpec); //需要自己实现功能，只是通知Ability被Releassed了
 		}
 	}
 }
 
 void UDemoAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
-	if(!InputTag.IsValid()) return;
-	for(FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	if (!InputTag.IsValid())
 	{
-		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		return;
+	}
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputPressed(AbilitySpec);
-			if(!AbilitySpec.IsActive())
+			if (!AbilitySpec.IsActive())
 			{
 				TryActivateAbility(AbilitySpec.Handle);
 			}
@@ -81,7 +90,7 @@ void UDemoAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inp
 }
 
 void UDemoAbilitySystemComponent::ClientOnMyGameplayEffectAppliedToSelf_Implementation(UAbilitySystemComponent* ASC,
-                                                                  const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
+	const FGameplayEffectSpec& GESpec, FActiveGameplayEffectHandle ActiveGEHandle)
 {
 	FGameplayTagContainer GameplayTags;
 	GESpec.GetAllAssetTags(GameplayTags);
@@ -97,9 +106,5 @@ void UDemoAbilitySystemComponent::InitAbilityActorInfo(AActor* InOwnerActor, AAc
 void UDemoAbilitySystemComponent::OnRep_ActivateAbilities()
 {
 	Super::OnRep_ActivateAbilities();
-	if(!bStartUpGivenAbility)
-	{
-		bStartUpGivenAbility = true;
-		OnAbilityGivenDelegate.Broadcast(this);
-	}
+	OnAbilityGivenDelegate.Broadcast(this);
 }

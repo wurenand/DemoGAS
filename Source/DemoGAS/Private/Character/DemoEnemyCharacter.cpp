@@ -42,7 +42,7 @@ void ADemoEnemyCharacter::BeginPlay()
 	//初始化ASC的ActorInfo
 	//对于AI控制的角色，直接在BeginPlay中初始化就行
 	InitialAbilitySystem();
-
+	
 	//~Begin
 	//设定WidgetController为Self
 	if (UDemoUserWidget* DemoUserWidget = Cast<UDemoUserWidget>(HealthBar->GetUserWidgetObject()))
@@ -79,6 +79,7 @@ void ADemoEnemyCharacter::InitialAbilitySystem()
 		InitialDefaultAttributes();
 		RegisterStateEvent();
 		UDemoSystemLibrary::GiveStateAbilities(this, this);
-		//TODO:给Enemy增加初始能力
+		//普攻 被动
+		UDemoSystemLibrary::GiveStartUpAbilitiesToCharacter(this,this);
 	}
 }

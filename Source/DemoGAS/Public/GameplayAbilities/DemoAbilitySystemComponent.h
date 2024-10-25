@@ -41,7 +41,6 @@ protected:
 
 	//利用OnRep函数实现Client端的GA广播到UI
 	virtual void OnRep_ActivateAbilities() override;
-	bool bStartUpGivenAbility = false;//用于确保广播初始GA的图标只广播一次
 
 private:
 	//确保bind Delegate只做一次

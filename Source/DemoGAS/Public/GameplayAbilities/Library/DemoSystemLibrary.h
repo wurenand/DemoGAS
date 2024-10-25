@@ -25,7 +25,10 @@ public:
 
 	//根据CharacterClassInfo给予共享的GA（实现State的GA）
 	static void GiveStateAbilities(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
+	//需要直接激活的Passive
 	static void GivePassiveAbilitiesAndActive(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
+	//不需要直接激活的初始就有的 (NormalAttack Passive)
+	static void GiveStartUpAbilitiesToCharacter(const UObject* WorldContentObject,ADemoCharacterBase* CharacterBase);
 
 
 	/**
