@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "DemoGAS/DemoGAS.h"
 #include "GameFramework/PlayerState.h"
+#include "GameplayAbilities/Data/CharacterClassInfo.h"
 #include "DemoPlayerState.generated.h"
 
 class ULevelUpInfo;class UAbilitySystemComponent;
@@ -57,12 +58,18 @@ public:
 	//填入升级配置的DataAsset
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Level")
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
+	
+	UPROPERTY(EditAnywhere,Replicated,BlueprintReadOnly,Category="PlayerCharacter")
+	ECharacterClass CharacterClass;
 
 	//~end
 
-	//为技能升级 Only On Server
+	//获取技能或为技能升级 Only On Server
 	UFUNCTION(Server,Reliable,Category="AbilityLevel")
 	void TryAddAbilityLevel(FGameplayTag InputActionTag);
+
+	//只能在Server授予能力 只为玩家操作角色使用
+	void AddAbilityFromTagToPlayerCharacter(FGameplayTag InputActionTag);
 	
 	//玩家所属阵营
 	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Team, Category = "Team")
@@ -83,7 +90,7 @@ private:
 
 	//升级技能使用的技能点
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_LevelPoints, Category = "LevelUp")
-	int32 LevelPoints = 0;
+	int32 LevelPoints = 1;
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);

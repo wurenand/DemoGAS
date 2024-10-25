@@ -79,6 +79,6 @@ void ADemoEnemyCharacter::InitialAbilitySystem()
 		InitialDefaultAttributes();
 		RegisterStateEvent();
 		UDemoSystemLibrary::GiveStateAbilities(this, this);
-		AddAbilityToCharacter();
+		//TODO:给Enemy增加初始能力
 	}
 }

@@ -4,8 +4,10 @@
 #include "Player/DemoPlayerState.h"
 
 #include "Character/DemoPlayerCharacter.h"
+#include "Game/DemoGameModeBase.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
 #include "GameplayAbilities/DemoAttributeSet.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 ADemoPlayerState::ADemoPlayerState()
@@ -29,6 +31,7 @@ void ADemoPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ADemoPlayerState,Level); //TODO这个宏和其他的有什么区别？
 	DOREPLIFETIME(ADemoPlayerState,XP);
+	DOREPLIFETIME(ADemoPlayerState,CharacterClass);
 	DOREPLIFETIME(ADemoPlayerState,LevelPoints);
 	DOREPLIFETIME(ADemoPlayerState,Team);
 }
@@ -79,8 +82,35 @@ void ADemoPlayerState::AddLevelPoints(int32 InLevelPoints)
 	//TODO:在HUD中显示
 }
 
+void ADemoPlayerState::AddAbilityFromTagToPlayerCharacter(FGameplayTag InputActionTag)
+{
+	if(!HasAuthority())
+	{
+		return;
+	}
+	UDemoAbilitySystemComponent* DemoAbilitySystemComponent = Cast<UDemoAbilitySystemComponent>(AbilitySystemComponent);
+	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(this));
+	if(DemoGameModeBase)
+	{
+		FCharacterClassDefaultInfo CharacterClassInfo = DemoGameModeBase->CharacterClassInfo->GetClassDefaultInfo(CharacterClass);
+		for(TSubclassOf<UGameplayAbility> GAClass : CharacterClassInfo.AbilitiesClass)
+		{
+			//TODO: 问题：在试图判断能够拥有的技能的TriggerInputTag和我想要获取的技能的InputActionTag时，出现崩溃
+			//判断 ： 由于GAClass是一个TSubclassOf,他只是一个类的模板信息，直接用它访问类的成员是不合法的
+			//解决 ： 可以使用CDO或者创建实例来访问，但是由于这里需要判断每个GA的各自的成员值，不能用CDO(只能获取默认值)
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(GAClass,1);
+			UDemoGameplayAbilityBase* DemoGA = Cast<UDemoGameplayAbilityBase>(AbilitySpec.Ability);
+			if(DemoGA->TriggerInputTag == InputActionTag)
+			{
+				DemoAbilitySystemComponent->AddAbilitiesToCharacter({GAClass});
+			}
+		}
+	}
+}
+
 void ADemoPlayerState::TryAddAbilityLevel_Implementation(FGameplayTag InputActionTag)
 {
+	bool bHasAbility = false;
 	for(FGameplayAbilitySpec& AbilitySpec : AbilitySystemComponent->GetActivatableAbilities())
 	{
 		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputActionTag))
@@ -89,7 +119,18 @@ void ADemoPlayerState::TryAddAbilityLevel_Implementation(FGameplayTag InputActio
 			{
 				AbilitySpec.Level++;
 				UE_LOG(LogTemp,Display,TEXT("AbilityLevel: %d"),AbilitySpec.Level);
+				bHasAbility = true;
+				LevelPoints--;
 			}
+		}
+	}
+	//没有获取过能力
+	if(!bHasAbility)
+	{
+		if(LevelPoints > 0)
+		{
+			AddAbilityFromTagToPlayerCharacter(InputActionTag);
+			LevelPoints--;
 		}
 	}
 }

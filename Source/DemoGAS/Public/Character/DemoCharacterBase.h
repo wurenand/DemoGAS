@@ -67,8 +67,6 @@ public:
 	//~end
 
 	void ApplyEffectToSelf(const TSubclassOf<UGameplayEffect>& EffectClassToBeApplied,float Level) const;
-	//只能在Server授予能力 (普通攻击，技能能力)
-	void AddAbilityToCharacter();
 
 protected:
 

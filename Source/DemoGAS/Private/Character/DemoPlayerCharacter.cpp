@@ -61,7 +61,9 @@ void ADemoPlayerCharacter::PossessedBy(AController* NewController)
 	//初始化ASC的ActorInfo 对于ASC位于PlayerState上
 	//Server端的ActorInfo在PossessedBy初始化
 	InitialAbilitySystem();
-	AddAbilityToCharacter();
+	//TODO:技能的GA已经放在的PlayerState中获得，还有初始GA需要做
+	//TODO:这里做一些PS中来自Character的数据的初始化
+	Cast<ADemoPlayerState>(GetPlayerState())->CharacterClass = CharacterClass;
 }
 
 //一般只调用一次，可以用来初始化
