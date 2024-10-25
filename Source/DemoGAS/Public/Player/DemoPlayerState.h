@@ -60,7 +60,7 @@ public:
 
 	//~end
 
-	//为技能升级
+	//为技能升级 Only On Server
 	UFUNCTION(Server,Reliable,Category="AbilityLevel")
 	void TryAddAbilityLevel(FGameplayTag InputActionTag);
 	

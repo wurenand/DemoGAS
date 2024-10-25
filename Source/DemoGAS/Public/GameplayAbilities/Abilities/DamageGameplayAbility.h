@@ -6,6 +6,7 @@
 #include "DemoGameplayAbilityBase.h"
 #include "DamageGameplayAbility.generated.h"
 
+class UDemoAttributeSet;
 class ADemoCharacterBase;
 
 UENUM(BlueprintType)
@@ -26,6 +27,11 @@ class DEMOGAS_API UDamageGameplayAbility : public UDemoGameplayAbilityBase
 public:
 	EDamageType GetDamageType() const { return DamageType; }
 
+	UFUNCTION(BlueprintCallable,BlueprintPure)
+	UDemoAttributeSet* GetSourceAttributeSet();
+	//开放给蓝图设定伤害值
+	UFUNCTION(BlueprintCallable)
+	void SetDamageValue(float InDamageValue);
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(ADemoCharacterBase* InTargetActor);
 	
