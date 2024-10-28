@@ -10,6 +10,7 @@
 #include "NavigationSystem.h"
 #include "Components/SplineComponent.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
+#include "GameplayAbilities/DemoAttributeSet.h"
 #include "Input/DemoInputComponent.h"
 #include "Interface/CombatInterface.h"
 #include "Interface/InteractInterface.h"
@@ -239,16 +240,21 @@ void ADemoPlayerController::AbilityInputTagTriggered(FGameplayTag InputTag)
 	{
 		if (bIsTargeting && CurrentPawnHitResult.GetActor()->Implements<UCombatInterface>())
 		{
-			//TODO:检测是否在攻击范围内，如果在，直接攻击， 不在就先移动再攻击
 			//TODO:有bug，在攻击期间应该不能响应RMB
-			//阵营判断
 			ICombatInterface* TargetActor = Cast<ICombatInterface>(CurrentPawnHitResult.GetActor());
-			if(IsValid(GetPawn()))
+			ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
+			//阵营判断
+			if (DemoPlayerState->GetTeam() != TargetActor->GetTeam())
 			{
-				ICombatInterface* ControlledPawn = Cast<ICombatInterface>(GetPawn());
-				if(ControlledPawn->GetTeam() != TargetActor->GetTeam())
+				//判定攻击距离
+				float Distance = CurrentPawnHitResult.GetActor()->GetDistanceTo(GetPawn());
+				if(Cast<UDemoAttributeSet>(DemoPlayerState->GetAttributeSet())->GetAttackDistance() >= Distance)
 				{
 					DemoASC->AbilityInputTagTriggered(InputTag);
+				}
+				else
+				{
+					//TODO:检测是否在攻击范围内，不在就先移动再攻击
 				}
 			}
 		}
