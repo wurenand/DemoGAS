@@ -29,6 +29,11 @@ int32 ADemoEnemyCharacter::GetPlayerLevel()
 	return Level;
 }
 
+ETeam ADemoEnemyCharacter::GetTeam()
+{
+	return Team;
+}
+
 
 void ADemoEnemyCharacter::StateCallback(const FGameplayTag CallbackTag, int32 NewCount)
 {

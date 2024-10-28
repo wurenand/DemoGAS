@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DemoGAS/DemoGAS.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
@@ -39,4 +40,7 @@ public:
 
 	//死亡接口 Called On Server
 	virtual void Die(UDemoAbilitySystemComponent* Killer) = 0;
+
+	//获取角色阵营
+	virtual ETeam GetTeam();
 };

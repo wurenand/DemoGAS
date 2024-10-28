@@ -83,6 +83,13 @@ int32 ADemoPlayerCharacter::GetPlayerLevel()
 	return DemoPlayerState->GetPlayerLevel();
 }
 
+ETeam ADemoPlayerCharacter::GetTeam()
+{
+	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());
+	check(DemoPlayerState);
+	return DemoPlayerState->GetTeam();
+}
+
 void ADemoPlayerCharacter::AddXP_Implementation(int32 InXP)
 {
 	ADemoPlayerState* DemoPlayerState = Cast<ADemoPlayerState>(GetPlayerState());

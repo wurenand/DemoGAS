@@ -43,6 +43,7 @@ public:
 	//~begin Level XP
 	//封装后的接口
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
+	FORCEINLINE ETeam GetTeam() const { return Team; }
 	FORCEINLINE int32 GetXP() const { return XP; }
 	//下面几个函数应该只在Server调用
 	void SetXP(int32 InXP);

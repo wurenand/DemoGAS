@@ -35,12 +35,6 @@ public:
 	//~Begin InteractInterface
 	virtual void HighlightActor(ETeam FromTeam) override;
 	virtual void UnHighlightActor() override;
-
-		//~Begin Team
-	virtual ETeam GetTeam() override;
-	UPROPERTY(EditAnywhere,ReplicatedUsing = "OnRep_Team",Category = "Team") //TODO:暂时先设置为EditAnyWhere
-	ETeam Team = ETeam::ETeam_Red;
-		//~End
 	//~End
 
 	USceneComponent* GetTargetComponent() const {return TargetComponent;};
@@ -48,7 +42,7 @@ public:
 	//~Begin CombatInterface
 	virtual UAnimMontage* GetStunnedMontage_Implementation() override;
 	virtual int32 GetPlayerLevel() override;
-
+	virtual ETeam GetTeam() override;
 	virtual void Die(UDemoAbilitySystemComponent* Killer) override;
 	//~End
 
@@ -96,6 +90,10 @@ protected:
 	void RegisterStateEvent();
 	//State Callback函数
 	virtual void StateCallback(const FGameplayTag CallbackTag,int32 NewCount);
+
+	//阵营变量，只是给Enemy用的，Player的Team从PS中获取
+	UPROPERTY(EditAnywhere,ReplicatedUsing = "OnRep_Team",Category = "Team") //TODO:暂时先设置为EditAnyWhere
+	ETeam Team = ETeam::ETeam_Red;
 
 
 	//眩晕蒙太奇动画

@@ -23,6 +23,7 @@ public:
 
 	//~Begin CombatInterface
 	virtual int32 GetPlayerLevel() override;
+	virtual ETeam GetTeam() override;
 	//~End
 
 	//~Begin HealthBar组件要绑定的委托 (来自WidgetController)

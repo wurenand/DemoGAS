@@ -3,6 +3,8 @@
 
 #include "Interface/CombatInterface.h"
 
+#include "DemoGAS/DemoGAS.h"
+
 // Add default functionality here for any ICombatInterface functions that are not pure virtual.
 int32 ICombatInterface::GetPlayerLevel()
 {
@@ -13,4 +15,9 @@ int32 ICombatInterface::GetPlayerLevel()
 FVector ICombatInterface::GetCombatSocketLocation(const FGameplayTag& InputTag)
 {
 	return FVector();
+}
+
+ETeam ICombatInterface::GetTeam()
+{
+	return ETeam::ETeam_Red;
 }

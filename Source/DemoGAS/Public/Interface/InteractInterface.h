@@ -8,7 +8,7 @@
 #include "InteractInterface.generated.h"
 
 
-//交互接口，提供一些功能包括：鼠标悬停高亮等 获取阵营
+//交互接口，提供一些功能包括：鼠标悬停高亮等
 UINTERFACE()
 class UInteractInterface : public UInterface
 {
@@ -16,7 +16,7 @@ class UInteractInterface : public UInterface
 };
 
 /**
- * 敌人接口，提供一些功能包括：鼠标悬停高亮,获取阵营等
+ * 敌人接口，提供一些功能包括：鼠标悬停高亮
  */
 class DEMOGAS_API IInteractInterface
 {
@@ -25,5 +25,4 @@ class DEMOGAS_API IInteractInterface
 public:
 	virtual void HighlightActor(ETeam FromTeam);
 	virtual void UnHighlightActor();
-	virtual ETeam GetTeam();
 };

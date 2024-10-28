@@ -31,6 +31,7 @@ protected:
 
 	//~Begin CombatInterface
 	virtual int32 GetPlayerLevel() override;
+	virtual ETeam GetTeam() override;
 	//~End
 
 	//~begin PlayerInterface

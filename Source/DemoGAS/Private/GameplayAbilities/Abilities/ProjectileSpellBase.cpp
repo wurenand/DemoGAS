@@ -53,10 +53,10 @@ void UProjectileSpellBase::SpawnOneProjectile(FVector TargetLocation,
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
 	//*****效果对象和方式
-	const ADemoCharacterBase* DemoCharacterBase = Cast<ADemoCharacterBase>(GetAvatarActorFromActorInfo());
+	ADemoCharacterBase* DemoCharacterBase = Cast<ADemoCharacterBase>(GetAvatarActorFromActorInfo());
 	if(DemoCharacterBase)
 	{
-		DemoProjectile->SetTeam(DemoCharacterBase->Team);
+		DemoProjectile->SetTeam(DemoCharacterBase->GetTeam());
 		DemoProjectile->SetTargetActor(InTargetActor);
 	}
 

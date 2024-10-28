@@ -12,8 +12,3 @@ void IInteractInterface::HighlightActor(ETeam FromTeam)
 void IInteractInterface::UnHighlightActor()
 {
 }
-
-ETeam IInteractInterface::GetTeam()
-{
-	return ETeam::ETeam_Red;
-}
