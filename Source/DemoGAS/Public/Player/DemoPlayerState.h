@@ -73,9 +73,14 @@ public:
 	void AddAbilityFromTagToPlayerCharacter(FGameplayTag InputActionTag);
 	
 	//玩家所属阵营
-	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Team, Category = "Team")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,ReplicatedUsing = OnRep_Team, Category = "Team")
 	ETeam Team = ETeam::ETeam_Red;
 
+	//用于SeamlessTravel 实现信息保留
+	virtual void SeamlessTravelTo(class APlayerState* NewPlayerState) override;
+	//更加常规的数据复制，断线重连等
+	virtual void CopyProperties(APlayerState* PlayerState) override;
+	
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;

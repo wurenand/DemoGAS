@@ -108,6 +108,24 @@ void ADemoPlayerState::AddAbilityFromTagToPlayerCharacter(FGameplayTag InputActi
 	}
 }
 
+void ADemoPlayerState::SeamlessTravelTo(class APlayerState* NewPlayerState)
+{
+	Super::SeamlessTravelTo(NewPlayerState);
+	if(ADemoPlayerState* NewPS = Cast<ADemoPlayerState>(NewPlayerState))
+	{
+		NewPS->Team = Team;
+	}
+}
+
+void ADemoPlayerState::CopyProperties(APlayerState* PlayerState)
+{
+	Super::CopyProperties(PlayerState);
+	if(ADemoPlayerState* NewPS = Cast<ADemoPlayerState>(PlayerState))
+	{
+		NewPS->Team = Team;
+	}
+}
+
 void ADemoPlayerState::TryAddAbilityLevel_Implementation(FGameplayTag InputActionTag)
 {
 	bool bHasAbility = false;
