@@ -34,6 +34,7 @@ void ADemoPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME(ADemoPlayerState,CharacterClass);
 	DOREPLIFETIME(ADemoPlayerState,LevelPoints);
 	DOREPLIFETIME(ADemoPlayerState,Team);
+	DOREPLIFETIME(ADemoPlayerState,CharacterClass);
 }
 
 UAbilitySystemComponent* ADemoPlayerState::GetAbilitySystemComponent() const
@@ -114,6 +115,7 @@ void ADemoPlayerState::SeamlessTravelTo(class APlayerState* NewPlayerState)
 	if(ADemoPlayerState* NewPS = Cast<ADemoPlayerState>(NewPlayerState))
 	{
 		NewPS->Team = Team;
+		NewPS->CharacterClass = CharacterClass;
 	}
 }
 
@@ -123,6 +125,7 @@ void ADemoPlayerState::CopyProperties(APlayerState* PlayerState)
 	if(ADemoPlayerState* NewPS = Cast<ADemoPlayerState>(PlayerState))
 	{
 		NewPS->Team = Team;
+		NewPS->CharacterClass = CharacterClass;
 	}
 }
 
@@ -165,6 +168,11 @@ void ADemoPlayerState::OnRep_LevelPoints()
 }
 
 void ADemoPlayerState::OnRep_Team()
+{
+	
+}
+
+void ADemoPlayerState::OnRep_CharacterClass()
 {
 	
 }

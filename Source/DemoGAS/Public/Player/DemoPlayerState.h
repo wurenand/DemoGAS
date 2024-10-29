@@ -59,10 +59,6 @@ public:
 	//填入升级配置的DataAsset
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Level")
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
-	
-	UPROPERTY(EditAnywhere,Replicated,BlueprintReadOnly,Category="PlayerCharacter")
-	ECharacterClass CharacterClass;
-
 	//~end
 
 	//获取技能或为技能升级 Only On Server
@@ -71,10 +67,15 @@ public:
 
 	//只能在Server授予能力 只为玩家操作角色使用
 	void AddAbilityFromTagToPlayerCharacter(FGameplayTag InputActionTag);
-	
+
+	//~begin 选择信息 要被跨地图传输
 	//玩家所属阵营
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,ReplicatedUsing = OnRep_Team, Category = "Team")
 	ETeam Team = ETeam::ETeam_Red;
+	//当前角色Class
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,ReplicatedUsing = OnRep_CharacterClass,Category = "Character")
+	ECharacterClass CharacterClass = ECharacterClass::ECC_Ezreal;
+	//~end
 
 	//用于SeamlessTravel 实现信息保留
 	virtual void SeamlessTravelTo(class APlayerState* NewPlayerState) override;
@@ -104,6 +105,8 @@ private:
 	void OnRep_LevelPoints();
 	UFUNCTION()
 	void OnRep_Team();
+	UFUNCTION()
+	void OnRep_CharacterClass();
 	UFUNCTION()
 	void OnRep_XP();
 };

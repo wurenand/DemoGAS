@@ -5,5 +5,5 @@
 
 FCharacterClassDefaultInfo UCharacterClassInfo::GetClassDefaultInfo(ECharacterClass CharacterClass)
 {
-	return CharacterClassInfomation.FindChecked(CharacterClass);
+	return CharacterClassInformation.FindChecked(CharacterClass);
 }

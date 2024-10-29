@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "CharacterClassInfo.generated.h"
 
+class ADemoPlayerCharacter;
 class UGameplayEffect;
 class UGameplayAbility;
 
@@ -14,8 +15,8 @@ enum class ECharacterClass : uint8
 {
 	//TODO:这里选择不同英雄
 	ECC_Ezreal UMETA(DisplayName = "伊泽瑞尔"),
-	ECC_JINZHAN  UMETA(DisplayName = "伊泽瑞尔2"),
-	ECC_TEST2  UMETA(DisplayName = "伊泽瑞尔3"),
+	ECC_JINZHAN  UMETA(DisplayName = "近战英雄占位符"),
+	ECC_TEST2  UMETA(DisplayName = "测试角色"),
 };
 
 /**
@@ -26,6 +27,10 @@ struct FCharacterClassDefaultInfo
 {
 	GENERATED_BODY()
 
+	//角色对应的Pawn
+	UPROPERTY(EditDefaultsOnly,Category="CharacterDefaults|BPClass")
+	TObjectPtr<ADemoPlayerCharacter> PlayerCharacterBPClass;
+	
 	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GE|PrimaryAttributes")
 	TSubclassOf<UGameplayEffect> PrimaryAttributesEffectClass;
 
@@ -51,7 +56,7 @@ class DEMOGAS_API UCharacterClassInfo : public UDataAsset
 public:
 	//独立的数组数据
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
-	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInfomation;
+	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInformation;
 	
 	//关于Health和Mana的设置 （第一次初始化的时候Apply用于把Health或者Mana回复满，后续升级的时候就Skip）
 	UPROPERTY(EditDefaultsOnly,Category = "CommonClassDefaults")
