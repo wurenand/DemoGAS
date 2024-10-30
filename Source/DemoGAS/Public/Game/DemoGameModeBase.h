@@ -18,4 +18,6 @@ class DEMOGAS_API ADemoGameModeBase : public AGameModeBase
 public:
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
+
+	virtual void RestartPlayer(AController* NewPlayer) override;
 };

@@ -29,7 +29,7 @@ struct FCharacterClassDefaultInfo
 
 	//角色对应的Pawn
 	UPROPERTY(EditDefaultsOnly,Category="CharacterDefaults|BPClass")
-	TObjectPtr<ADemoPlayerCharacter> PlayerCharacterBPClass;
+	TSubclassOf<ADemoPlayerCharacter> PlayerCharacterBPClass;
 	
 	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GE|PrimaryAttributes")
 	TSubclassOf<UGameplayEffect> PrimaryAttributesEffectClass;
