@@ -30,6 +30,9 @@ struct FCharacterClassDefaultInfo
 	//角色对应的Pawn
 	UPROPERTY(EditDefaultsOnly,Category="CharacterDefaults|BPClass")
 	TSubclassOf<ADemoPlayerCharacter> PlayerCharacterBPClass;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="CharacterDefaults|Icon")
+	TObjectPtr<UTexture2D> Icon;
 	
 	UPROPERTY(EditDefaultsOnly,Category = "ClassDefaults|GE|PrimaryAttributes")
 	TSubclassOf<UGameplayEffect> PrimaryAttributesEffectClass;
@@ -55,7 +58,7 @@ class DEMOGAS_API UCharacterClassInfo : public UDataAsset
 
 public:
 	//独立的数组数据
-	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category = "CharacterClassDefaults")
 	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInformation;
 	
 	//关于Health和Mana的设置 （第一次初始化的时候Apply用于把Health或者Mana回复满，后续升级的时候就Skip）
@@ -69,6 +72,6 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category = "DataPassiveAbilities")
 	TArray<TSubclassOf<UGameplayAbility>> PassiveAbilities;
 
-	
+	UFUNCTION(BlueprintCallable)
 	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 };

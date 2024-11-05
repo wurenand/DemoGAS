@@ -9,6 +9,8 @@ void ADemoRoomPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//非本地不要添加Widget
+	if(!IsLocalController()) return;
 	checkf(RoomWidgetClass,TEXT("RoomWidgetClass is NULL"));
 	RoomWidget = CreateWidget(this,RoomWidgetClass);
 	bShowMouseCursor = true;
