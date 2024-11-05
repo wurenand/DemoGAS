@@ -7,6 +7,11 @@
 #include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
 
+ADemoGameModeBase::ADemoGameModeBase()
+{
+	bUseSeamlessTravel = true;
+}
+
 void ADemoGameModeBase::RestartPlayer(AController* NewPlayer)
 {
 	if(GetWorld()->IsInSeamlessTravel())

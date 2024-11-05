@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "DemoRoomPlayerController.generated.h"
 
+enum class ECharacterClass : uint8;
+enum class ETeam : uint8;
 /**
  * 作为Room关卡中的PC，控制RoomUI
  */
@@ -14,12 +16,20 @@ class DEMOGAS_API ADemoRoomPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	virtual void BeginPlay() override;
-	protected:
-	UPROPERTY(EditAnywhere,Category = "RoomUI")
+
+	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Select")
+	void SelectTeam(ETeam InTeam);
+
+	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Select")
+	void SelectHero(ECharacterClass InCharacterClass);
+	
+protected:
+	UPROPERTY(EditAnywhere, Category = "RoomUI")
 	TSubclassOf<UUserWidget> RoomWidgetClass;
-	UPROPERTY(EditAnywhere,Category = "RoomUI")
+	UPROPERTY(EditAnywhere, Category = "RoomUI")
 	TObjectPtr<UUserWidget> RoomWidget;
+
 	
 };

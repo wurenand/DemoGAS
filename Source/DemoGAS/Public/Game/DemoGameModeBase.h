@@ -16,6 +16,8 @@ class DEMOGAS_API ADemoGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	ADemoGameModeBase();
+	
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 
