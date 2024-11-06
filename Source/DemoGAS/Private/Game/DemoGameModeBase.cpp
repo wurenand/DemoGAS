@@ -7,14 +7,18 @@
 #include "Player/DemoPlayerController.h"
 #include "Player/DemoPlayerState.h"
 
-ADemoGameModeBase::ADemoGameModeBase()
+
+void ADemoGameModeBase::HandleSeamlessTravelPlayer(AController*& C)
 {
-	bUseSeamlessTravel = true;
+	bFromSeamless = true;
+	//HandleSeamlessTravelPlayer会调用RestartPlayer(Seamless时PostLogin不会调用，不会导致重复Spawn)
+	Super::HandleSeamlessTravelPlayer(C);
 }
 
 void ADemoGameModeBase::RestartPlayer(AController* NewPlayer)
 {
-	if(GetWorld()->IsInSeamlessTravel())
+	UE_LOG(LogTemp, Display, TEXT("RestartPlayer"));
+	if(bFromSeamless)
 	{
 		if (ADemoPlayerController* NewPlayerController = Cast<ADemoPlayerController>(NewPlayer))
 		{

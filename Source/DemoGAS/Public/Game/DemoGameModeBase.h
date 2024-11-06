@@ -16,10 +16,14 @@ class DEMOGAS_API ADemoGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-	ADemoGameModeBase();
+	//用于在RestartPlayer中做区分
+	virtual void HandleSeamlessTravelPlayer(AController*& C) override;
 	
 	UPROPERTY(EditDefaultsOnly,Category = "CharacterClassDefaults")
 	TObjectPtr<UCharacterClassInfo> CharacterClassInfo;
 
 	virtual void RestartPlayer(AController* NewPlayer) override;
+
+private:
+	bool bFromSeamless = false;
 };

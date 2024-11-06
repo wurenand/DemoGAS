@@ -12,6 +12,7 @@ ADemoRoomGameMode::ADemoRoomGameMode()
 
 void ADemoRoomGameMode::ServerTravel(const FString& URL,bool bAbsolute)
 {
+	UE_LOG(LogTemp,Display,TEXT("MyServerTravel"));
 	//TODO:SeamlessTravel失效？无法执行无缝转移
 	if(!HasAuthority()) return;
 	if(CanServerTravel(URL,bAbsolute))
