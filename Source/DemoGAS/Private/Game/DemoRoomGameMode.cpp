@@ -3,6 +3,7 @@
 
 #include "Game/DemoRoomGameMode.h"
 
+#include "Game/DemoRoomGameState.h"
 #include "Player/DemoPlayerState.h"
 
 ADemoRoomGameMode::ADemoRoomGameMode()
@@ -10,35 +11,48 @@ ADemoRoomGameMode::ADemoRoomGameMode()
 	bUseSeamlessTravel = true;
 }
 
-void ADemoRoomGameMode::ServerTravel(const FString& URL,bool bAbsolute)
+void ADemoRoomGameMode::ServerTravel(const FString& URL, bool bAbsolute)
 {
-	UE_LOG(LogTemp,Display,TEXT("MyServerTravel"));
+	UE_LOG(LogTemp, Display, TEXT("MyServerTravel"));
 	//TODO:SeamlessTravel失效？无法执行无缝转移
-	if(!HasAuthority()) return;
-	if(CanServerTravel(URL,bAbsolute))
+	if (!HasAuthority())
 	{
-		GetWorld()->ServerTravel(URL,bAbsolute);
+		return;
 	}
+	if (CanServerTravel(URL, bAbsolute))
+	{
+		GetWorld()->ServerTravel(URL, bAbsolute);
+	}
+}
+
+void ADemoRoomGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	RoomGameState = Cast<ADemoRoomGameState>(GetGameState<ADemoRoomGameState>());
 }
 
 void ADemoRoomGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	//TODO:注册玩家到GameState中
+	RoomGameState->LoginPlayer(NewPlayer);
 }
 
-void ADemoRoomGameMode::SelectTeam(APlayerController* PlayerController,ETeam InTeam)
+void ADemoRoomGameMode::SelectTeam(APlayerController* PlayerController, ETeam InTeam)
 {
-	if(ADemoPlayerState* DemoPlayerState = PlayerController->GetPlayerState<ADemoPlayerState>())
+	if (ADemoPlayerState* DemoPlayerState = PlayerController->GetPlayerState<ADemoPlayerState>())
 	{
 		DemoPlayerState->Team = InTeam;
 	}
 }
 
-void ADemoRoomGameMode::SelectHero(APlayerController* PlayerController,ECharacterClass InCharacterClass)
+void ADemoRoomGameMode::SelectHero(APlayerController* PlayerController, ECharacterClass InCharacterClass)
 {
-	if(ADemoPlayerState* DemoPlayerState = PlayerController->GetPlayerState<ADemoPlayerState>())
+	if (ADemoPlayerState* DemoPlayerState = PlayerController->GetPlayerState<ADemoPlayerState>())
 	{
 		DemoPlayerState->CharacterClass = InCharacterClass;
 	}
+}
+
+void ADemoRoomGameMode::SetPlayerReady(APlayerController* PlayerController, bool bIsReady)
+{
 }

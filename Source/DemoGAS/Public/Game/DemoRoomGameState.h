@@ -15,10 +15,22 @@ class DEMOGAS_API ADemoRoomGameState : public AGameStateBase
 	GENERATED_BODY()
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Players,Category = "RoomGameState")
+	//PostLogin之后，记录连接了的PC CalledOnServer
+	UFUNCTION(NetMulticast, reliable)
+	void LoginPlayer(APlayerController* PlayerController);
+	UFUNCTION(NetMulticast, reliable)
+	void SetPlayerIsReady(APlayerController* PlayerController,bool bIsReady);
+
+protected:
+	//TODO:感觉这里都不需要复制了。使用NetMulticast的LoginPlayer来管理
+	UPROPERTY(BlueprintReadOnly,Replicated,Category = "RoomGameState")
 	TArray<APlayerController*> Players;
 
-	UFUNCTION()
-	void OnRep_Players();
+	//用来记录玩家是否准备了， 不复制
+	UPROPERTY(BlueprintReadOnly,Category = "RoomGameState")
+	TMap<APlayerController*,bool> PlayerReadyState;
+
+	//游戏地图的URL
+	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "RoomGameState")
+	FString GameMapURL;
 };

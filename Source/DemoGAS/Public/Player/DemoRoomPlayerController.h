@@ -24,6 +24,9 @@ public:
 
 	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Select")
 	void SelectHero(ECharacterClass InCharacterClass);
+
+	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Ready")
+	void SetReady(bool bIsReady);
 	
 protected:
 	UPROPERTY(EditAnywhere, Category = "RoomUI")
