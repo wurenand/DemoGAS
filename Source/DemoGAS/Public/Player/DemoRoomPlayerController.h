@@ -24,12 +24,15 @@ public:
 
 	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Select")
 	void SelectHero(ECharacterClass InCharacterClass);
+
+	UFUNCTION(BlueprintCallable,Server,Reliable,Category = "Ready")
+	void SetReady(bool bIsReady);
 	
 protected:
 	UPROPERTY(EditAnywhere, Category = "RoomUI")
 	TSubclassOf<UUserWidget> RoomWidgetClass;
 	UPROPERTY(EditAnywhere, Category = "RoomUI")
 	TObjectPtr<UUserWidget> RoomWidget;
-
-	
+	UPROPERTY(BlueprintReadOnly, Category = "Ready")
+	bool bPlayerIsReady = false;
 };

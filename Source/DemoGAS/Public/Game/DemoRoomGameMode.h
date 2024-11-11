@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "DemoRoomGameMode.generated.h"
 
+class ADemoRoomGameState;
 enum class ECharacterClass : uint8;
 enum class ETeam : uint8;
 /**
@@ -23,6 +24,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Map")
 	void ServerTravel(const FString& URL,bool bAbsolute);
 
+	virtual void BeginPlay() override;
+	
 	//将玩家注册到GameState中，用于管理对局是否开始等
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
@@ -31,4 +34,9 @@ public:
 	void SelectTeam(APlayerController* PlayerController,ETeam InTeam);
 	UFUNCTION(BlueprintCallable)
 	void SelectHero(APlayerController* PlayerController,ECharacterClass InCharacterClass);
+	UFUNCTION(BlueprintCallable)
+	void SetPlayerReady(APlayerController* PlayerController,bool bIsReady);
+
+private:
+	TObjectPtr<ADemoRoomGameState> RoomGameState;
 };

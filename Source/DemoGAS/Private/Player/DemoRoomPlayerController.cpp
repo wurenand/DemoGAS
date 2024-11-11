@@ -23,6 +23,14 @@ void ADemoRoomPlayerController::BeginPlay()
 	RoomWidget->AddToViewport(0);
 }
 
+void ADemoRoomPlayerController::SetReady_Implementation(bool bIsReady)
+{
+	if (ADemoRoomGameMode* RoomGameMode = Cast<ADemoRoomGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		RoomGameMode->SetPlayerReady(this, bIsReady);
+	}
+}
+
 void ADemoRoomPlayerController::SelectTeam_Implementation(ETeam InTeam)
 {
 	if (ADemoRoomGameMode* RoomGameMode = Cast<ADemoRoomGameMode>(GetWorld()->GetAuthGameMode()))
