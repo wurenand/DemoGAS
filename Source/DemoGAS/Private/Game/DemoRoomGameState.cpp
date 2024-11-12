@@ -12,8 +12,23 @@ void ADemoRoomGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(ADemoRoomGameState, Players);
 }
 
+void ADemoRoomGameState::OnRep_Players(const TArray<APlayerController*>& OldPlayers)
+{
+	for (APlayerController* PC : Players)
+	{
+		if (!OldPlayers.Contains(PC))
+		{
+			PlayerReadyState.Add(PC, false);
+			UE_LOG(LogTemp,Warning,TEXT("ADemoRoomGameState::OnRep_Players"));
+		}
+	}
+}
+
 void ADemoRoomGameState::SetPlayerIsReady_Implementation(APlayerController* PlayerController, bool bIsReady)
 {
+	bool bIsServer = HasAuthority();
+	static int32 count = 0;
+	UE_LOG(LogTemp, Warning, TEXT("isServer %d  count : %d"), bIsServer, ++count);
 	if (Players.Contains(PlayerController) && PlayerReadyState[PlayerController] != bIsReady)
 	{
 		PlayerReadyState[PlayerController] = bIsReady;
@@ -39,10 +54,11 @@ void ADemoRoomGameState::SetPlayerIsReady_Implementation(APlayerController* Play
 	}
 }
 
-void ADemoRoomGameState::LoginPlayer_Implementation(APlayerController* PlayerController)
+void ADemoRoomGameState::LoginPlayer(APlayerController* PlayerController)
 {
+	TArray<APlayerController*> OldPlayers = Players;
 	Players.Add(PlayerController);
-	//TODO:用一个委托，通知UI生成图标
-	//TODO:？BUG 为什么没能往Map中添加元素
-	PlayerReadyState.Add(PlayerController, false);
+	OnRep_Players(OldPlayers);
 }
+
+

@@ -4,6 +4,7 @@
 #include "Game/DemoRoomGameMode.h"
 
 #include "Game/DemoRoomGameState.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/DemoPlayerState.h"
 
 ADemoRoomGameMode::ADemoRoomGameMode()
@@ -28,13 +29,23 @@ void ADemoRoomGameMode::ServerTravel(const FString& URL, bool bAbsolute)
 void ADemoRoomGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	RoomGameState = Cast<ADemoRoomGameState>(GetGameState<ADemoRoomGameState>());
 }
 
 void ADemoRoomGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-	RoomGameState->LoginPlayer(NewPlayer);
+	//使用懒汉模式
+	if (RoomGameState == nullptr)
+	{
+		RoomGameState = Cast<ADemoRoomGameState>(GetWorld()->GetGameState());
+	}
+	if (RoomGameState && HasAuthority())
+	{
+		//TODO:还有问题 本地应该只有自己的PlayerController？
+		//还有问题: 如果后续有人登陆，在登陆之前的PlayerStateReady是不会同步的
+		//解决方法:用OnRep_Players中添加Map映射
+		RoomGameState->LoginPlayer(NewPlayer);
+	}
 }
 
 void ADemoRoomGameMode::SelectTeam(APlayerController* PlayerController, ETeam InTeam)
