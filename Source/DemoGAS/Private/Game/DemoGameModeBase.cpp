@@ -17,7 +17,6 @@ void ADemoGameModeBase::HandleSeamlessTravelPlayer(AController*& C)
 
 void ADemoGameModeBase::RestartPlayer(AController* NewPlayer)
 {
-	UE_LOG(LogTemp, Display, TEXT("RestartPlayer"));
 	if(bFromSeamless)
 	{
 		if (ADemoPlayerController* NewPlayerController = Cast<ADemoPlayerController>(NewPlayer))
@@ -31,6 +30,9 @@ void ADemoGameModeBase::RestartPlayer(AController* NewPlayer)
 				TSubclassOf<ADemoPlayerCharacter> SpawnClass = CharacterClassDefaultInfo.PlayerCharacterBPClass;
 				FTransform SpawnTransform;
 				FActorSpawnParameters SpawnParameters;
+				//因为Collision问题导致失败
+				//TODO:后续根据PlayerStart来进行生成
+				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 				ADemoPlayerCharacter* SpawnCharacter = GetWorld()->SpawnActor<ADemoPlayerCharacter>(SpawnClass,SpawnTransform,SpawnParameters);
 				NewPlayerController->SetPawn(SpawnCharacter);
 				FinishRestartPlayer(NewPlayerController,FRotator(0.0f));
