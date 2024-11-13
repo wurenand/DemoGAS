@@ -8,12 +8,14 @@
 #include "Character/DemoCharacterBase.h"
 #include "Game/DemoGameModeBase.h"
 #include "GameplayAbilities/DemoAbilitySystemComponent.h"
+#include "GameplayAbilities/DemoAttributeSet.h"
 #include "Kismet/GameplayStatics.h"
 
 void UDemoSystemLibrary::InitialDefaultAttributes(const UObject* WorldContentObject, ECharacterClass CharacterClass,
                                                   float Level, ADemoCharacterBase* CharacterBase)
 {
 	//将存放在GM中的CharacterClass DataAsset拿出来
+	//这里Client是拿不到GM的，所以会直接退出
 	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(WorldContentObject));
 	if (DemoGameModeBase == nullptr)
 	{
@@ -27,6 +29,13 @@ void UDemoSystemLibrary::InitialDefaultAttributes(const UObject* WorldContentObj
 
 	//Apply GE
 	CharacterBase->ApplyEffectToSelf(CharacterClassInfo.PrimaryAttributesEffectClass, Level);
+
+	//TODO:Test
+	bool IsServer = CharacterBase->HasAuthority();
+	float CurrentDistance = Cast<UDemoAttributeSet>(CharacterBase->GetAttributeSet())->GetAttackDistance();
+	UE_LOG(LogTemp, Warning, TEXT("Before FromServer %d AttributeValue = %f PawnName %s"), IsServer, CurrentDistance,
+	       *CharacterBase->GetName());
+
 	if (!CharacterBase->bFirstInitial)
 	{
 		CharacterBase->ApplyEffectToSelf(DemoGameModeBase->CharacterClassInfo->VitalAttributesEffectClass, Level);
@@ -68,7 +77,8 @@ void UDemoSystemLibrary::GivePassiveAbilitiesAndActive(const UObject* WorldConte
 	}
 }
 
-void UDemoSystemLibrary::GiveStartUpAbilitiesToCharacter(const UObject* WorldContentObject, ADemoCharacterBase* CharacterBase)
+void UDemoSystemLibrary::GiveStartUpAbilitiesToCharacter(const UObject* WorldContentObject,
+                                                         ADemoCharacterBase* CharacterBase)
 {
 	ADemoGameModeBase* DemoGameModeBase = Cast<ADemoGameModeBase>(UGameplayStatics::GetGameMode(WorldContentObject));
 	if (DemoGameModeBase)

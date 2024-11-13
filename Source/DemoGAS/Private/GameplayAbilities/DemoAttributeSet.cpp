@@ -195,6 +195,8 @@ void UDemoAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, Armor, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, CriticalChance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, CriticalBoncePercent, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, AttackDistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDemoAttributeSet, SpellArmor, COND_None, REPNOTIFY_Always);
 }
 
 void UDemoAttributeSet::OnRep_Health(const FGameplayAttributeData& OldValue) const

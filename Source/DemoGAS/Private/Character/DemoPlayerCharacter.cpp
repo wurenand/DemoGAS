@@ -144,6 +144,10 @@ void ADemoPlayerCharacter::StateCallback(const FGameplayTag CallbackTag, int32 N
 
 void ADemoPlayerCharacter::InitialAbilitySystem()
 {
+	if(!HasAuthority())
+	{
+		UE_LOG(LogTemp,Log, TEXT("ADemoPlayerCharacter::InitialAbilitySystem"));
+	}
 	//1 初始化ActorInfo
 	ADemoPlayerState* DemoPlayerState = GetPlayerState<ADemoPlayerState>();
 	check(DemoPlayerState)
@@ -156,7 +160,7 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 	AbilitySystemComponent = DemoPlayerState->GetAbilitySystemComponent();
 	AttributeSet = DemoPlayerState->GetAttributeSet();
 
-	//4 初始化Attributes，可以只在Server调用，但是在这个函数中Server和Client都会调用，在Client调用可以避免Client等待同步的过程
+	//4 初始化Attributes OnServer(因为里面要获取GM)
 	InitialDefaultAttributes();
 
 	
@@ -175,6 +179,7 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 	//6 绑定事件到GameplayTag增删
 	RegisterStateEvent();
 
+	//TODO:为什么Client的Pawn的AttributeSet的值没有被设置？？
 	//7 Give用于实现State状态的GA
 	UDemoSystemLibrary::GiveStateAbilities(this,this);
 	//8 GiveAndActive与经验等有关的被动Listen触发GA
