@@ -30,6 +30,8 @@ public:
 	void SetTargetActor(const ADemoCharacterBase* InTargetActor);
 	FORCEINLINE const ADemoCharacterBase* GetTargetActor() {return TargetActor;}
 
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 protected:
 	virtual void BeginPlay() override;
 	
@@ -37,6 +39,6 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "InteracteBase")
 	ETeam Team = ETeam::ETeam_Blue;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = "InteracteBaset")
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Replicated,Category = "InteracteBaset")
 	const ADemoCharacterBase* TargetActor = nullptr;
 };

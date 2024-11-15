@@ -1,6 +1,8 @@
 ﻿
 #include "Actor/InteractBaseActor.h"
 
+#include "Net/UnrealNetwork.h"
+
 
 AInteractBaseActor::AInteractBaseActor()
 {
@@ -15,6 +17,12 @@ void AInteractBaseActor::SetTeam(ETeam InTeam)
 void AInteractBaseActor::SetTargetActor(const ADemoCharacterBase* InTargetActor)
 {
 	TargetActor = InTargetActor;
+}
+
+void AInteractBaseActor::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AInteractBaseActor, TargetActor);
 }
 
 void AInteractBaseActor::BeginPlay()

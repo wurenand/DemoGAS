@@ -178,8 +178,6 @@ void ADemoPlayerCharacter::InitialAbilitySystem()
 
 	//6 绑定事件到GameplayTag增删
 	RegisterStateEvent();
-
-	//TODO:为什么Client的Pawn的AttributeSet的值没有被设置？？
 	//7 Give用于实现State状态的GA
 	UDemoSystemLibrary::GiveStateAbilities(this,this);
 	//8 GiveAndActive与经验等有关的被动Listen触发GA
