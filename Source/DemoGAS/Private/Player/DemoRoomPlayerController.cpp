@@ -5,6 +5,8 @@
 
 #include "Blueprint/UserWidget.h"
 #include "Game/DemoRoomGameMode.h"
+#include "GameFramework/GameStateBase.h"
+#include "UI/Widget/DemoUserWidget.h"
 
 void ADemoRoomPlayerController::BeginPlay()
 {
@@ -15,8 +17,14 @@ void ADemoRoomPlayerController::BeginPlay()
 	{
 		return;
 	}
+	//SpawnUI
+	//直接让GameState作为UI的Controller
 	checkf(RoomWidgetClass, TEXT("RoomWidgetClass is NULL"));
 	RoomWidget = CreateWidget(this, RoomWidgetClass);
+	UDemoUserWidget* DemoUserWidget = Cast<UDemoUserWidget>(RoomWidget);
+	checkf(DemoUserWidget, TEXT("RoomWidgetClass Should be child class of UDemoUserWidget"));
+	//让GameState作为RoomWidget的WidgetController 实现Room部分角色 阵营 英雄的UI同步！
+	DemoUserWidget->SetWidgetController(GetWorld()->GetGameState());
 	bShowMouseCursor = true;
 	FInputModeUIOnly InputModeUIOnly;
 	SetInputMode(InputModeUIOnly);
