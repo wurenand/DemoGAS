@@ -12,34 +12,34 @@ void ADemoRoomGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	DOREPLIFETIME(ADemoRoomGameState, Players);
 }
 
-void ADemoRoomGameState::OnRep_Players(const TArray<APlayerController*>& OldPlayers)
+void ADemoRoomGameState::OnRep_Players(const TArray<APlayerState*>& OldPlayers)
 {
-	for (APlayerController* PC : Players)
+	for (APlayerState* PS : Players)
 	{
-		if (!OldPlayers.Contains(PC))
+		if (!OldPlayers.Contains(PS))
 		{
-			PlayerReadyState.Add(PC, false);
+			PlayerReadyState.Add(PS, false);
 			//TODO:不应该使用PlayerController 因为Client根本没有！ 只有自己的Controller
 			//所以只传递这个指针却找不到具体的对象！  但是我需要找到这个对象吗？
-			SpawnPlayerDelegate.Broadcast(PC, 0);
+			SpawnPlayerDelegate.Broadcast(PS, 0);
 		}
 	}
 }
 
-void ADemoRoomGameState::SetPlayerIsReady_Implementation(APlayerController* PlayerController, bool bIsReady)
+void ADemoRoomGameState::SetPlayerIsReady_Implementation(APlayerState* PlayerState, bool bIsReady)
 {
 	bool bIsServer = HasAuthority();
 	static int32 count = 0;
 	UE_LOG(LogTemp, Warning, TEXT("isServer %d  count : %d"), bIsServer, ++count);
-	if (Players.Contains(PlayerController) && PlayerReadyState[PlayerController] != bIsReady)
+	if (Players.Contains(PlayerState) && PlayerReadyState[PlayerState] != bIsReady)
 	{
-		PlayerReadyState[PlayerController] = bIsReady;
-		UpdateReadyDelegate.Broadcast(PlayerController, bIsReady);
+		PlayerReadyState[PlayerState] = bIsReady;
+		UpdateReadyDelegate.Broadcast(PlayerState, bIsReady);
 		//检查是否全部准备了
 		if (HasAuthority())
 		{
 			bool bShouldStartGame = true;
-			for (TTuple<APlayerController*, bool> ReadyState : PlayerReadyState)
+			for (TTuple<APlayerState*, bool> ReadyState : PlayerReadyState)
 			{
 				if (!ReadyState.Value)
 				{
@@ -56,20 +56,20 @@ void ADemoRoomGameState::SetPlayerIsReady_Implementation(APlayerController* Play
 	}
 }
 
-void ADemoRoomGameState::LoginPlayer(APlayerController* PlayerController)
+void ADemoRoomGameState::LoginPlayer(APlayerState* PlayerController)
 {
-	TArray<APlayerController*> OldPlayers = Players;
+	TArray<APlayerState*> OldPlayers = Players;
 	Players.Add(PlayerController);
 	OnRep_Players(OldPlayers);
 }
 
-void ADemoRoomGameState::UpdatePlayerTeam_Implementation(APlayerController* PlayerController, ETeam NewTeam)
+void ADemoRoomGameState::UpdatePlayerTeam_Implementation(APlayerState* PlayerState, ETeam NewTeam)
 {
-	UpdateTeamDelegate.Broadcast(PlayerController, static_cast<uint8>(NewTeam));
+	UpdateTeamDelegate.Broadcast(PlayerState, static_cast<uint8>(NewTeam));
 }
 
-void ADemoRoomGameState::UpdatePlayerIsHero_Implementation(APlayerController* PlayerController,
+void ADemoRoomGameState::UpdatePlayerIsHero_Implementation(APlayerState* PlayerState,
                                                            ECharacterClass NewCharacter)
 {
-	UpdateHeroDelegate.Broadcast(PlayerController, static_cast<uint8>(NewCharacter));
+	UpdateHeroDelegate.Broadcast(PlayerState, static_cast<uint8>(NewCharacter));
 }

@@ -44,7 +44,7 @@ void ADemoRoomGameMode::PostLogin(APlayerController* NewPlayer)
 		//TODO:还有问题 本地应该只有自己的PlayerController？
 		//还有问题: 如果后续有人登陆，在登陆之前的PlayerStateReady是不会同步的
 		//解决方法:用OnRep_Players中添加Map映射
-		RoomGameState->LoginPlayer(NewPlayer);
+		RoomGameState->LoginPlayer(NewPlayer->PlayerState);
 	}
 }
 
@@ -66,5 +66,5 @@ void ADemoRoomGameMode::SelectHero(APlayerController* PlayerController, ECharact
 
 void ADemoRoomGameMode::SetPlayerReady(APlayerController* PlayerController, bool bIsReady)
 {
-	RoomGameState->SetPlayerIsReady(PlayerController, bIsReady);
+	RoomGameState->SetPlayerIsReady(PlayerController->PlayerState, bIsReady);
 }

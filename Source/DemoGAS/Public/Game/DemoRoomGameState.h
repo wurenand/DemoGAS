@@ -6,7 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "DemoRoomGameState.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUpdatePlayerEnumSignature,APlayerController*,PC,uint8 ,EnumValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUpdatePlayerEnumSignature,APlayerState*,PS,uint8 ,EnumValue);
 
 enum class ECharacterClass : uint8;
 enum class ETeam : uint8;
@@ -28,27 +28,27 @@ public:
 	FUpdatePlayerEnumSignature SpawnPlayerDelegate;
 	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	//PostLogin之后，记录连接了的PC CalledOnServer
-	void LoginPlayer(APlayerController* PlayerController);
+	//PostLogin之后，记录连接了的玩家 CalledOnServer
+	void LoginPlayer(APlayerState* PlayerState);
 	UFUNCTION(NetMulticast, reliable)
-	void SetPlayerIsReady(APlayerController* PlayerController,bool bIsReady);
+	void SetPlayerIsReady(APlayerState* PlayerState,bool bIsReady);
 	//多播来使用委托同步到所有人的UI上
 	UFUNCTION(NetMulticast, reliable)
-	void UpdatePlayerTeam(APlayerController* PlayerController,ETeam NewTeam);
+	void UpdatePlayerTeam(APlayerState* PlayerState,ETeam NewTeam);
 	//多播来使用委托同步到所有人的UI上
 	UFUNCTION(NetMulticast, reliable)
-	void UpdatePlayerIsHero(APlayerController* PlayerController,ECharacterClass NewCharacter);
+	void UpdatePlayerIsHero(APlayerState* PlayerState,ECharacterClass NewCharacter);
 
 protected:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Players,Category = "RoomGameState")
-	TArray<APlayerController*> Players;
+	TArray<APlayerState*> Players;
 
 	UFUNCTION()
-	void OnRep_Players(const TArray<APlayerController*>& OldPlayers);
+	void OnRep_Players(const TArray<APlayerState*>& OldPlayers);
 
 	//用来记录玩家是否准备了， 不复制
 	UPROPERTY(BlueprintReadOnly,Category = "RoomGameState")
-	TMap<APlayerController*,bool> PlayerReadyState;
+	TMap<APlayerState*,bool> PlayerReadyState;
 
 	//游戏地图的URL
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category = "RoomGameState")
