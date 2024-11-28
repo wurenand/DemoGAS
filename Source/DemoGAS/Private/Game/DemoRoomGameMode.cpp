@@ -52,7 +52,13 @@ void ADemoRoomGameMode::SelectTeam(APlayerController* PlayerController, ETeam In
 {
 	if (ADemoPlayerState* DemoPlayerState = PlayerController->GetPlayerState<ADemoPlayerState>())
 	{
-		DemoPlayerState->Team = InTeam;
+		//相同就不改了
+		if (DemoPlayerState->Team != InTeam)
+		{
+			DemoPlayerState->Team = InTeam;
+			//让GS多播更新UI
+			RoomGameState->UpdatePlayerTeam(DemoPlayerState, InTeam);
+		}
 	}
 }
 

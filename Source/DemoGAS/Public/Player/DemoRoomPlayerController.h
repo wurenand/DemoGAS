@@ -33,6 +33,4 @@ protected:
 	TSubclassOf<UUserWidget> RoomWidgetClass;
 	UPROPERTY(EditAnywhere, Category = "RoomUI")
 	TObjectPtr<UUserWidget> RoomWidget;
-	UPROPERTY(BlueprintReadOnly, Category = "Ready")
-	bool bPlayerIsReady = false;
 };
